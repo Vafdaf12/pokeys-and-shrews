@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
-project(CmakeTemplateSDL VERSION 0.1.0 LANGUAGES C CXX)
+project(PokeysAndShrews VERSION 0.1.0 LANGUAGES C CXX)
 
-set(NAME_EXE CmakeTemplateSDL)
+set(NAME_EXE PokeysAndShrews)
 
 include(FetchContent)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

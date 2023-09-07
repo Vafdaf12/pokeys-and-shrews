@@ -10,7 +10,7 @@
 int main(int, char**) {
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
 
-    SDL_Window* window = SDL_CreateWindow("SDL + CMake Template",
+    SDL_Window* window = SDL_CreateWindow("Pokeys & Shrews",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         800,

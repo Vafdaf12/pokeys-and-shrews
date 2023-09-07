@@ -16,3 +16,7 @@ _deps
 
 # Build directory
 build/
+
+# Temporary files created by Visual Paradigm
+*.vpp.bak*
+*.vpp.lck
