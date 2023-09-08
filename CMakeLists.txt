@@ -13,11 +13,15 @@ FetchContent_Declare(SDL2
 )
 FetchContent_MakeAvailable(SDL2)
 
-
 file(GLOB SRCFILES
     src/*.cpp
 )
-add_executable(${NAME_EXE} ${SRCFILES})
+file(GLOB RESFILES
+    res/*
+)
+
+file(COPY ${RESFILES} DESTINATION "${CMAKE_BINARY_DIR}/res")
+add_executable(${NAME_EXE} ${SRCFILES} ${RESFILES})
 target_include_directories(${NAME_EXE}
     PRIVATE src/
 )
