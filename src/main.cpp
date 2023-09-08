@@ -12,10 +12,14 @@
 // following main is picked up correctly
 #undef main
 
+long time_step(long time, long fps) {
+    return (time*fps / 1000);
+}
+
 int main(int, char**) {
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
     std::string base = SDL_GetBasePath();
-    base += "res/Hero1.bmp"; 
+    base += "res/Spritesheet.bmp"; 
 
     std::cout << base << std::endl;
 
@@ -30,7 +34,8 @@ int main(int, char**) {
 
     SDL_Surface* image = SDL_LoadBMP(base.c_str());
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-    SDL_Rect rect = {100, 100, 400, 100};
+    SDL_Rect rect = {100, 100, 100, 100};
+    SDL_Rect src = {0, 0, 32, 32};
 
     SDL_Event event;
     bool quit = false;
@@ -43,12 +48,13 @@ int main(int, char**) {
 
         SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 255);
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, NULL, &rect);
+        SDL_RenderCopy(renderer, texture, &src, &rect);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderDrawLine(renderer, (time) % 800, 0, 800 - (time % 800), 600);
         SDL_RenderPresent(renderer);
 
         time += dt;
+        src.y = (time_step(time, 10)%4)*32;
     }
     return 0;
 }

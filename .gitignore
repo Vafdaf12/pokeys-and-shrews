@@ -20,3 +20,7 @@ build/
 # Temporary files created by Visual Paradigm
 *.vpp.bak*
 *.vpp.lck
+
+# Temporary files created by Krita
+*~
+*-autosave.*
