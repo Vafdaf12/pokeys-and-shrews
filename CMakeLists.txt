@@ -32,13 +32,17 @@ FetchContent_MakeAvailable(SDL2_image)
 file(GLOB SRCFILES
     src/*.cpp
 )
-file(GLOB RESFILES
-    res/*
-)
 
-file(COPY ${RESFILES} DESTINATION "${CMAKE_BINARY_DIR}/res")
+# Add executable
 add_executable(${NAME_EXE} ${SRCFILES} ${RESFILES})
 target_include_directories(${NAME_EXE}
     PRIVATE src/
 )
 target_link_libraries(${NAME_EXE} SDL2-static SDL2_image)
+
+# Copy resource files to build directory
+add_custom_command(
+        TARGET ${NAME_EXE} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_SOURCE_DIR}/res
+                ${CMAKE_CURRENT_BINARY_DIR}/res)
