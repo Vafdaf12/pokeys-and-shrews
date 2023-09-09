@@ -8,6 +8,8 @@
 #include <SDL.h>
 #include <string>
 
+#include <SDL_image.h>
+
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
 #undef main
@@ -19,7 +21,8 @@ long time_step(long time, long fps) {
 int main(int, char**) {
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
     std::string base = SDL_GetBasePath();
-    base += "res/Spritesheet.bmp"; 
+    base += "res/Spritesheet.png"; 
+    
 
     std::cout << base << std::endl;
 
@@ -32,7 +35,7 @@ int main(int, char**) {
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
-    SDL_Surface* image = SDL_LoadBMP(base.c_str());
+    SDL_Surface* image = IMG_Load(base.c_str());
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
     SDL_Rect rect = {100, 100, 100, 100};
     SDL_Rect src = {0, 0, 32, 32};
@@ -46,7 +49,7 @@ int main(int, char**) {
             if (event.type == SDL_QUIT) quit = true;
         }
 
-        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 255);
+        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0x00, 255);
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, texture, &src, &rect);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
