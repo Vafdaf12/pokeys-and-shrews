@@ -31,6 +31,7 @@ FetchContent_MakeAvailable(SDL2_image)
 
 file(GLOB SRCFILES
     src/*.cpp
+    src/**/*.cpp
 )
 
 # Add executable

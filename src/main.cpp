@@ -1,28 +1,39 @@
-#include "SDL_filesystem.h"
-#include "SDL_rect.h"
-#include "SDL_render.h"
-#include "SDL_surface.h"
-#include <assert.h>
 #include <iostream>
 
-#include <SDL.h>
-#include <string>
-
-#include <SDL_image.h>
+#include "research/ResearchLab.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
 #undef main
 
-long time_step(long time, long fps) {
-    return (time*fps / 1000);
-}
+long time_step(long time, long fps) { return (time * fps / 1000); }
 
 int main(int, char**) {
+    ResearchItem* items[] = {
+        new ResearchItem("Item1", 10),
+        new ResearchItem("Item2", 2),
+        new ResearchItem("Item3", 5),
+    };
+
+    ResearchLab lab;
+    lab.enqueue(items[0]);
+    lab.enqueue(items[1]);
+    lab.enqueue(items[2]);
+
+    for (int i = 0; i < 4; i++) {
+        lab.tick();
+    }
+    std::cout << lab << std::endl;
+    for (int i = 0; i < 6; i++) {
+        lab.tick();
+    }
+    std::cout << lab << std::endl;
+    lab.cancel(items[2]);
+
+    /*
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
     std::string base = SDL_GetBasePath();
-    base += "res/Spritesheet.png"; 
-    
+    base += "res/Spritesheet.png";
 
     std::cout << base << std::endl;
 
@@ -59,5 +70,6 @@ int main(int, char**) {
         time += dt;
         src.y = (time_step(time, 10)%4)*32;
     }
+    */
     return 0;
 }
