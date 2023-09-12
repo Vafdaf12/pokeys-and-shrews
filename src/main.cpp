@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "research/ResearchLab.h"
+#include "test.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
@@ -9,22 +9,8 @@
 long time_step(long time, long fps) { return (time * fps / 1000); }
 
 int main(int, char**) {
-    ResearchLab lab;
-    lab.enqueue(new ResearchItem("Item1", 10));
-    lab.enqueue(new ResearchItem("Item2", 2));
-    lab.enqueue(new ResearchItem("Item3", 5));
-
-    for (int i = 0; i < 4; i++) {
-        lab.tick();
-    }
-    std::cout << lab << std::endl;
-    for (int i = 0; i < 6; i++) {
-        lab.tick();
-    }
-    std::cout << lab << std::endl;
-    delete lab.cancel(1);
-    delete lab.cancel(0);
-    std::cout << lab << std::endl;
+    test::research_lab();
+    test::bank();
 
     /*
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
