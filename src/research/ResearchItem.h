@@ -8,14 +8,22 @@ public:
     ResearchItem(const std::string& trap, uint32_t time);
 
     /**
-      * @returns Whether the research has completed
-    */
+     * @returns Whether the research has completed
+     */
     bool tick();
 
+    /**
+     * Completes the research, notifying all relevant parties
+     */
     void complete();
+
+    /**
+     * Cancels the research, notifying all relevant parties
+     */
     void cancel();
 
-    std::string toString() const;
+    friend std::ostream& operator<<(std::ostream&, const ResearchItem&);
+
 private:
     std::string m_trap;
     uint32_t m_totalTicks;

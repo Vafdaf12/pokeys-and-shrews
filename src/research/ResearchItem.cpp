@@ -21,8 +21,8 @@ void ResearchItem::cancel() {
     std::cout << m_trap << ": CANCELLED" << std::endl;
 }
 
-std::string ResearchItem::toString() const {
-    std::stringstream s;
-    s << m_trap << ": " << m_currentTick << "/" << m_totalTicks;
-    return s.str();
+std::ostream& operator<<(std::ostream& out, const ResearchItem& item) {
+    out << item.m_trap << "(" << item.m_currentTick << "," << item.m_totalTicks
+        << ")";
+    return out;
 }

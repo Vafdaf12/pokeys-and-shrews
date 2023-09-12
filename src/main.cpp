@@ -9,16 +9,10 @@
 long time_step(long time, long fps) { return (time * fps / 1000); }
 
 int main(int, char**) {
-    ResearchItem* items[] = {
-        new ResearchItem("Item1", 10),
-        new ResearchItem("Item2", 2),
-        new ResearchItem("Item3", 5),
-    };
-
     ResearchLab lab;
-    lab.enqueue(items[0]);
-    lab.enqueue(items[1]);
-    lab.enqueue(items[2]);
+    lab.enqueue(new ResearchItem("Item1", 10));
+    lab.enqueue(new ResearchItem("Item2", 2));
+    lab.enqueue(new ResearchItem("Item3", 5));
 
     for (int i = 0; i < 4; i++) {
         lab.tick();
@@ -28,7 +22,9 @@ int main(int, char**) {
         lab.tick();
     }
     std::cout << lab << std::endl;
-    lab.cancel(items[2]);
+    delete lab.cancel(1);
+    delete lab.cancel(0);
+    std::cout << lab << std::endl;
 
     /*
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
