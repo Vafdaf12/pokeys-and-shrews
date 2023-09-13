@@ -14,20 +14,25 @@ public:
      * @param amt The amount to deposit
      */
     inline void deposit(int amt) {
-        assert(amt > 0);
+        assert(amt >= 0);
         m_balance += amt;
     }
 
     /**
-     * Withdraw money from the bank given enough funds
+     * Withdraw money from the bank
      * @param amt The amount to withdraw
-     * @return Whether the withdrawl was successful
      */
-    bool withdraw(int amt) {
-        assert(amt > 0);
-        if (m_balance < amt) return false;
+    void withdraw(int amt) {
+        assert(amt >= 0);
         m_balance -= amt;
-        return true;
+    }
+
+    /**
+     * @return Whether there are sufficient funds for a withdrawl
+     */
+    bool sufficientFunds(int amt) {
+        assert(amt >= 0);
+        return m_balance >= amt;
     }
 
     friend inline std::ostream& operator<<(std::ostream& out, const Bank& b) {
