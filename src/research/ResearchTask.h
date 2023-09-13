@@ -3,9 +3,14 @@
 #include <stdint.h>
 #include <string>
 
-class ResearchItem {
+/**
+ * Captures the idea of a some research task that requires time and money to
+ * complete. A research task plays the role of a Command in the Command Pattern,
+ * with the Engine (TODO) being the Receiver
+ */
+class ResearchTask {
 public:
-    ResearchItem(const std::string& trap, uint32_t time);
+    ResearchTask(const std::string& trap, uint32_t time);
 
     /**
      * @returns Whether the research has completed
@@ -22,7 +27,7 @@ public:
      */
     void cancel();
 
-    friend std::ostream& operator<<(std::ostream&, const ResearchItem&);
+    friend std::ostream& operator<<(std::ostream&, const ResearchTask&);
 
 private:
     std::string m_trap;

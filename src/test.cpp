@@ -10,9 +10,9 @@ namespace test {
 void research_lab() {
     // Initialize Lab
     ResearchLab lab;
-    lab.enqueue(new ResearchItem("Item1", 10));
-    lab.enqueue(new ResearchItem("Item2", 2));
-    lab.enqueue(new ResearchItem("Item3", 5));
+    lab.enqueue(new ResearchTask("Item1", 10));
+    lab.enqueue(new ResearchTask("Item2", 2));
+    lab.enqueue(new ResearchTask("Item3", 5));
 
     // Lab ticking
     for (int i = 0; i < 4; i++) {
@@ -27,7 +27,6 @@ void research_lab() {
     std::cout << lab << std::endl;
 
     // Research cancellation
-    delete lab.cancel(1);
     std::cout << lab << std::endl;
 }
 void bank() {

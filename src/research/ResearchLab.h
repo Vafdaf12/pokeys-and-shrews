@@ -3,12 +3,14 @@
 #include <memory>
 #include <vector>
 
-#include "ResearchItem.h"
+#include "ResearchTask.h"
 
+/**
+ * Manages the completion of research tasks submitted to it, but does not manage
+ * any memory pertaining to a research task
+ */
 class ResearchLab {
 public:
-    ~ResearchLab();
-
     /**
      * Updates the research lab to perform one unit of research
      */
@@ -18,17 +20,17 @@ public:
      * Enqueues the passed in item to research
      * @param item The item to research
      */
-    void enqueue(ResearchItem* item);
+    void enqueue(ResearchTask* item);
 
     /**
-     * Cancels the item at the specified position in the queue
-     * @param item The index of the item to cancel research for
-     * @return The cancelled item (if any)
+     * Cancels the passed in research task (if it is queued)
+     * @param task The task to cancel
+     * @return Whether the task was cancelled
      */
-    ResearchItem* cancel(size_t i);
+    bool cancel(ResearchTask* task);
 
     friend std::ostream& operator<<(std::ostream&, const ResearchLab&);
 
 private:
-    std::vector<ResearchItem*> m_queue;
+    std::vector<ResearchTask*> m_queue;
 };

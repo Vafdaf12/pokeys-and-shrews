@@ -8,6 +8,8 @@ set(FETCHCONTENT_QUIET FALSE)
 
 # Export compile_commands.json for clangd support
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Tells all dependencies to compile statically
 set(BUILD_SHARED_LIBS OFF)
