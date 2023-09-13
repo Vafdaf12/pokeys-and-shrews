@@ -11,6 +11,7 @@ long time_step(long time, long fps) { return (time * fps / 1000); }
 int main(int, char**) {
     test::research_lab();
     test::bank();
+    test::research_engine();
 
     /*
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);

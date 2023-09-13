@@ -4,6 +4,7 @@
 #include <vcruntime.h>
 
 #include "bank/Bank.h"
+#include "core/Engine.h"
 #include "research/ResearchLab.h"
 
 namespace test {
@@ -24,6 +25,25 @@ void research_lab() {
 
     // Research cancellation
     std::cout << lab << std::endl;
+}
+void research_engine() {
+    ResearchTask* tasks[] = {new ResearchTask("Item1", 10, 10),
+        new ResearchTask("Item2", 2, 10),
+        new ResearchTask("Item3", 5, 10)};
+    ResearchLab* lab = new ResearchLab();
+    Bank* bank = new Bank(25);
+
+    Engine engine(lab, bank);
+    engine.researchRequested(tasks[0]);
+    engine.researchRequested(tasks[1]);
+    engine.researchRequested(tasks[2]);
+
+    lab->update(12);
+    lab->update(1);
+    lab->cancel(tasks[1]);
+
+    delete lab;
+    delete bank;
 }
 void bank() {
     Bank bank(100);
