@@ -22,7 +22,7 @@ bool ResearchLab::cancel(ResearchTask* task) {
     assert(task);
     auto it = std::remove(m_queue.begin(), m_queue.end(), task);
     if (it == m_queue.end()) return false;
-
+    task->cancel();
     m_queue.erase(it);
     return true;
 }

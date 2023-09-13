@@ -4,8 +4,11 @@
 #include <iostream>
 #include <sstream>
 
-ResearchTask::ResearchTask(const std::string& trap, uint32_t time, int cost)
-    : m_trap(trap), m_totalTicks(time), m_cost(cost) {
+#include "core/Engine.h"
+
+ResearchTask::ResearchTask(
+    const std::string& trap, uint32_t time, int cost, Engine* engine)
+    : m_trap(trap), m_totalTicks(time), m_cost(cost), m_pEngine(engine) {
     assert(cost >= 0);
 }
 
@@ -15,11 +18,11 @@ void ResearchTask::update(uint32_t dt) {
 void ResearchTask::complete() {
     m_currentTick = m_totalTicks;
     m_active = false;
-    std::cout << m_trap << ": COMPLETE" << std::endl;
+    if (m_pEngine) m_pEngine->researchCompleted(this);
 }
 void ResearchTask::cancel() {
     m_active = false;
-    std::cout << m_trap << ": CANCELLED" << std::endl;
+    if (m_pEngine) m_pEngine->researchCancelled(this);
 }
 
 std::ostream& operator<<(std::ostream& out, const ResearchTask& item) {

@@ -27,13 +27,13 @@ void research_lab() {
     std::cout << lab << std::endl;
 }
 void research_engine() {
-    ResearchTask* tasks[] = {new ResearchTask("Item1", 10, 10),
-        new ResearchTask("Item2", 2, 10),
-        new ResearchTask("Item3", 5, 10)};
     ResearchLab* lab = new ResearchLab();
     Bank* bank = new Bank(25);
-
     Engine engine(lab, bank);
+
+    ResearchTask* tasks[] = {new ResearchTask("Item1", 10, 10, &engine),
+        new ResearchTask("Item2", 2, 10, &engine),
+        new ResearchTask("Item3", 5, 10, &engine)};
     engine.researchRequested(tasks[0]);
     engine.researchRequested(tasks[1]);
     engine.researchRequested(tasks[2]);

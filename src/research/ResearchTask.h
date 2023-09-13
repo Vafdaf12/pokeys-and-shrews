@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <string>
 
+class Engine;
+
 /**
  * Captures the idea of a some research task that requires time and money to
  * complete. A research task plays the role of a Command in the Command Pattern,
@@ -10,7 +12,10 @@
  */
 class ResearchTask {
 public:
-    ResearchTask(const std::string& trap, uint32_t time, int cost);
+    ResearchTask(const std::string& trap,
+        uint32_t time,
+        int cost,
+        Engine* engine = nullptr);
 
     inline int getCost() const { return m_cost; }
     inline bool isComplete() const { return m_currentTick >= m_totalTicks; }
@@ -35,4 +40,6 @@ private:
     uint32_t m_currentTick = 0;
     int m_cost;
     bool m_active = true;
+
+    Engine* m_pEngine;
 };
