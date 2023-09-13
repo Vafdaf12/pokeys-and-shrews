@@ -1,15 +1,16 @@
 #include "ResearchTask.h"
 
+#include <cassert>
 #include <iostream>
 #include <sstream>
 
-ResearchTask::ResearchTask(const std::string& trap, uint32_t time)
-    : m_trap(trap), m_totalTicks(time) {}
+ResearchTask::ResearchTask(const std::string& trap, uint32_t time, int cost)
+    : m_trap(trap), m_totalTicks(time), m_cost(cost) {
+    assert(cost >= 0);
+}
 
-bool ResearchTask::tick() {
-    if (m_active) m_currentTick++;
-
-    return m_currentTick >= m_totalTicks;
+void ResearchTask::update(uint32_t dt) {
+    if (m_active) m_currentTick += dt;
 }
 void ResearchTask::complete() {
     m_currentTick = m_totalTicks;

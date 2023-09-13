@@ -10,21 +10,21 @@
  */
 class ResearchTask {
 public:
-    ResearchTask(const std::string& trap, uint32_t time);
+    ResearchTask(const std::string& trap, uint32_t time, int cost);
+
+    inline int getCost() const { return m_cost; }
+    inline bool isComplete() const { return m_currentTick >= m_totalTicks; }
 
     /**
-     * @returns Whether the research has completed
+     * Updates the research task
+     * @param dt The time that has passed since the last update
      */
-    bool tick();
+    void update(uint32_t dt);
 
-    /**
-     * Completes the research, notifying all relevant parties
-     */
+    // Marks the research task as complete
     void complete();
 
-    /**
-     * Cancels the research, notifying all relevant parties
-     */
+    // Marks the research task as cancelled
     void cancel();
 
     friend std::ostream& operator<<(std::ostream&, const ResearchTask&);
@@ -33,5 +33,6 @@ private:
     std::string m_trap;
     uint32_t m_totalTicks;
     uint32_t m_currentTick = 0;
+    int m_cost;
     bool m_active = true;
 };

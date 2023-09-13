@@ -1,7 +1,7 @@
 #pragma once
 
+#include <list>
 #include <memory>
-#include <vector>
 
 #include "ResearchTask.h"
 
@@ -14,7 +14,7 @@ public:
     /**
      * Updates the research lab to perform one unit of research
      */
-    void tick();
+    void update(uint32_t dt);
 
     /**
      * Enqueues the passed in item to research
@@ -32,5 +32,5 @@ public:
     friend std::ostream& operator<<(std::ostream&, const ResearchLab&);
 
 private:
-    std::vector<ResearchTask*> m_queue;
+    std::list<ResearchTask*> m_queue;
 };

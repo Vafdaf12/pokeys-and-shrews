@@ -10,20 +10,16 @@ namespace test {
 void research_lab() {
     // Initialize Lab
     ResearchLab lab;
-    lab.enqueue(new ResearchTask("Item1", 10));
-    lab.enqueue(new ResearchTask("Item2", 2));
-    lab.enqueue(new ResearchTask("Item3", 5));
+    lab.enqueue(new ResearchTask("Item1", 10, 10));
+    lab.enqueue(new ResearchTask("Item2", 2, 10));
+    lab.enqueue(new ResearchTask("Item3", 5, 10));
 
     // Lab ticking
-    for (int i = 0; i < 4; i++) {
-        lab.tick();
-    }
+    lab.update(4);
     std::cout << lab << std::endl;
 
     // Research completion
-    for (int i = 0; i < 6; i++) {
-        lab.tick();
-    }
+    lab.update(6);
     std::cout << lab << std::endl;
 
     // Research cancellation
@@ -41,8 +37,10 @@ void bank() {
     bank.withdraw(50);
     std::cout << "withdraw(55) => " << bank << std::endl;
 
-    std::cout << "withdraw(61) = " << bank.withdraw(61) << std::endl;
-    std::cout << "withdraw(30) = " << bank.withdraw(30) << std::endl;
+    std::cout << "sufficientFunds(61) = " << bank.sufficientFunds(61)
+              << std::endl;
+    std::cout << "sufficientFunds(30) = " << bank.sufficientFunds(30)
+              << std::endl;
     std::cout << bank << std::endl;
 }
 } // namespace test

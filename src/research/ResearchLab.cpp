@@ -5,12 +5,12 @@
 #include <ostream>
 #include <xmemory>
 
-void ResearchLab::tick() {
+void ResearchLab::update(uint32_t dt) {
     if (m_queue.empty()) return;
-
-    if (m_queue[0]->tick()) {
-        m_queue[0]->complete();
-        m_queue.erase(std::remove(m_queue.begin(), m_queue.end(), m_queue[0]));
+    m_queue.front()->update(dt);
+    if (m_queue.front()->isComplete()) {
+        m_queue.front()->complete();
+        m_queue.pop_front();
     }
 }
 
