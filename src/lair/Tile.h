@@ -11,6 +11,8 @@ public:
 
     TileEntity* contents = nullptr;
 
+    friend class TileGraphic;
+
 private:
     Tile* west = nullptr;
     Tile* east = nullptr;
