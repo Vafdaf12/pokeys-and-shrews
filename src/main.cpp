@@ -4,7 +4,9 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+#include "graphics/LairGraphic.h"
 #include "graphics/TileGraphic.h"
+#include "lair/Lair.h"
 #include "lair/Tile.h"
 #include "test.h"
 
@@ -20,13 +22,17 @@ int main(int, char**) {
     test::bank();
     test::research_engine();
     */
-    Tile t0, t1;
-    t0.setNeighbour(&t1, Tile::South);
+    Lair lair(10, 10);
+    LairGraphic g(&lair);
+    lair.addTile(1, 0);
+    lair.addTile(0, 0);
+    lair.addTile(1, 1);
+    lair.addTile(2, 1);
+    lair.addTile(2, 2);
+    lair.addTile(3, 1);
 
-    Graphic* graphics[] = {
-        new TileGraphic(&t0, 50, 50),
-        new TileGraphic(&t1, 50, 100),
-    };
+    lair.removeTile(1, 0);
+    lair.addTile(1, 0);
 
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
     std::string base = SDL_GetBasePath();
@@ -62,9 +68,7 @@ int main(int, char**) {
         SDL_RenderCopy(renderer, texture, &src, &rect);
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderDrawLine(renderer, (time) % 800, 0, 800 - (time % 800), 600);
-        for (Graphic* g : graphics) {
-            g->draw(renderer);
-        }
+        g.draw(renderer);
         SDL_RenderPresent(renderer);
 
         time += dt;
