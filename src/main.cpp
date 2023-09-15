@@ -64,13 +64,14 @@ int main(int, char**) {
         int dt = SDL_GetTicks() - time;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
-            if (event.type == SDL_MOUSEBUTTONUP) {
-                int x = event.button.x / TileGraphic::TILE_WIDTH;
-                int y = event.button.y / TileGraphic::TILE_WIDTH;
-                if (event.button.button == SDL_BUTTON_LEFT) {
+            if (event.type == SDL_MOUSEMOTION) {
+                int x = (event.motion.x - 20) / TileGraphic::TILE_WIDTH;
+                int y = (event.motion.y - 20) / TileGraphic::TILE_WIDTH;
+                if (event.button.button == SDL_BUTTON(SDL_BUTTON_LEFT)) {
                     lair.addTile(x, y);
 
-                } else if (event.button.button == SDL_BUTTON_RIGHT) {
+                } else if (event.button.button ==
+                           SDL_BUTTON(SDL_BUTTON_RIGHT)) {
                     lair.removeTile(x, y);
                 }
             }

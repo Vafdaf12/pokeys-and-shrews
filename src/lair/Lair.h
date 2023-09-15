@@ -24,6 +24,9 @@ public:
 
     inline void setEngine(Engine* e) { m_pEngine = e; }
 
+    inline size_t getWidth() const { return m_width; }
+    inline size_t getHeight() const { return m_height; }
+
 private:
     Engine* m_pEngine;
     size_t index(int x, int y) const;

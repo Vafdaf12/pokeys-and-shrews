@@ -1,8 +1,10 @@
 #include "Engine.h"
 
+#include "SDL_rect.h"
 #include "SDL_render.h"
 #include "bank/Bank.h"
 #include "graphics/TileGraphic.h"
+#include "lair/Lair.h"
 #include "lair/Tile.h"
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
@@ -34,8 +36,8 @@ void Engine::researchCancelled(ResearchTask* pTask) {
 
 void Engine::tileAdded(Tile* tile) {
     m_graphics[tile] = new TileGraphic(tile,
-        tile->getX() * TileGraphic::TILE_WIDTH,
-        tile->getY() * TileGraphic::TILE_WIDTH);
+        tile->getX() * TileGraphic::TILE_WIDTH + 20,
+        tile->getY() * TileGraphic::TILE_WIDTH + 20);
 }
 
 void Engine::tileRemoved(Tile* tile) {
@@ -47,6 +49,14 @@ void Engine::tileRemoved(Tile* tile) {
 void Engine::draw(RenderTarget target) const {
     SDL_SetRenderDrawColor(target, 0xff, 0xff, 0xff, 255);
     SDL_RenderClear(target);
+
+    SDL_SetRenderDrawColor(target, 0xff, 0x00, 0x00, 255);
+    SDL_Rect rect = {20,
+        20,
+        static_cast<int>(m_pLair->getWidth() * TileGraphic::TILE_WIDTH),
+        static_cast<int>(m_pLair->getHeight() * TileGraphic::TILE_WIDTH)};
+
+    SDL_RenderDrawRect(target, &rect);
 
     for (const auto& p : m_graphics) {
         p.second->draw(target);
