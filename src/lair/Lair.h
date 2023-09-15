@@ -3,8 +3,9 @@
 #include "lair/LairExplorer.h"
 #include "lair/Tile.h"
 
-#include <vcruntime.h>
 #include <vector>
+
+class Engine;
 
 class Lair {
 public:
@@ -13,7 +14,7 @@ public:
         DEPTH_FIRST,
         BREADTH_FIRST,
     };
-    Lair(size_t w, size_t h);
+    Lair(size_t w, size_t h, Engine* pEngine = nullptr);
 
     bool removeTile(int x, int y);
     Tile* addTile(int x, int y);
@@ -21,7 +22,10 @@ public:
 
     LairExplorer* createExplorer(ExploreType type) const;
 
+    inline void setEngine(Engine* e) { m_pEngine = e; }
+
 private:
+    Engine* m_pEngine;
     size_t index(int x, int y) const;
     size_t m_width, m_height;
     std::vector<Tile*> m_tiles;

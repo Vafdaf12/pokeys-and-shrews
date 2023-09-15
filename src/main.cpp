@@ -2,8 +2,12 @@
 #include <iostream>
 
 #include "SDL.h"
+#include "SDL_events.h"
 #include "SDL_image.h"
 
+#include "SDL_keycode.h"
+#include "SDL_mouse.h"
+#include "core/Engine.h"
 #include "graphics/LairGraphic.h"
 #include "graphics/TileGraphic.h"
 #include "lair/Lair.h"
@@ -23,7 +27,9 @@ int main(int, char**) {
     test::research_engine();
     */
     Lair lair(10, 10);
-    LairGraphic g(&lair);
+    Engine engine(nullptr, nullptr, &lair);
+    lair.setEngine(&engine);
+
     lair.addTile(1, 0);
     lair.addTile(0, 0);
     lair.addTile(1, 1);
@@ -49,10 +55,7 @@ int main(int, char**) {
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
-    SDL_Surface* image = IMG_Load(base.c_str());
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
-    SDL_Rect rect = {100, 100, 100, 100};
-    SDL_Rect src = {0, 0, 32, 32};
+    int i = 0;
 
     SDL_Event event;
     bool quit = false;
@@ -61,18 +64,21 @@ int main(int, char**) {
         int dt = SDL_GetTicks() - time;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
+            if (event.type == SDL_MOUSEBUTTONUP) {
+                int x = event.button.x / TileGraphic::TILE_WIDTH;
+                int y = event.button.y / TileGraphic::TILE_WIDTH;
+                if (event.button.button == SDL_BUTTON_LEFT) {
+                    lair.addTile(x, y);
+
+                } else if (event.button.button == SDL_BUTTON_RIGHT) {
+                    lair.removeTile(x, y);
+                }
+            }
         }
 
-        SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 255);
-        SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, texture, &src, &rect);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderDrawLine(renderer, (time) % 800, 0, 800 - (time % 800), 600);
-        g.draw(renderer);
-        SDL_RenderPresent(renderer);
+        engine.draw(renderer);
 
         time += dt;
-        src.y = (time_step(time, 10) % 4) * 32;
     }
     return 0;
 }

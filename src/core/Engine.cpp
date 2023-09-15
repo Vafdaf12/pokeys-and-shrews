@@ -1,6 +1,9 @@
 #include "Engine.h"
 
+#include "SDL_render.h"
 #include "bank/Bank.h"
+#include "graphics/TileGraphic.h"
+#include "lair/Tile.h"
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
 
@@ -27,4 +30,26 @@ void Engine::researchCancelled(ResearchTask* pTask) {
     assert(pTask);
     std::cout << "[ENGINE] research cancelled: " << *pTask << std::endl;
     m_pBank->deposit(pTask->getCost());
+}
+
+void Engine::tileAdded(Tile* tile) {
+    m_graphics[tile] = new TileGraphic(tile,
+        tile->getX() * TileGraphic::TILE_WIDTH,
+        tile->getY() * TileGraphic::TILE_WIDTH);
+}
+
+void Engine::tileRemoved(Tile* tile) {
+    auto it = m_graphics.find(tile);
+    if (it == m_graphics.end()) return;
+    m_graphics.erase(it->first);
+}
+
+void Engine::draw(RenderTarget target) const {
+    SDL_SetRenderDrawColor(target, 0xff, 0xff, 0xff, 255);
+    SDL_RenderClear(target);
+
+    for (const auto& p : m_graphics) {
+        p.second->draw(target);
+    }
+    SDL_RenderPresent(target);
 }
