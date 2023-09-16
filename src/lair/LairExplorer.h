@@ -1,18 +1,29 @@
 #pragma once
 
 #include "lair/Tile.h"
+#include <stdint.h>
 
 class LairExplorer {
 public:
-    /// @return the entrance of the lair to start exploring from
-    virtual Tile* entrance() const = 0;
+    /**
+     * Sets the starting point of the exploration, resetting any exploration
+     * that has been done
+     * @param tile The new tile to start from
+     */
+    virtual void setStart(Tile* tile) = 0;
 
-    /// @return The destination room to find by exploration
-    virtual Tile* destination() const = 0;
+    /// @return The starting point of exploration
+    virtual Tile* getStart() const = 0;
 
-    /// Go to the next room
+    /**
+     * Backtracks through the explored path through n steps
+     * @param n The number of steps to backtrack
+     */
+    virtual void backtrack(uint32_t n = 1) = 0;
+
+    /// Explore the next tile
     virtual void next() = 0;
 
-    /// Retrieves the current room
+    /// Retrieve the current tile
     virtual operator Tile*() const = 0;
 };
