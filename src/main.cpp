@@ -4,11 +4,15 @@
 #include "SDL.h"
 #include "SDL_events.h"
 #include "SDL_image.h"
-
 #include "SDL_keycode.h"
 #include "SDL_mouse.h"
+#include "SDL_render.h"
+#include "SDL_timer.h"
+#include "SDL_ttf.h"
+
 #include "core/Engine.h"
 #include "graphics/LairGraphic.h"
+#include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
 #include "lair/Lair.h"
 #include "lair/Tile.h"
@@ -26,7 +30,7 @@ int main(int, char**) {
     test::bank();
     test::research_engine();
     */
-    Lair lair(10, 10);
+    Lair lair(15, 11);
     Engine engine(nullptr, nullptr, &lair);
     lair.setEngine(&engine);
 
@@ -41,8 +45,9 @@ int main(int, char**) {
     lair.addTile(1, 0);
 
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
+    assert(TTF_Init() == 0);
     std::string base = SDL_GetBasePath();
-    base += "res/Spritesheet.png";
+    base += "res/Monocraft-no-ligatures.ttf";
 
     std::cout << base << std::endl;
 
@@ -55,13 +60,25 @@ int main(int, char**) {
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
+    TTF_Font* font = TTF_OpenFont(base.c_str(), 32);
+    TextGraphic text("Text", font, renderer);
+    text.setPosition(0, 0);
+
+    std::string texts[] = {
+        "Text #1",
+        "Text #2",
+        "Text #3",
+    };
+
     int i = 0;
 
     SDL_Event event;
     bool quit = false;
-    int time = SDL_GetTicks();
+    int last = SDL_GetTicks();
+    int time = 0;
     while (!quit) {
-        int dt = SDL_GetTicks() - time;
+        int dt = SDL_GetTicks() - last;
+        last += dt;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
             if (event.type == SDL_MOUSEMOTION) {
@@ -76,10 +93,22 @@ int main(int, char**) {
                 }
             }
         }
+        text.setColor(time % 255, 0, 0);
 
         engine.draw(renderer);
+        text.draw(renderer);
+        SDL_RenderPresent(renderer);
 
         time += dt;
+        if (time > 1000) {
+            time -= 1000;
+            i = (i + 1) % 3;
+            text.setText(texts[i]);
+        }
     }
+
+    TTF_CloseFont(font);
+    TTF_Quit();
+    SDL_Quit();
     return 0;
 }

@@ -61,5 +61,4 @@ void Engine::draw(RenderTarget target) const {
     for (const auto& p : m_graphics) {
         p.second->draw(target);
     }
-    SDL_RenderPresent(target);
 }

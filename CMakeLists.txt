@@ -18,18 +18,21 @@ set(BUILD_SHARED_LIBS OFF)
 set(SDL2_MAIN_LIBRARY SDL2)
 set(SDL2_DISABLE_INSTALL ON)
 set(SDL2IMAGE_INSTALL OFF)
+set(SDL2TTF_INSTALL OFF)
 
 FetchContent_Declare(SDL2 
     GIT_REPOSITORY https://github.com/libsdl-org/SDL
     GIT_TAG release-2.26.2
 )
-FetchContent_MakeAvailable(SDL2)
-
 FetchContent_Declare(SDL2_image
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
     GIT_TAG release-2.6.3
 )
-FetchContent_MakeAvailable(SDL2_image)
+FetchContent_Declare(SDL2_ttf
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
+    GIT_TAG release-2.20.2
+)
+FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_ttf)
 
 file(GLOB SRCFILES
     src/*.cpp
@@ -41,7 +44,7 @@ add_executable(${NAME_EXE} ${SRCFILES} ${RESFILES})
 target_include_directories(${NAME_EXE}
     PRIVATE src/
 )
-target_link_libraries(${NAME_EXE} SDL2-static SDL2_image)
+target_link_libraries(${NAME_EXE} SDL2-static SDL2_image SDL2_ttf)
 
 # Copy resource files to build directory
 add_custom_command(
