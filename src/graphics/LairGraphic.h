@@ -8,7 +8,7 @@ class Lair;
 class LairGraphic : public Graphic {
 public:
     LairGraphic(Lair* lair) : m_lair(lair) {}
-    void draw(RenderTarget target) const override;
+    void draw(TargetType target) const override;
 
 private:
     static constexpr SDL_Point START_POINT = {10, 10};

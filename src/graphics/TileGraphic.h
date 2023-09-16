@@ -9,7 +9,7 @@ class TileGraphic : public Graphic {
 public:
     TileGraphic(const Tile* tile, int x = 0, int y = 0);
 
-    void draw(RenderTarget target) const override;
+    void draw(TargetType target) const override;
     inline void setPosition(int x, int y) { m_position = {x, y}; }
 
     static constexpr int TILE_WIDTH = 50;

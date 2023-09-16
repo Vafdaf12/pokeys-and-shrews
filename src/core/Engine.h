@@ -32,7 +32,7 @@ public:
     // Event triggered when a tile is removed from the lair
     void tileRemoved(Tile* tile);
 
-    void draw(RenderTarget target) const;
+    void draw(Graphic::TargetType target) const;
 
 private:
     std::map<void*, Graphic*> m_graphics;

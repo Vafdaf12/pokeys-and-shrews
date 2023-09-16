@@ -11,7 +11,7 @@ TileGraphic::TileGraphic(const Tile* tile, int x, int y)
     assert(tile);
 }
 
-void TileGraphic::draw(RenderTarget target) const {
+void TileGraphic::draw(TargetType target) const {
     SDL_Rect rect = {m_position.x, m_position.y, TILE_WIDTH, TILE_WIDTH};
 
     SDL_SetRenderDrawColor(target, 0xee, 0xee, 0xee, 255);

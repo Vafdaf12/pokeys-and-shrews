@@ -46,7 +46,7 @@ void Engine::tileRemoved(Tile* tile) {
     m_graphics.erase(it->first);
 }
 
-void Engine::draw(RenderTarget target) const {
+void Engine::draw(Graphic::TargetType target) const {
     SDL_SetRenderDrawColor(target, 0xff, 0xff, 0xff, 255);
     SDL_RenderClear(target);
 

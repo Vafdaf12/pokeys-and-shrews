@@ -2,10 +2,10 @@
 
 struct SDL_Renderer;
 
-using RenderTarget = SDL_Renderer*;
-
 class Graphic {
 public:
+    using TargetType = SDL_Renderer*;
+
     virtual ~Graphic() {}
-    virtual void draw(RenderTarget target) const = 0;
+    virtual void draw(TargetType target) const = 0;
 };

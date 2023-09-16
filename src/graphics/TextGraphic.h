@@ -14,7 +14,7 @@ public:
 
     SDL_Point getRenderSize() const;
 
-    void draw(RenderTarget target) const override;
+    void draw(TargetType target) const override;
 
     void setText(const std::string& text);
     inline const std::string& getText() const { return m_text; }

@@ -35,7 +35,7 @@ SDL_Point TextGraphic::getRenderSize() const {
     SDL_QueryTexture(m_pTexture, NULL, NULL, &p.x, &p.y);
     return p;
 }
-void TextGraphic::draw(RenderTarget target) const {
+void TextGraphic::draw(TargetType target) const {
     SDL_Point size = getRenderSize();
     SDL_Rect dest = {m_dest.x, m_dest.y, size.x, size.y};
     SDL_RenderCopy(target, m_pTexture, NULL, &dest);
