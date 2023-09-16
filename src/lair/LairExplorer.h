@@ -25,5 +25,5 @@ public:
     virtual void next() = 0;
 
     /// Retrieve the current tile
-    virtual operator Tile*() const = 0;
+    virtual Tile* get() const = 0;
 };

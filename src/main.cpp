@@ -12,10 +12,13 @@
 
 #include "core/Engine.h"
 #include "core/UserInterface.h"
+#include "graphics/LairExplorerGraphic.h"
 #include "graphics/LairGraphic.h"
 #include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
+#include "lair/DepthFirstExplorer.h"
 #include "lair/Lair.h"
+#include "lair/LairExplorer.h"
 #include "lair/Tile.h"
 #include "test.h"
 
@@ -61,6 +64,9 @@ int main(int, char**) {
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
+
+    DepthFirstExplorer e(lair.getTile(0, 0));
+    LairExplorerGraphic g(&e);
 
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
     assert(TTF_Init() == 0);
@@ -113,8 +119,12 @@ int main(int, char**) {
                 }
             } else if (event.type == SDL_MOUSEBUTTONUP) {
                 editState = ES_NONE;
+            } else if (event.type == SDL_KEYUP) {
+                switch (event.key.keysym.sym) {
+                case SDLK_SPACE: e.next(); break;
+                case SDLK_TAB: e.backtrack(3); std::cout << "Back" << std::endl;
+                }
             }
-
             switch (editState) {
 
             case ES_FORT:
@@ -129,7 +139,10 @@ int main(int, char**) {
         text.setColor(time % 255, 0, 0);
 
         ui.draw(renderer);
+        g.update();
+        g.draw(renderer);
         text.draw(renderer);
+
         SDL_RenderPresent(renderer);
 
         time += dt;
