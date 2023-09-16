@@ -1,7 +1,8 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include <map>
+
+class UserInterface;
 class ResearchTask;
 class ResearchLab;
 class Bank;
@@ -11,8 +12,8 @@ class Tile;
 
 class Engine {
 public:
-    Engine(ResearchLab* pLab, Bank* pBank, Lair* pLair)
-        : m_pLab(pLab), m_pBank(pBank), m_pLair(pLair) {}
+    Engine(ResearchLab* pLab, Bank* pBank, Lair* pLair, UserInterface* pMenu)
+        : m_pMenu(pMenu), m_pLab(pLab), m_pBank(pBank), m_pLair(pLair) {}
 
     /**
      * Event triggered when a request is made to queue a task for research
@@ -32,11 +33,8 @@ public:
     // Event triggered when a tile is removed from the lair
     void tileRemoved(Tile* tile);
 
-    void draw(Graphic::TargetType target) const;
-
 private:
-    std::map<void*, Graphic*> m_graphics;
-
+    UserInterface* m_pMenu;
     ResearchLab* m_pLab;
     Bank* m_pBank;
     Lair* m_pLair;

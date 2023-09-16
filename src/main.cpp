@@ -11,6 +11,7 @@
 #include "SDL_ttf.h"
 
 #include "core/Engine.h"
+#include "core/UserInterface.h"
 #include "graphics/LairGraphic.h"
 #include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
@@ -31,7 +32,8 @@ int main(int, char**) {
     test::research_engine();
     */
     Lair lair(15, 11);
-    Engine engine(nullptr, nullptr, &lair);
+    UserInterface ui;
+    Engine engine(nullptr, nullptr, &lair, &ui);
     lair.setEngine(&engine);
 
     lair.addTile(1, 0);
@@ -95,7 +97,7 @@ int main(int, char**) {
         }
         text.setColor(time % 255, 0, 0);
 
-        engine.draw(renderer);
+        ui.draw(renderer);
         text.draw(renderer);
         SDL_RenderPresent(renderer);
 
