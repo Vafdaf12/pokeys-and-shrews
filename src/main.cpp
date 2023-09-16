@@ -25,6 +25,22 @@
 
 long time_step(long time, long fps) { return (time * fps / 1000); }
 
+enum EditState { ES_NONE = 0, ES_FORT = 2, ES_ADD = 1, ES_REM = -1 };
+
+SDL_Point getTilePosition(SDL_Event ev) {
+    SDL_Point p = {0, 0};
+    if (ev.type == SDL_MOUSEBUTTONDOWN || ev.type == SDL_MOUSEBUTTONUP) {
+        p.x = ev.button.x - 20;
+        p.y = ev.button.y - 20;
+    } else if (ev.type == SDL_MOUSEMOTION) {
+        p.x = ev.motion.x - 20;
+        p.y = ev.motion.y - 20;
+    }
+    p.x /= TileGraphic::TILE_WIDTH;
+    p.y /= TileGraphic::TILE_WIDTH;
+    return p;
+}
+
 int main(int, char**) {
     /*
     test::research_lab();
@@ -78,21 +94,36 @@ int main(int, char**) {
     bool quit = false;
     int last = SDL_GetTicks();
     int time = 0;
+    EditState editState = ES_NONE;
     while (!quit) {
         int dt = SDL_GetTicks() - last;
         last += dt;
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) quit = true;
-            if (event.type == SDL_MOUSEMOTION) {
-                int x = (event.motion.x - 20) / TileGraphic::TILE_WIDTH;
-                int y = (event.motion.y - 20) / TileGraphic::TILE_WIDTH;
-                if (event.button.button == SDL_BUTTON(SDL_BUTTON_LEFT)) {
-                    lair.addTile(x, y);
 
-                } else if (event.button.button ==
-                           SDL_BUTTON(SDL_BUTTON_RIGHT)) {
-                    lair.removeTile(x, y);
+            SDL_Point p = getTilePosition(event);
+            Tile* cur = lair.getTile(p.x, p.y);
+
+            if (event.type == SDL_MOUSEBUTTONDOWN) {
+                switch (event.button.button) {
+                case SDL_BUTTON_LEFT: editState = cur ? ES_FORT : ES_ADD; break;
+                case SDL_BUTTON_RIGHT:
+                    editState = cur ? ES_REM : ES_NONE;
+                    break;
                 }
+            } else if (event.type == SDL_MOUSEBUTTONUP) {
+                editState = ES_NONE;
+            }
+
+            switch (editState) {
+
+            case ES_FORT:
+                if (cur) cur->fortify();
+                break;
+
+            case ES_ADD: lair.addTile(p.x, p.y); break;
+            case ES_REM: lair.removeTile(p.x, p.y); break;
+            case ES_NONE: break;
             }
         }
         text.setColor(time % 255, 0, 0);

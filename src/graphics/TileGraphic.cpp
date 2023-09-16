@@ -14,7 +14,11 @@ TileGraphic::TileGraphic(const Tile* tile, int x, int y)
 void TileGraphic::draw(TargetType target) const {
     SDL_Rect rect = {m_position.x, m_position.y, TILE_WIDTH, TILE_WIDTH};
 
-    SDL_SetRenderDrawColor(target, 0xee, 0xee, 0xee, 255);
+    if (m_tile->m_fortified) {
+        SDL_SetRenderDrawColor(target, 0xee, 0xaa, 0xaa, 255);
+    } else {
+        SDL_SetRenderDrawColor(target, 0xee, 0xee, 0xee, 255);
+    }
     SDL_RenderFillRect(target, &rect);
 
     SDL_SetRenderDrawColor(target, 0, 0, 0, 255);

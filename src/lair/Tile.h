@@ -15,11 +15,13 @@ public:
 
     friend class TileGraphic;
 
+    inline void fortify() { m_fortified = true; }
     inline int getX() const { return x; }
     inline int getY() const { return y; }
 
 private:
     int x, y;
+    bool m_fortified = false;
     Tile* west = nullptr;
     Tile* east = nullptr;
     Tile* north = nullptr;
