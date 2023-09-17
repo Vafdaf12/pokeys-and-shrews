@@ -13,6 +13,7 @@
 #include "bank/Bank.h"
 #include "core/Engine.h"
 #include "core/ResourceManager.h"
+#include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "graphics/LairExplorerGraphic.h"
 #include "graphics/LairGraphic.h"
@@ -68,9 +69,11 @@ int main(int, char**) {
     Lair lair(15, 11);
     UserInterface ui(font, renderer);
     Bank bank(100);
-    Engine engine(nullptr, &bank, &lair, &ui);
+    Storyteller storyteller;
+    Engine engine(nullptr, &bank, &lair, &ui, &storyteller);
     lair.setEngine(&engine);
     bank.setEngine(&engine);
+    storyteller.setEngine(&engine);
 
     lair.addTile(1, 0);
     lair.addTile(0, 0);
