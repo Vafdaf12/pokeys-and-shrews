@@ -1,7 +1,6 @@
 #pragma once
 
-class TileEntity;
-class Trap;
+#include "trap/Trap.h"
 
 class Tile {
 public:
@@ -11,8 +10,6 @@ public:
 
     void setNeighbour(Tile* tile, Direction dir);
     Tile* getNeighbour(Direction dir);
-
-    TileEntity* contents = nullptr;
 
     friend class TileGraphic;
 

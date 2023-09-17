@@ -28,6 +28,7 @@
 #include "lair/LairExplorer.h"
 #include "lair/Tile.h"
 #include "test.h"
+#include "trap/DamageTrap.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
@@ -85,18 +86,17 @@ int main(int, char**) {
     lair.addTile(1, 1);
     lair.addTile(2, 1);
     lair.addTile(2, 2);
-    lair.addTile(3, 1);
+    lair.addTile(3, 1)->addTrap(new DamageTrap(1));
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
 
-    ;
     std::vector<LairExplorer*> explorers;
     std::vector<LairExplorerGraphic> explorerGraphics;
     explorers.push_back(new DepthFirstExplorer(lair.getTile(0, 0)));
     explorerGraphics.emplace_back(explorers.back());
 
-    Hero hero(new DepthFirstExplorer(lair.getTile(0, 0)), 50, 1);
+    Hero hero(new DepthFirstExplorer(lair.getTile(0, 0)), 5, 1);
     HeroGraphic graphic(&hero);
 
     SDL_Event event;
