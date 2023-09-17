@@ -131,10 +131,7 @@ int main(int, char**) {
             }
             switch (editState) {
 
-            case ES_FORT:
-                if (cur) cur->fortify();
-                break;
-
+            case ES_FORT: lair.fortifyTile(p.x, p.y); break;
             case ES_ADD: lair.addTile(p.x, p.y); break;
             case ES_REM: lair.removeTile(p.x, p.y); break;
             case ES_NONE: break;

@@ -45,4 +45,7 @@ void Engine::tileRemoved(Tile* tile) {
     m_pMenu->removeTile(tile);
     m_pStoryteller->removeSpawnTile(tile);
 }
+void Engine::tileFortified(Tile* tile) {
+    m_pStoryteller->removeSpawnTile(tile);
+}
 void Engine::balanceChanged(int balance) { m_pMenu->setBalance(balance); }

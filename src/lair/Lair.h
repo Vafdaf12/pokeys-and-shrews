@@ -17,6 +17,7 @@ public:
     Lair(size_t w, size_t h, Engine* pEngine = nullptr);
 
     bool removeTile(int x, int y);
+    bool fortifyTile(int x, int y);
     Tile* addTile(int x, int y);
     Tile* getTile(int x, int y);
 

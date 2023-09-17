@@ -39,6 +39,9 @@ public:
     // Event triggered when a tile is removed from the lair
     void tileRemoved(Tile* tile);
 
+    // Event triggered when a tile is fortified
+    void tileFortified(Tile* tile);
+
     // Event triggered when the balance in the bank is changed
     void balanceChanged(int balance);
 
