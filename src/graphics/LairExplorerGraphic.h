@@ -11,10 +11,12 @@ public:
     LairExplorerGraphic(LairExplorer* explorer);
 
     void draw(TargetType target) const override;
-    void update();
+    void update(uint32_t dt);
 
 private:
     SDL_Color m_color;
+    SDL_Point m_cur;
+    SDL_Point m_dest;
     LairExplorer* m_pExplorer;
     std::vector<SDL_Point> m_points;
 };

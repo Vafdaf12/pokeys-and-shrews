@@ -1,5 +1,7 @@
 #include <cassert>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 #include "SDL.h"
 #include "SDL_events.h"
@@ -53,6 +55,7 @@ int main(int, char**) {
     test::bank();
     test::research_engine();
     */
+    srand(time(nullptr));
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
 
     SDL_Window* window = SDL_CreateWindow("Pokeys & Shrews",
@@ -140,14 +143,14 @@ int main(int, char**) {
 
         ui.draw(renderer);
         for (auto& g : explorerGraphics) {
-            g.update();
+            g.update(dt);
             g.draw(renderer);
         }
 
         SDL_RenderPresent(renderer);
         time += dt;
-        if (time > 500) {
-            time -= 500;
+        if (time > 100) {
+            time -= 100;
             for (auto& e : explorers)
                 e->next();
         }
