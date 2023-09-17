@@ -85,12 +85,16 @@ int main(int, char**) {
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
 
-    DepthFirstExplorer e(lair.getTile(0, 0));
-    LairExplorerGraphic g(&e);
+    ;
+    std::vector<LairExplorer*> explorers;
+    std::vector<LairExplorerGraphic> explorerGraphics;
+    explorers.push_back(new DepthFirstExplorer(lair.getTile(0, 0)));
+    explorerGraphics.emplace_back(explorers.back());
 
     SDL_Event event;
     bool quit = false;
     int last = SDL_GetTicks();
+    int time = 0;
     EditState editState = ES_NONE;
     while (!quit) {
         int dt = SDL_GetTicks() - last;
@@ -112,8 +116,10 @@ int main(int, char**) {
                 editState = ES_NONE;
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                case SDLK_SPACE: e.next(); break;
-                case SDLK_TAB: e.backtrack(3); break;
+                case SDLK_TAB:
+                    explorers.push_back(storyteller.createExplorer());
+                    explorerGraphics.push_back(explorers.back());
+                    break;
                 case SDLK_UP: bank.deposit(1); break;
                 case SDLK_DOWN:
                     if (bank.sufficientFunds(1)) bank.withdraw(1);
@@ -133,10 +139,18 @@ int main(int, char**) {
         }
 
         ui.draw(renderer);
-        g.update();
-        g.draw(renderer);
+        for (auto& g : explorerGraphics) {
+            g.update();
+            g.draw(renderer);
+        }
 
         SDL_RenderPresent(renderer);
+        time += dt;
+        if (time > 500) {
+            time -= 500;
+            for (auto& e : explorers)
+                e->next();
+        }
     }
 
     SDL_Quit();

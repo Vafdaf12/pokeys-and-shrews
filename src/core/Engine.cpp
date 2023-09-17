@@ -4,6 +4,7 @@
 #include "SDL_render.h"
 
 #include "bank/Bank.h"
+#include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "graphics/TileGraphic.h"
 #include "lair/Lair.h"
@@ -36,6 +37,12 @@ void Engine::researchCancelled(ResearchTask* pTask) {
     m_pBank->deposit(pTask->getCost());
 }
 
-void Engine::tileAdded(Tile* tile) { m_pMenu->addTile(tile); }
-void Engine::tileRemoved(Tile* tile) { m_pMenu->removeTile(tile); }
+void Engine::tileAdded(Tile* tile) {
+    m_pMenu->addTile(tile);
+    m_pStoryteller->addSpawnTile(tile);
+}
+void Engine::tileRemoved(Tile* tile) {
+    m_pMenu->removeTile(tile);
+    m_pStoryteller->removeSpawnTile(tile);
+}
 void Engine::balanceChanged(int balance) { m_pMenu->setBalance(balance); }

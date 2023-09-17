@@ -29,7 +29,7 @@ void research_lab() {
 void research_engine() {
     ResearchLab* lab = new ResearchLab();
     Bank* bank = new Bank(25);
-    Engine engine(lab, bank, nullptr, nullptr);
+    Engine engine(lab, bank, nullptr, nullptr, nullptr);
 
     ResearchTask* tasks[] = {new ResearchTask("Item1", 10, 10, &engine),
         new ResearchTask("Item2", 2, 10, &engine),

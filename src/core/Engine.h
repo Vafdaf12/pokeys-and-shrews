@@ -3,6 +3,7 @@
 #include <map>
 
 class UserInterface;
+class Storyteller;
 class ResearchTask;
 class ResearchLab;
 class Bank;
@@ -12,8 +13,13 @@ class Tile;
 
 class Engine {
 public:
-    Engine(ResearchLab* pLab, Bank* pBank, Lair* pLair, UserInterface* pMenu)
-        : m_pMenu(pMenu), m_pLab(pLab), m_pBank(pBank), m_pLair(pLair) {}
+    Engine(ResearchLab* pLab,
+        Bank* pBank,
+        Lair* pLair,
+        UserInterface* pMenu,
+        Storyteller* pStoryteller)
+        : m_pStoryteller(pStoryteller), m_pMenu(pMenu), m_pLab(pLab),
+          m_pBank(pBank), m_pLair(pLair) {}
 
     /**
      * Event triggered when a request is made to queue a task for research
@@ -37,6 +43,7 @@ public:
     void balanceChanged(int balance);
 
 private:
+    Storyteller* m_pStoryteller;
     UserInterface* m_pMenu;
     ResearchLab* m_pLab;
     Bank* m_pBank;
