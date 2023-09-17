@@ -18,7 +18,6 @@
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "graphics/LairExplorerGraphic.h"
-#include "graphics/LairGraphic.h"
 #include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
 #include "lair/DepthFirstExplorer.h"
