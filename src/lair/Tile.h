@@ -1,6 +1,7 @@
 #pragma once
 
 class TileEntity;
+class Trap;
 
 class Tile {
 public:
@@ -19,6 +20,9 @@ public:
     inline int getX() const { return x; }
     inline int getY() const { return y; }
 
+    inline void addTrap(Trap* trap) { m_pTrap = trap; }
+    inline Trap* getTrap() { return m_pTrap; }
+
 private:
     int x, y;
     bool m_fortified = false;
@@ -26,4 +30,6 @@ private:
     Tile* east = nullptr;
     Tile* north = nullptr;
     Tile* south = nullptr;
+
+    Trap* m_pTrap = nullptr;
 };

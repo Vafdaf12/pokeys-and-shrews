@@ -16,10 +16,13 @@
 #include "core/Engine.h"
 #include "core/ResourceManager.h"
 #include "core/Storyteller.h"
+#include "core/Timer.h"
 #include "core/UserInterface.h"
+#include "graphics/HeroGraphic.h"
 #include "graphics/LairExplorerGraphic.h"
 #include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
+#include "hero/Hero.h"
 #include "lair/DepthFirstExplorer.h"
 #include "lair/Lair.h"
 #include "lair/LairExplorer.h"
@@ -93,10 +96,14 @@ int main(int, char**) {
     explorers.push_back(new DepthFirstExplorer(lair.getTile(0, 0)));
     explorerGraphics.emplace_back(explorers.back());
 
+    Hero hero(new DepthFirstExplorer(lair.getTile(0, 0)), 50, 1);
+    HeroGraphic graphic(&hero);
+
     SDL_Event event;
     bool quit = false;
     int last = SDL_GetTicks();
-    int time = 0;
+
+    Timer timer(100);
     EditState editState = ES_NONE;
     while (!quit) {
         int dt = SDL_GetTicks() - last;
@@ -118,6 +125,7 @@ int main(int, char**) {
                 editState = ES_NONE;
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
+                case SDLK_SPACE: hero.takeDamage(1); break;
                 case SDLK_TAB:
                     explorers.push_back(storyteller.createExplorer());
                     explorerGraphics.push_back(explorers.back());
@@ -136,17 +144,21 @@ int main(int, char**) {
             case ES_NONE: break;
             }
         }
+        hero.update(dt);
 
         ui.draw(renderer);
+        /*
         for (auto& g : explorerGraphics) {
             g.update(dt);
             g.draw(renderer);
         }
+        */
 
+        graphic.draw(renderer);
         SDL_RenderPresent(renderer);
-        time += dt;
-        if (time > 100) {
-            time -= 100;
+        timer.update(dt);
+        if (timer.isComplete()) {
+            timer.tick();
             for (auto& e : explorers)
                 e->next();
         }
