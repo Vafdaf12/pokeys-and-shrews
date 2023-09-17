@@ -32,8 +32,8 @@ void LairExplorerGraphic::draw(TargetType target) const {
 }
 
 void LairExplorerGraphic::update(uint32_t dt) {
-    m_cur.x += std::round((m_dest.x - m_cur.x) / 4.0f);
-    m_cur.y += std::round((m_dest.y - m_cur.y) / 4.0f);
+    m_cur.x += static_cast<int>((m_dest.x - m_cur.x) / 4.0f);
+    m_cur.y += static_cast<int>((m_dest.y - m_cur.y) / 4.0f);
     if (std::abs(m_cur.x - m_dest.x) < 5) {
         m_cur.x = m_dest.x;
     }
