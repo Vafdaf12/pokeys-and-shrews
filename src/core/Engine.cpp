@@ -11,7 +11,6 @@
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
 
-
 #include <iostream>
 
 bool Engine::researchRequested(ResearchTask* pTask) {
@@ -39,3 +38,4 @@ void Engine::researchCancelled(ResearchTask* pTask) {
 
 void Engine::tileAdded(Tile* tile) { m_pMenu->addTile(tile); }
 void Engine::tileRemoved(Tile* tile) { m_pMenu->removeTile(tile); }
+void Engine::balanceChanged(int balance) { m_pMenu->setBalance(balance); }

@@ -23,11 +23,12 @@ public:
     void setColor(uint8_t r, uint8_t g, uint8_t b);
 
 private:
+    void renderText();
     std::string m_text;
 
     SDL_Renderer* m_pRenderer;
-    SDL_Surface* m_pSurface;
-    SDL_Texture* m_pTexture;
+    SDL_Surface* m_pSurface = nullptr;
+    SDL_Texture* m_pTexture = nullptr;
     SDL_Point m_dest;
 
     TTF_Font* m_pFont;

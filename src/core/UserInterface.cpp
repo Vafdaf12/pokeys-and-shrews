@@ -3,6 +3,7 @@
 #include "SDL_render.h"
 #include "graphics/TileGraphic.h"
 #include "lair/Tile.h"
+#include <sstream>
 
 void UserInterface::addTile(Tile* tile) {
     m_graphics[tile] = new TileGraphic(tile,
@@ -15,6 +16,11 @@ bool UserInterface::removeTile(Tile* tile) {
     m_graphics.erase(it->first);
     return true;
 }
+void UserInterface::setBalance(int balance) {
+    std::stringstream s;
+    s << "$ " << balance;
+    m_balance.setText(s.str());
+}
 
 void UserInterface::draw(Graphic::TargetType target) const {
     SDL_SetRenderDrawColor(target, 0xff, 0xff, 0xff, 255);
@@ -23,4 +29,6 @@ void UserInterface::draw(Graphic::TargetType target) const {
     for (const auto& p : m_graphics) {
         p.second->draw(target);
     }
+
+    m_balance.draw(target);
 }

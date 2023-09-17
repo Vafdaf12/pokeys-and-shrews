@@ -10,6 +10,7 @@
 #include "SDL_timer.h"
 #include "SDL_ttf.h"
 
+#include "bank/Bank.h"
 #include "core/Engine.h"
 #include "core/UserInterface.h"
 #include "graphics/LairExplorerGraphic.h"
@@ -50,10 +51,27 @@ int main(int, char**) {
     test::bank();
     test::research_engine();
     */
+    assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
+    assert(TTF_Init() == 0);
+    std::string base = SDL_GetBasePath();
+    base += "res/Monocraft-no-ligatures.ttf";
+
+    SDL_Window* window = SDL_CreateWindow("Pokeys & Shrews",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        800,
+        600,
+        0);
+    SDL_Renderer* renderer =
+        SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
+    TTF_Font* font = TTF_OpenFont(base.c_str(), 32);
+
     Lair lair(15, 11);
-    UserInterface ui;
-    Engine engine(nullptr, nullptr, &lair, &ui);
+    UserInterface ui(font, renderer);
+    Bank bank(100);
+    Engine engine(nullptr, &bank, &lair, &ui);
     lair.setEngine(&engine);
+    bank.setEngine(&engine);
 
     lair.addTile(1, 0);
     lair.addTile(0, 0);
@@ -68,38 +86,11 @@ int main(int, char**) {
     DepthFirstExplorer e(lair.getTile(0, 0));
     LairExplorerGraphic g(&e);
 
-    assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
-    assert(TTF_Init() == 0);
-    std::string base = SDL_GetBasePath();
-    base += "res/Monocraft-no-ligatures.ttf";
-
     std::cout << base << std::endl;
-
-    SDL_Window* window = SDL_CreateWindow("Pokeys & Shrews",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        800,
-        600,
-        0);
-    SDL_Renderer* renderer =
-        SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-
-    TTF_Font* font = TTF_OpenFont(base.c_str(), 32);
-    TextGraphic text("Text", font, renderer);
-    text.setPosition(0, 0);
-
-    std::string texts[] = {
-        "Text #1",
-        "Text #2",
-        "Text #3",
-    };
-
-    int i = 0;
 
     SDL_Event event;
     bool quit = false;
     int last = SDL_GetTicks();
-    int time = 0;
     EditState editState = ES_NONE;
     while (!quit) {
         int dt = SDL_GetTicks() - last;
@@ -122,7 +113,11 @@ int main(int, char**) {
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
                 case SDLK_SPACE: e.next(); break;
-                case SDLK_TAB: e.backtrack(3); std::cout << "Back" << std::endl;
+                case SDLK_TAB: e.backtrack(3); break;
+                case SDLK_UP: bank.deposit(1); break;
+                case SDLK_DOWN:
+                    if (bank.sufficientFunds(1)) bank.withdraw(1);
+                    break;
                 }
             }
             switch (editState) {
@@ -136,21 +131,12 @@ int main(int, char**) {
             case ES_NONE: break;
             }
         }
-        text.setColor(time % 255, 0, 0);
 
         ui.draw(renderer);
         g.update();
         g.draw(renderer);
-        text.draw(renderer);
 
         SDL_RenderPresent(renderer);
-
-        time += dt;
-        if (time > 1000) {
-            time -= 1000;
-            i = (i + 1) % 3;
-            text.setText(texts[i]);
-        }
     }
 
     TTF_CloseFont(font);
