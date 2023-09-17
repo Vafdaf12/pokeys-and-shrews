@@ -12,6 +12,7 @@
 
 #include "bank/Bank.h"
 #include "core/Engine.h"
+#include "core/ResourceManager.h"
 #include "core/UserInterface.h"
 #include "graphics/LairExplorerGraphic.h"
 #include "graphics/LairGraphic.h"
@@ -52,9 +53,6 @@ int main(int, char**) {
     test::research_engine();
     */
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
-    assert(TTF_Init() == 0);
-    std::string base = SDL_GetBasePath();
-    base += "res/Monocraft-no-ligatures.ttf";
 
     SDL_Window* window = SDL_CreateWindow("Pokeys & Shrews",
         SDL_WINDOWPOS_CENTERED,
@@ -64,7 +62,8 @@ int main(int, char**) {
         0);
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
-    TTF_Font* font = TTF_OpenFont(base.c_str(), 32);
+    TTF_Font* font =
+        ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 32);
 
     Lair lair(15, 11);
     UserInterface ui(font, renderer);
@@ -85,8 +84,6 @@ int main(int, char**) {
 
     DepthFirstExplorer e(lair.getTile(0, 0));
     LairExplorerGraphic g(&e);
-
-    std::cout << base << std::endl;
 
     SDL_Event event;
     bool quit = false;
@@ -139,8 +136,6 @@ int main(int, char**) {
         SDL_RenderPresent(renderer);
     }
 
-    TTF_CloseFont(font);
-    TTF_Quit();
     SDL_Quit();
     return 0;
 }
