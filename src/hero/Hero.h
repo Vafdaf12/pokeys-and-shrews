@@ -21,7 +21,6 @@ public:
 private:
     Timer m_stunTimer;
     Timer m_movement;
-    Timer m_interactTimer;
     LairExplorer* m_pExplorer;
 
     uint32_t m_totalHealth;
