@@ -153,6 +153,7 @@ int main(int, char**) {
         lab.update(dt);
         storyteller.update(dt);
         trap->update(dt);
+        ui.update(dt);
 
         ui.draw();
         /*

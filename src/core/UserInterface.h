@@ -32,6 +32,7 @@ public:
     bool removeHero(Hero* hero);
 
     void draw() const override;
+    void update(uint32_t dt) override;
 
 private:
     TTF_Font* m_pFont;

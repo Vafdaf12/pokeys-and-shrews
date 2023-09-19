@@ -48,6 +48,17 @@ void UserInterface::draw() const {
 
     m_balance.draw();
 }
+void UserInterface::update(uint32_t dt) {
+    for (const auto& p : m_graphics) {
+        p.second->update(dt);
+    }
+    for (const auto& p : m_entities) {
+        p.second->update(dt);
+    }
+    for (const auto& p : m_research) {
+        p.second->update(dt);
+    }
+}
 void UserInterface::addResearch(ResearchTask* task) {
     int y = 0;
     for (auto [task, graphic] : m_research) {

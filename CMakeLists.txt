@@ -32,7 +32,11 @@ FetchContent_Declare(SDL2_ttf
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_ttf
     GIT_TAG release-2.20.2
 )
-FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_ttf)
+FetchContent_Declare(tweeny
+    GIT_REPOSITORY https://github.com/mobius3/tweeny
+    GIT_TAG v3
+)
+FetchContent_MakeAvailable(SDL2 SDL2_image SDL2_ttf tweeny)
 
 file(GLOB SRCFILES
     src/*.cpp
@@ -44,7 +48,7 @@ add_executable(${NAME_EXE} ${SRCFILES} ${RESFILES})
 target_include_directories(${NAME_EXE}
     PRIVATE src/
 )
-target_link_libraries(${NAME_EXE} SDL2-static SDL2_image SDL2_ttf)
+target_link_libraries(${NAME_EXE} SDL2-static SDL2_image SDL2_ttf tweeny)
 
 # Copy resource files to build directory
 add_custom_command(
