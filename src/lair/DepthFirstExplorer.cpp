@@ -14,6 +14,9 @@ void DepthFirstExplorer::setStart(Tile* tile) {
 void DepthFirstExplorer::backtrack(uint32_t n) {
     for (int i = 0; i < n; i++) {
         m_pCurrent = m_path.back();
+        if (!m_depth.empty() && m_pCurrent == m_depth.top()) {
+            m_depth.pop();
+        }
         m_path.pop_back();
         m_explored.erase(m_pCurrent);
     }
