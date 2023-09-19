@@ -6,6 +6,7 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
+#include "entity/TeleportTrap.h"
 #include "graphics/TileGraphic.h"
 
 #include "core/EventLoop.h"
@@ -13,10 +14,9 @@
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "entity/Bank.h"
+#include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
-#include "trap/DamageTrap.h"
-
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
@@ -75,7 +75,12 @@ int main(int, char**) {
     lair.addTile(1, 1);
     lair.addTile(2, 1);
     lair.addTile(2, 2);
-    lair.addTile(3, 1)->addTrap(new DamageTrap(5));
+    TeleportTrap* trap = new TeleportTrap(5000);
+    {
+        Tile* t = lair.addTile(3, 1);
+        t->setEntity(trap);
+        t->fortify();
+    }
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
@@ -112,6 +117,8 @@ int main(int, char**) {
         if (bank.sufficientFunds(1)) bank.deposit(1);
     });
 
+    storyteller.spawnHero()->getExplorer()->setStart(lair.getTile(0, 0));
+
     while (!eventLoop.shouldQuit()) {
         int dt = SDL_GetTicks() - last;
         last += dt;
@@ -139,6 +146,7 @@ int main(int, char**) {
         }
         lab.update(dt);
         storyteller.update(dt);
+        trap->update(dt);
 
         ui.draw();
         /*

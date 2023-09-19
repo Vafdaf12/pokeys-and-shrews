@@ -1,6 +1,6 @@
 #pragma once
 
-#include "trap/Trap.h"
+class TileEntity;
 
 class Tile {
 public:
@@ -17,8 +17,8 @@ public:
     inline int getX() const { return x; }
     inline int getY() const { return y; }
 
-    inline void addTrap(Trap* trap) { m_pTrap = trap; }
-    inline Trap* getTrap() { return m_pTrap; }
+    inline void setEntity(TileEntity* trap) { m_pEntity = trap; }
+    inline TileEntity* getEntity() { return m_pEntity; }
 
 private:
     int x, y;
@@ -28,5 +28,5 @@ private:
     Tile* north = nullptr;
     Tile* south = nullptr;
 
-    Trap* m_pTrap = nullptr;
+    TileEntity* m_pEntity = nullptr;
 };

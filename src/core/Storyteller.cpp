@@ -1,7 +1,6 @@
 #include "Storyteller.h"
 #include "hero/Hero.h"
 #include "lair/DepthFirstExplorer.h"
-#include "trap/Trap.h"
 
 #include <iterator>
 #include <list>
@@ -18,15 +17,15 @@ Hero* Storyteller::spawnHero() {
     std::advance(it, i);
 
     Hero* hero = new Hero(new DepthFirstExplorer(*it), 10, 1, m_pEngine);
+    m_pHeroes.emplace_back(hero);
     if (m_pEngine) m_pEngine->heroSpawned(hero);
 
     return hero;
 }
 void Storyteller::update(uint32_t dt) {
-    m_spawnTimer.update(dt);
+    // m_spawnTimer.update(dt);
     if (m_spawnTimer.isComplete()) {
         m_spawnTimer.tick();
-        m_pHeroes.emplace_back(spawnHero());
     }
     for (Hero* h : m_pHeroes) {
         h->update(dt);

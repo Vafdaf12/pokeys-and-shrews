@@ -1,6 +1,6 @@
 #include "Hero.h"
 
-#include "trap/Trap.h"
+#include "entity/TileEntity.h"
 
 #include <cassert>
 
@@ -24,7 +24,7 @@ void Hero::update(uint32_t dt) {
 
     Tile* tile = m_pExplorer->get();
     assert(tile);
-    Trap* trap = tile->getTrap();
+    TileEntity* trap = tile->getEntity();
     if (trap) trap->interact(*this);
 }
 

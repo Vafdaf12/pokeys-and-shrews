@@ -3,7 +3,9 @@
 #include <stdint.h>
 class Timer {
 public:
-    Timer(uint32_t time = 0) : m_time(time) {}
+    Timer(uint32_t time = 0, bool completed = false) : m_time(time) {
+        if (completed) m_current = time;
+    }
 
     inline void update(uint32_t dt) { m_current += dt; }
     inline bool isComplete() const { return m_current >= m_time; }
