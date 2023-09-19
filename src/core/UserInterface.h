@@ -4,7 +4,9 @@
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
 #include "graphics/TextGraphic.h"
+#include "research/ResearchTask.h"
 #include <map>
+#include <vector>
 
 class Tile;
 
@@ -22,10 +24,14 @@ public:
     /// Sets the displayed bank balance
     void setBalance(int balance);
 
+    void addResearch(ResearchTask* task);
+    void removeResearch(ResearchTask* task);
+
     void draw() const override;
 
 private:
     TTF_Font* m_pFont;
     TextGraphic m_balance;
     std::map<void*, Graphic*> m_graphics;
+    std::vector<std::pair<ResearchTask*, Graphic*>> m_research;
 };

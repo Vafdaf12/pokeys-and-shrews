@@ -22,17 +22,19 @@ bool Engine::researchRequested(ResearchTask* pTask) {
     }
     m_pBank->withdraw(pTask->getCost());
     m_pLab->enqueue(pTask);
-    std::cout << "[ENGINE] research queued: " << *pTask << std::endl;
+    m_pMenu->addResearch(pTask);
     return true;
 }
 
 void Engine::researchCompleted(ResearchTask* pTask) {
     assert(pTask);
+    m_pMenu->removeResearch(pTask);
     std::cout << "[ENGINE] research completed: " << *pTask << std::endl;
 }
 
 void Engine::researchCancelled(ResearchTask* pTask) {
     assert(pTask);
+    m_pMenu->removeResearch(pTask);
     std::cout << "[ENGINE] research cancelled: " << *pTask << std::endl;
     m_pBank->deposit(pTask->getCost());
 }

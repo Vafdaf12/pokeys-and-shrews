@@ -19,6 +19,7 @@ public:
 
     inline int getCost() const { return m_cost; }
     inline bool isComplete() const { return m_currentTick >= m_totalTicks; }
+    inline const std::string& getName() const { return m_trap; }
 
     /**
      * Updates the research task

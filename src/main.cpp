@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <stdlib.h>
+#include <string>
 #include <time.h>
 
 #include "SDL.h"
@@ -27,6 +28,8 @@
 #include "lair/Lair.h"
 #include "lair/LairExplorer.h"
 #include "lair/Tile.h"
+#include "research/ResearchLab.h"
+#include "research/ResearchTask.h"
 #include "test.h"
 #include "trap/DamageTrap.h"
 
@@ -72,11 +75,12 @@ int main(int, char**) {
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 32);
 
+    ResearchLab lab;
     Lair lair(15, 11);
     UserInterface ui(renderer, font);
     Bank bank(100);
     Storyteller storyteller;
-    Engine engine(nullptr, &bank, &lair, &ui, &storyteller);
+    Engine engine(&lab, &bank, &lair, &ui, &storyteller);
     lair.setEngine(&engine);
     bank.setEngine(&engine);
     storyteller.setEngine(&engine);
@@ -105,6 +109,7 @@ int main(int, char**) {
 
     Timer timer(100);
     EditState editState = ES_NONE;
+    int n = 1;
     while (!quit) {
         int dt = SDL_GetTicks() - last;
         last += dt;
@@ -127,8 +132,8 @@ int main(int, char**) {
                 switch (event.key.keysym.sym) {
                 case SDLK_SPACE: hero.takeDamage(1); break;
                 case SDLK_TAB:
-                    explorers.push_back(storyteller.createExplorer());
-                    explorerGraphics.emplace_back(renderer, explorers.back());
+                    engine.researchRequested(new ResearchTask(
+                        "Trap #" + std::to_string(n++), 1000, 10, &engine));
                     break;
                 case SDLK_UP: bank.deposit(1); break;
                 case SDLK_DOWN:
@@ -144,6 +149,7 @@ int main(int, char**) {
             case ES_NONE: break;
             }
         }
+        lab.update(dt);
         hero.update(dt);
 
         ui.draw();
