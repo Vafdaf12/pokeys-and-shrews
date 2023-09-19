@@ -10,6 +10,7 @@ class Bank;
 class Graphic;
 class Lair;
 class Tile;
+class Hero;
 
 class Engine {
 public:
@@ -44,6 +45,9 @@ public:
 
     // Event triggered when the balance in the bank is changed
     void balanceChanged(int balance);
+
+    void heroSpawned(Hero* hero);
+    void heroDied(Hero* hero);
 
 private:
     Storyteller* m_pStoryteller;

@@ -4,11 +4,12 @@
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
 #include "graphics/TextGraphic.h"
-#include "research/ResearchTask.h"
 #include <map>
 #include <vector>
 
 class Tile;
+class Hero;
+class ResearchTask;
 
 class UserInterface : public Graphic {
 public:
@@ -25,7 +26,10 @@ public:
     void setBalance(int balance);
 
     void addResearch(ResearchTask* task);
-    void removeResearch(ResearchTask* task);
+    bool removeResearch(ResearchTask* task);
+
+    void addHero(Hero* hero);
+    bool removeHero(Hero* hero);
 
     void draw() const override;
 
@@ -33,5 +37,6 @@ private:
     TTF_Font* m_pFont;
     TextGraphic m_balance;
     std::map<void*, Graphic*> m_graphics;
+    std::map<void*, Graphic*> m_entities;
     std::vector<std::pair<ResearchTask*, Graphic*>> m_research;
 };

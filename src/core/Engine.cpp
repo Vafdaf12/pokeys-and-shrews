@@ -42,12 +42,30 @@ void Engine::researchCancelled(ResearchTask* pTask) {
 void Engine::tileAdded(Tile* tile) {
     m_pMenu->addTile(tile);
     m_pStoryteller->addSpawnTile(tile);
+    std::cout << "[ENGINE] tile added at: (" << tile->getX() << ", "
+              << tile->getY() << ")" << std::endl;
 }
 void Engine::tileRemoved(Tile* tile) {
     m_pMenu->removeTile(tile);
     m_pStoryteller->removeSpawnTile(tile);
+    std::cout << "[ENGINE] tile removed at: (" << tile->getX() << ", "
+              << tile->getY() << ")" << std::endl;
 }
 void Engine::tileFortified(Tile* tile) {
     m_pStoryteller->removeSpawnTile(tile);
+    std::cout << "[ENGINE] tile fortified at: (" << tile->getX() << ", "
+              << tile->getY() << ")" << std::endl;
 }
-void Engine::balanceChanged(int balance) { m_pMenu->setBalance(balance); }
+void Engine::balanceChanged(int balance) {
+    std::cout << "[ENGINE] balance changed: $" << balance << std::endl;
+    m_pMenu->setBalance(balance);
+}
+
+void Engine::heroSpawned(Hero* hero) {
+    std::cout << "[ENGINE] hero spawned" << std::endl;
+    m_pMenu->addHero(hero);
+}
+void Engine::heroDied(Hero* hero) {
+    std::cout << "[ENGINE] hero died" << std::endl;
+    m_pMenu->removeHero(hero);
+}

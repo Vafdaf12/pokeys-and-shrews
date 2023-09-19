@@ -90,18 +90,10 @@ int main(int, char**) {
     lair.addTile(1, 1);
     lair.addTile(2, 1);
     lair.addTile(2, 2);
-    lair.addTile(3, 1)->addTrap(new DamageTrap(1));
+    lair.addTile(3, 1)->addTrap(new DamageTrap(5));
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
-
-    std::vector<LairExplorer*> explorers;
-    std::vector<LairExplorerGraphic> explorerGraphics;
-    explorers.push_back(new DepthFirstExplorer(lair.getTile(0, 0)));
-    explorerGraphics.emplace_back(renderer, explorers.back());
-
-    Hero hero(new DepthFirstExplorer(lair.getTile(0, 0)), 5, 1);
-    HeroGraphic graphic(renderer, &hero);
 
     SDL_Event event;
     bool quit = false;
@@ -130,7 +122,6 @@ int main(int, char**) {
                 editState = ES_NONE;
             } else if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
-                case SDLK_SPACE: hero.takeDamage(1); break;
                 case SDLK_TAB:
                     engine.researchRequested(new ResearchTask(
                         "Trap #" + std::to_string(n++), 1000, 10, &engine));
@@ -150,7 +141,7 @@ int main(int, char**) {
             }
         }
         lab.update(dt);
-        hero.update(dt);
+        storyteller.update(dt);
 
         ui.draw();
         /*
@@ -160,14 +151,7 @@ int main(int, char**) {
         }
         */
 
-        graphic.draw();
         SDL_RenderPresent(renderer);
-        timer.update(dt);
-        if (timer.isComplete()) {
-            timer.tick();
-            for (auto& e : explorers)
-                e->next();
-        }
     }
 
     SDL_Quit();
