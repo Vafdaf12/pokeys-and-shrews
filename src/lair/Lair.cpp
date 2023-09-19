@@ -19,6 +19,7 @@ bool Lair::removeTile(int x, int y) {
     if (x < 0 || y < 0) return false;
     if (x >= m_width || y >= m_height) return false;
     size_t i = index(x, y);
+    if (!m_tiles[i]) return false;
 
     size_t n = index(x, y - 1);
     size_t s = index(x, y + 1);

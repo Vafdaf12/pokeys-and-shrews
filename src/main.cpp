@@ -139,9 +139,18 @@ int main(int, char**) {
         }
 
         switch (editState) {
-        case ES_FORT: lair.fortifyTile(p.x, p.y); break;
-        case ES_ADD: lair.addTile(p.x, p.y); break;
-        case ES_REM: lair.removeTile(p.x, p.y); break;
+        case ES_FORT:
+            std::cout << "FORT: " << p.x << ", " << p.y << std::endl;
+            lair.fortifyTile(p.x, p.y);
+            break;
+        case ES_ADD:
+            std::cout << "ADD: " << p.x << ", " << p.y << std::endl;
+            lair.addTile(p.x, p.y);
+            break;
+        case ES_REM:
+            std::cout << "REMOVE: " << p.x << ", " << p.y << std::endl;
+            lair.removeTile(p.x, p.y);
+            break;
         case ES_NONE: break;
         }
         lab.update(dt);

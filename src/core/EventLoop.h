@@ -25,7 +25,7 @@ public:
     const static MouseButton BUTTON_RIGHT = 1 << 1;
 
 private:
-    bool m_shouldQuit;
+    bool m_shouldQuit = false;
     std::vector<std::pair<SDL_EventType, EventHandler>> m_handlers;
     std::vector<std::tuple<SDL_EventType, MouseButton, EventHandler>>
         m_buttonHandlers;
