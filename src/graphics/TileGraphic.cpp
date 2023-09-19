@@ -7,8 +7,9 @@
 #include <vector>
 
 TileGraphic::TileGraphic(TargetType target, const Tile* tile, int x, int y)
-    : Graphic(target), m_position({x, y}), m_tile(tile) {
+    : Graphic(target), m_tile(tile) {
     assert(tile);
+    m_position = {x, y};
 }
 
 void TileGraphic::draw() const {

@@ -16,6 +16,9 @@ public:
     virtual void draw() const = 0;
     virtual void update(uint32_t dt) {}
 
+    inline void setPosition(Vector pos) { m_position = pos; }
+    inline Vector getPosition() const { return m_position; }
+
 protected:
     Vector m_position = {0, 0};
     TargetType m_target;

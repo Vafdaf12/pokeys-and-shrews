@@ -13,7 +13,7 @@ LairExplorerGraphic::LairExplorerGraphic(
     m_color.b = rand() % 255;
     m_cur.x = explorer->get()->getX() + 20 + TileGraphic::TILE_WIDTH / 2;
     m_cur.y = explorer->get()->getY() + 20 + TileGraphic::TILE_WIDTH / 2;
-    m_dest = m_cur;
+    m_position = m_cur;
 }
 void LairExplorerGraphic::draw() const {
     Tile* tile = m_pExplorer->get();
@@ -33,13 +33,13 @@ void LairExplorerGraphic::draw() const {
 }
 
 void LairExplorerGraphic::update(uint32_t dt) {
-    m_cur.x += static_cast<int>((m_dest.x - m_cur.x) / 4.0f);
-    m_cur.y += static_cast<int>((m_dest.y - m_cur.y) / 4.0f);
-    if (std::abs(m_cur.x - m_dest.x) < 5) {
-        m_cur.x = m_dest.x;
+    m_cur.x += static_cast<int>((m_position.x - m_cur.x) / 4.0f);
+    m_cur.y += static_cast<int>((m_position.y - m_cur.y) / 4.0f);
+    if (std::abs(m_cur.x - m_position.x) < 5) {
+        m_cur.x = m_position.x;
     }
-    if (std::abs(m_cur.y - m_dest.y) < 5) {
-        m_cur.y = m_dest.y;
+    if (std::abs(m_cur.y - m_position.y) < 5) {
+        m_cur.y = m_position.y;
     }
     Tile* tile = m_pExplorer->get();
     if (!tile) return;
@@ -51,7 +51,7 @@ void LairExplorerGraphic::update(uint32_t dt) {
 
     if (m_points.empty()) {
         m_points.push_back(p);
-        m_dest = m_points.back();
+        m_position = m_points.back();
         return;
     }
     if (m_points.back().x == p.x && m_points.back().y == p.y) return;
@@ -63,5 +63,5 @@ void LairExplorerGraphic::update(uint32_t dt) {
         }
         m_points.pop_back();
     }
-    m_dest = m_points.back();
+    m_position = m_points.back();
 }

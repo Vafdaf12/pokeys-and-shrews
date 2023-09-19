@@ -67,7 +67,7 @@ void UserInterface::addResearch(ResearchTask* task) {
         y += h + 5;
     }
     TextGraphic* g = new TextGraphic(m_target, task->getName(), m_pFont);
-    g->setPosition(200, y);
+    g->setPosition({200, y});
     m_research.emplace_back(task, g);
 }
 void UserInterface::addHero(Hero* task) {
@@ -96,7 +96,7 @@ bool UserInterface::removeResearch(ResearchTask* task) {
     int y = 0;
     for (auto [task, graphic] : m_research) {
         TextGraphic* g = static_cast<TextGraphic*>(graphic);
-        g->setPosition(200, y);
+        g->setPosition({200, y});
 
         int h;
         TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);

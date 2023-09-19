@@ -13,7 +13,7 @@ TextGraphic::TextGraphic(
 
     renderText();
 
-    setPosition(0, 0);
+    m_position = {0, 0};
     setColor(0, 0, 0);
 }
 TextGraphic::~TextGraphic() {
@@ -49,6 +49,6 @@ SDL_Point TextGraphic::getRenderSize() const {
 }
 void TextGraphic::draw() const {
     SDL_Point size = getRenderSize();
-    SDL_Rect dest = {m_dest.x, m_dest.y, size.x, size.y};
+    SDL_Rect dest = {m_position.x, m_position.y, size.x, size.y};
     SDL_RenderCopy(m_target, m_pTexture, NULL, &dest);
 }

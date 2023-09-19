@@ -10,11 +10,9 @@ public:
     TileGraphic(TargetType target, const Tile* tile, int x = 0, int y = 0);
 
     void draw() const override;
-    inline void setPosition(int x, int y) { m_position = {x, y}; }
 
     static constexpr int TILE_WIDTH = 50;
 
 private:
-    SDL_Point m_position;
     const Tile* m_tile;
 };
