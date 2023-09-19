@@ -71,3 +71,6 @@ void Engine::heroDied(Hero* hero) {
     m_pMenu->removeHero(hero);
     m_pBank->deposit(hero->getTotalHealth());
 }
+void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
+    if (entity == m_pBank) quit();
+}

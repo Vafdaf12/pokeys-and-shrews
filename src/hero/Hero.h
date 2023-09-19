@@ -10,6 +10,7 @@ public:
     Hero(LairExplorer* explorer,
         uint32_t health,
         float speed,
+        uint32_t damage,
         Engine* pEngine = nullptr);
     friend class HeroGraphic;
 
@@ -21,6 +22,7 @@ public:
     inline bool isDead() const { return m_remainingHealth == 0; }
     inline LairExplorer* getExplorer() { return m_pExplorer; }
     inline uint32_t getTotalHealth() const { return m_totalHealth; }
+    inline uint32_t getDamage() const { return m_damage; }
 
 private:
     Timer m_stunTimer;
@@ -29,5 +31,6 @@ private:
     Engine* m_pEngine;
 
     uint32_t m_totalHealth;
+    uint32_t m_damage;
     uint32_t m_remainingHealth;
 };

@@ -52,7 +52,11 @@ public:
 
     void heroInteracted(TileEntity* entity, Hero* hero);
 
+    inline bool shouldQuit() const { return m_shouldQuit; }
+    inline void quit() { m_shouldQuit = true; }
+
 private:
+    bool m_shouldQuit = false;
     Storyteller* m_pStoryteller;
     UserInterface* m_pMenu;
     ResearchLab* m_pLab;

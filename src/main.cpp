@@ -58,7 +58,7 @@ int main(int, char**) {
     SDL_Renderer* renderer =
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Font* font =
-        ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 32);
+        ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
 
     ResearchLab lab;
     Lair lair(15, 11);
@@ -79,6 +79,11 @@ int main(int, char**) {
     {
         Tile* t = lair.addTile(3, 1);
         t->setEntity(trap);
+        t->fortify();
+    }
+    {
+        Tile* t = lair.addTile(3, 2);
+        t->setEntity(&bank);
         t->fortify();
     }
 
@@ -116,10 +121,11 @@ int main(int, char**) {
     eventLoop.onKeyPressed(SDLK_DOWN, [&](auto) {
         if (bank.sufficientFunds(1)) bank.deposit(1);
     });
+    eventLoop.onQuit([&](auto) { engine.quit(); });
 
     storyteller.spawnHero()->getExplorer()->setStart(lair.getTile(0, 0));
 
-    while (!eventLoop.shouldQuit()) {
+    while (!engine.shouldQuit()) {
         int dt = SDL_GetTicks() - last;
         last += dt;
         SDL_Point p = {-1, -1};

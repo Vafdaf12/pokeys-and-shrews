@@ -4,10 +4,13 @@
 
 #include <cassert>
 
-Hero::Hero(
-    LairExplorer* explorer, uint32_t health, float speed, Engine* pEngine)
+Hero::Hero(LairExplorer* explorer,
+    uint32_t health,
+    float speed,
+    uint32_t damage,
+    Engine* pEngine)
     : m_pExplorer(explorer), m_pEngine(pEngine), m_totalHealth(health),
-      m_remainingHealth(health) {
+      m_damage(damage), m_remainingHealth(health) {
     m_movement = Timer(static_cast<uint32_t>(1000 / speed));
 }
 

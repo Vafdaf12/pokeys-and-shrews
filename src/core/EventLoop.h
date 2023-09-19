@@ -19,13 +19,10 @@ public:
     void onKeyPressed(Key, EventHandler);
     void onQuit(EventHandler);
 
-    inline bool shouldQuit() const { return m_shouldQuit; }
-
     const static MouseButton BUTTON_LEFT = 1 << 0;
     const static MouseButton BUTTON_RIGHT = 1 << 1;
 
 private:
-    bool m_shouldQuit = false;
     std::vector<std::pair<SDL_EventType, EventHandler>> m_handlers;
     std::vector<std::tuple<SDL_EventType, MouseButton, EventHandler>>
         m_buttonHandlers;

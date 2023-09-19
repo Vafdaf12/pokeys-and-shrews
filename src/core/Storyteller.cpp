@@ -16,7 +16,7 @@ Hero* Storyteller::spawnHero() {
     auto it = m_spawnTiles.begin();
     std::advance(it, i);
 
-    Hero* hero = new Hero(new DepthFirstExplorer(*it), 10, 1, m_pEngine);
+    Hero* hero = new Hero(new DepthFirstExplorer(*it), 10, 1, 10, m_pEngine);
     m_pHeroes.emplace_back(hero);
     if (m_pEngine) m_pEngine->heroSpawned(hero);
 

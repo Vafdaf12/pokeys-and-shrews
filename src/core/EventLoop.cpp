@@ -2,9 +2,6 @@
 #include "SDL_events.h"
 
 void EventLoop::handleEvent(EventType event) {
-    if (event.type == SDL_QUIT) {
-        m_shouldQuit = true;
-    }
     for (auto& [type, handler] : m_handlers) {
         if (type != event.type) continue;
         handler(event);
