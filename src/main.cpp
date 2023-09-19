@@ -8,14 +8,15 @@
 
 #include "graphics/TileGraphic.h"
 
-#include "bank/Bank.h"
 #include "core/EventLoop.h"
 #include "core/ResourceManager.h"
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
+#include "entity/Bank.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
 #include "trap/DamageTrap.h"
+
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly

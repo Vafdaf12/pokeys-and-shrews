@@ -11,6 +11,7 @@ class Graphic;
 class Lair;
 class Tile;
 class Hero;
+class TileEntity;
 
 class Engine {
 public:
@@ -48,6 +49,8 @@ public:
 
     void heroSpawned(Hero* hero);
     void heroDied(Hero* hero);
+
+    void heroInteracted(TileEntity* entity, Hero* hero);
 
 private:
     Storyteller* m_pStoryteller;

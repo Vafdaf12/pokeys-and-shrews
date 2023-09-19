@@ -3,16 +3,15 @@
 #include "SDL_rect.h"
 #include "SDL_render.h"
 
-#include "bank/Bank.h"
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
+#include "entity/Bank.h"
 #include "graphics/TileGraphic.h"
 #include "hero/Hero.h"
 #include "lair/Lair.h"
 #include "lair/Tile.h"
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
-
 
 #include <iostream>
 
