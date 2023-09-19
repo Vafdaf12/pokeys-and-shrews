@@ -15,6 +15,7 @@
 
 #include "bank/Bank.h"
 #include "core/Engine.h"
+#include "core/EventLoop.h"
 #include "core/ResourceManager.h"
 #include "core/Storyteller.h"
 #include "core/Timer.h"
@@ -96,49 +97,52 @@ int main(int, char**) {
     lair.addTile(1, 0);
 
     SDL_Event event;
-    bool quit = false;
     int last = SDL_GetTicks();
 
     Timer timer(100);
     EditState editState = ES_NONE;
     int n = 1;
-    while (!quit) {
+
+    EventLoop eventLoop;
+    eventLoop.onMouseDown(EventLoop::BUTTON_LEFT, [&](EventLoop::EventType e) {
+        auto [x, y] = getTilePosition(event);
+        if (!lair.getTile(x, y)) editState = ES_ADD;
+        else editState = ES_FORT;
+    });
+    eventLoop.onMouseDown(EventLoop::BUTTON_RIGHT, [&](EventLoop::EventType e) {
+        auto [x, y] = getTilePosition(event);
+        if (!lair.getTile(x, y)) return;
+        editState = ES_REM;
+    });
+    auto stopEdit = [&](auto) { editState = ES_NONE; };
+
+    eventLoop.onMouseUp(
+        EventLoop::BUTTON_LEFT | EventLoop::BUTTON_RIGHT, stopEdit);
+
+    eventLoop.onKeyPressed(SDLK_TAB, [&](auto) {
+        engine.researchRequested(new ResearchTask(
+            "Trap #" + std::to_string(n++), 1000, 10, &engine));
+    });
+    eventLoop.onKeyPressed(SDLK_UP, [&](auto) { bank.deposit(1); });
+    eventLoop.onKeyPressed(SDLK_DOWN, [&](auto) {
+        if (bank.sufficientFunds(1)) bank.deposit(1);
+    });
+
+    while (!eventLoop.shouldQuit()) {
         int dt = SDL_GetTicks() - last;
         last += dt;
+        SDL_Point p = {-1, -1};
+
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) quit = true;
+            eventLoop.handleEvent(event);
+            p = getTilePosition(event);
+        }
 
-            SDL_Point p = getTilePosition(event);
-            Tile* cur = lair.getTile(p.x, p.y);
-
-            if (event.type == SDL_MOUSEBUTTONDOWN) {
-                switch (event.button.button) {
-                case SDL_BUTTON_LEFT: editState = cur ? ES_FORT : ES_ADD; break;
-                case SDL_BUTTON_RIGHT:
-                    editState = cur ? ES_REM : ES_NONE;
-                    break;
-                }
-            } else if (event.type == SDL_MOUSEBUTTONUP) {
-                editState = ES_NONE;
-            } else if (event.type == SDL_KEYUP) {
-                switch (event.key.keysym.sym) {
-                case SDLK_TAB:
-                    engine.researchRequested(new ResearchTask(
-                        "Trap #" + std::to_string(n++), 1000, 10, &engine));
-                    break;
-                case SDLK_UP: bank.deposit(1); break;
-                case SDLK_DOWN:
-                    if (bank.sufficientFunds(1)) bank.withdraw(1);
-                    break;
-                }
-            }
-            switch (editState) {
-
-            case ES_FORT: lair.fortifyTile(p.x, p.y); break;
-            case ES_ADD: lair.addTile(p.x, p.y); break;
-            case ES_REM: lair.removeTile(p.x, p.y); break;
-            case ES_NONE: break;
-            }
+        switch (editState) {
+        case ES_FORT: lair.fortifyTile(p.x, p.y); break;
+        case ES_ADD: lair.addTile(p.x, p.y); break;
+        case ES_REM: lair.removeTile(p.x, p.y); break;
+        case ES_NONE: break;
         }
         lab.update(dt);
         storyteller.update(dt);

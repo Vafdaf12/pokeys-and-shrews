@@ -7,10 +7,12 @@
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "graphics/TileGraphic.h"
+#include "hero/Hero.h"
 #include "lair/Lair.h"
 #include "lair/Tile.h"
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
+
 
 #include <iostream>
 
@@ -68,4 +70,5 @@ void Engine::heroSpawned(Hero* hero) {
 void Engine::heroDied(Hero* hero) {
     std::cout << "[ENGINE] hero died" << std::endl;
     m_pMenu->removeHero(hero);
+    m_pBank->deposit(hero->getTotalHealth());
 }

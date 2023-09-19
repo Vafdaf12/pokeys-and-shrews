@@ -20,6 +20,7 @@ public:
 
     inline bool isDead() const { return m_remainingHealth == 0; }
     inline LairExplorer* getExplorer() { return m_pExplorer; }
+    inline uint32_t getTotalHealth() const { return m_totalHealth; }
 
 private:
     Timer m_stunTimer;
