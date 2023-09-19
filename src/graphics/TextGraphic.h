@@ -8,13 +8,12 @@
 
 class TextGraphic : public Graphic {
 public:
-    TextGraphic(
-        const std::string& text, TTF_Font* pFont, SDL_Renderer* pRenderer);
+    TextGraphic(TargetType target, const std::string& text, TTF_Font* pFont);
     ~TextGraphic();
 
     SDL_Point getRenderSize() const;
 
-    void draw(TargetType target) const override;
+    void draw() const override;
 
     void setText(const std::string& text);
     inline const std::string& getText() const { return m_text; }
@@ -26,7 +25,6 @@ private:
     void renderText();
     std::string m_text;
 
-    SDL_Renderer* m_pRenderer;
     SDL_Surface* m_pSurface = nullptr;
     SDL_Texture* m_pTexture = nullptr;
     SDL_Point m_dest;

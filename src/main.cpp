@@ -73,7 +73,7 @@ int main(int, char**) {
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 32);
 
     Lair lair(15, 11);
-    UserInterface ui(font, renderer);
+    UserInterface ui(renderer, font);
     Bank bank(100);
     Storyteller storyteller;
     Engine engine(nullptr, &bank, &lair, &ui, &storyteller);
@@ -94,10 +94,10 @@ int main(int, char**) {
     std::vector<LairExplorer*> explorers;
     std::vector<LairExplorerGraphic> explorerGraphics;
     explorers.push_back(new DepthFirstExplorer(lair.getTile(0, 0)));
-    explorerGraphics.emplace_back(explorers.back());
+    explorerGraphics.emplace_back(renderer, explorers.back());
 
     Hero hero(new DepthFirstExplorer(lair.getTile(0, 0)), 5, 1);
-    HeroGraphic graphic(&hero);
+    HeroGraphic graphic(renderer, &hero);
 
     SDL_Event event;
     bool quit = false;
@@ -128,7 +128,7 @@ int main(int, char**) {
                 case SDLK_SPACE: hero.takeDamage(1); break;
                 case SDLK_TAB:
                     explorers.push_back(storyteller.createExplorer());
-                    explorerGraphics.push_back(explorers.back());
+                    explorerGraphics.emplace_back(renderer, explorers.back());
                     break;
                 case SDLK_UP: bank.deposit(1); break;
                 case SDLK_DOWN:
@@ -146,7 +146,7 @@ int main(int, char**) {
         }
         hero.update(dt);
 
-        ui.draw(renderer);
+        ui.draw();
         /*
         for (auto& g : explorerGraphics) {
             g.update(dt);
@@ -154,7 +154,7 @@ int main(int, char**) {
         }
         */
 
-        graphic.draw(renderer);
+        graphic.draw();
         SDL_RenderPresent(renderer);
         timer.update(dt);
         if (timer.isComplete()) {

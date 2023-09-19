@@ -7,9 +7,9 @@ struct SDL_Texture;
 
 class HeroGraphic : public Graphic {
 public:
-    HeroGraphic(Hero* explorer);
+    HeroGraphic(TargetType target, Hero* explorer);
 
-    void draw(TargetType target) const override;
+    void draw() const override;
 
 private:
     Hero* m_pHero;

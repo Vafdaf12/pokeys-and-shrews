@@ -5,8 +5,9 @@
 #include "lair/LairExplorer.h"
 #include <cmath>
 
-LairExplorerGraphic::LairExplorerGraphic(LairExplorer* explorer)
-    : m_pExplorer(explorer) {
+LairExplorerGraphic::LairExplorerGraphic(
+    TargetType target, LairExplorer* explorer)
+    : Graphic(target), m_pExplorer(explorer) {
     m_color.r = rand() % 255;
     m_color.g = rand() % 255;
     m_color.b = rand() % 255;
@@ -14,7 +15,7 @@ LairExplorerGraphic::LairExplorerGraphic(LairExplorer* explorer)
     m_cur.y = explorer->get()->getY() + 20 + TileGraphic::TILE_WIDTH / 2;
     m_dest = m_cur;
 }
-void LairExplorerGraphic::draw(TargetType target) const {
+void LairExplorerGraphic::draw() const {
     Tile* tile = m_pExplorer->get();
     if (!tile) return;
 
@@ -23,12 +24,12 @@ void LairExplorerGraphic::draw(TargetType target) const {
 
     SDL_Rect rect = {x, y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH};
 
-    SDL_SetRenderDrawBlendMode(target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(target, m_color.r, m_color.g, m_color.b, 100);
-    SDL_RenderFillRect(target, &rect);
+    SDL_SetRenderDrawBlendMode(m_target, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(m_target, m_color.r, m_color.g, m_color.b, 100);
+    SDL_RenderFillRect(m_target, &rect);
 
-    SDL_SetRenderDrawColor(target, m_color.r, m_color.g, m_color.b, 255);
-    SDL_RenderDrawLines(target, m_points.data(), m_points.size());
+    SDL_SetRenderDrawColor(m_target, m_color.r, m_color.g, m_color.b, 255);
+    SDL_RenderDrawLines(m_target, m_points.data(), m_points.size());
 }
 
 void LairExplorerGraphic::update(uint32_t dt) {

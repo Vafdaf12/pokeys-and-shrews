@@ -6,7 +6,8 @@
 #include <sstream>
 
 void UserInterface::addTile(Tile* tile) {
-    m_graphics[tile] = new TileGraphic(tile,
+    m_graphics[tile] = new TileGraphic(m_target,
+        tile,
         tile->getX() * TileGraphic::TILE_WIDTH + 20,
         tile->getY() * TileGraphic::TILE_WIDTH + 20);
 }
@@ -22,13 +23,13 @@ void UserInterface::setBalance(int balance) {
     m_balance.setText(s.str());
 }
 
-void UserInterface::draw(Graphic::TargetType target) const {
-    SDL_SetRenderDrawColor(target, 0xff, 0xff, 0xff, 255);
-    SDL_RenderClear(target);
+void UserInterface::draw() const {
+    SDL_SetRenderDrawColor(m_target, 0xff, 0xff, 0xff, 255);
+    SDL_RenderClear(m_target);
 
     for (const auto& p : m_graphics) {
-        p.second->draw(target);
+        p.second->draw();
     }
 
-    m_balance.draw(target);
+    m_balance.draw();
 }

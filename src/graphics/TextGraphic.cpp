@@ -7,10 +7,9 @@
 #include <cassert>
 
 TextGraphic::TextGraphic(
-    const std::string& text, TTF_Font* pFont, SDL_Renderer* pRenderer)
-    : m_text(text), m_pRenderer(pRenderer), m_pFont(pFont) {
+    TargetType target, const std::string& text, TTF_Font* pFont)
+    : Graphic(target), m_text(text), m_pFont(pFont) {
     assert(pFont);
-    assert(pRenderer);
 
     renderText();
 
@@ -31,7 +30,7 @@ void TextGraphic::renderText() {
     if (m_pSurface) SDL_FreeSurface(m_pSurface);
 
     m_pSurface = TTF_RenderText_Solid(m_pFont, m_text.c_str(), {255, 255, 255});
-    m_pTexture = SDL_CreateTextureFromSurface(m_pRenderer, m_pSurface);
+    m_pTexture = SDL_CreateTextureFromSurface(m_target, m_pSurface);
     SDL_SetTextureColorMod(m_pTexture, col.r, col.g, col.b);
 }
 void TextGraphic::setText(const std::string& text) {
@@ -48,8 +47,8 @@ SDL_Point TextGraphic::getRenderSize() const {
     SDL_QueryTexture(m_pTexture, NULL, NULL, &p.x, &p.y);
     return p;
 }
-void TextGraphic::draw(TargetType target) const {
+void TextGraphic::draw() const {
     SDL_Point size = getRenderSize();
     SDL_Rect dest = {m_dest.x, m_dest.y, size.x, size.y};
-    SDL_RenderCopy(target, m_pTexture, NULL, &dest);
+    SDL_RenderCopy(m_target, m_pTexture, NULL, &dest);
 }

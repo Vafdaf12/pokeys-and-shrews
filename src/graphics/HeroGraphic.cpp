@@ -6,9 +6,10 @@
 #include "SDL_render.h"
 #include <algorithm>
 
-HeroGraphic::HeroGraphic(Hero* hero) : m_pHero(hero) {}
+HeroGraphic::HeroGraphic(TargetType target, Hero* hero)
+    : Graphic(target), m_pHero(hero) {}
 
-void HeroGraphic::draw(TargetType target) const {
+void HeroGraphic::draw() const {
     Tile* tile = m_pHero->getExplorer()->get();
 
     int x = 20 + tile->getX() * TileGraphic::TILE_WIDTH;
@@ -23,7 +24,7 @@ void HeroGraphic::draw(TargetType target) const {
     int r = static_cast<int>(facR * 255);
     int g = static_cast<int>(facG * 255);
 
-    SDL_SetRenderDrawBlendMode(target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(target, r, g, 0, 100);
-    SDL_RenderFillRect(target, &rect);
+    SDL_SetRenderDrawBlendMode(m_target, SDL_BLENDMODE_BLEND);
+    SDL_SetRenderDrawColor(m_target, r, g, 0, 100);
+    SDL_RenderFillRect(m_target, &rect);
 }

@@ -8,9 +8,9 @@ class LairExplorer;
 
 class LairExplorerGraphic : public Graphic {
 public:
-    LairExplorerGraphic(LairExplorer* explorer);
+    LairExplorerGraphic(TargetType target, LairExplorer* explorer);
 
-    void draw(TargetType target) const override;
+    void draw() const override;
     void update(uint32_t dt);
 
 private:

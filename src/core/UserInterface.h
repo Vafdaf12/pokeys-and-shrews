@@ -10,8 +10,8 @@ class Tile;
 
 class UserInterface : public Graphic {
 public:
-    UserInterface(TTF_Font* pFont, TargetType target)
-        : m_pFont(pFont), m_balance("$ N/A", pFont, target) {}
+    UserInterface(TargetType target, TTF_Font* pFont)
+        : Graphic(target), m_pFont(pFont), m_balance(target, "$ N/A", pFont) {}
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -22,7 +22,7 @@ public:
     /// Sets the displayed bank balance
     void setBalance(int balance);
 
-    void draw(TargetType target) const override;
+    void draw() const override;
 
 private:
     TTF_Font* m_pFont;
