@@ -1,37 +1,20 @@
 #include <cassert>
+#include <ctime>
 #include <iostream>
-#include <stdlib.h>
 #include <string>
-#include <time.h>
 
 #include "SDL.h"
-#include "SDL_events.h"
-#include "SDL_image.h"
-#include "SDL_keycode.h"
-#include "SDL_mouse.h"
-#include "SDL_render.h"
-#include "SDL_timer.h"
 #include "SDL_ttf.h"
 
+#include "graphics/TileGraphic.h"
+
 #include "bank/Bank.h"
-#include "core/Engine.h"
 #include "core/EventLoop.h"
 #include "core/ResourceManager.h"
 #include "core/Storyteller.h"
-#include "core/Timer.h"
 #include "core/UserInterface.h"
-#include "graphics/HeroGraphic.h"
-#include "graphics/LairExplorerGraphic.h"
-#include "graphics/TextGraphic.h"
-#include "graphics/TileGraphic.h"
-#include "hero/Hero.h"
-#include "lair/DepthFirstExplorer.h"
 #include "lair/Lair.h"
-#include "lair/LairExplorer.h"
-#include "lair/Tile.h"
 #include "research/ResearchLab.h"
-#include "research/ResearchTask.h"
-#include "test.h"
 #include "trap/DamageTrap.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
