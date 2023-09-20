@@ -17,6 +17,7 @@
 #include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
+#include "ui/Button.h"
 #include "ui/Label.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
@@ -36,8 +37,9 @@ SDL_Point getTilePosition(SDL_Event ev) {
         p.x = ev.motion.x - 20;
         p.y = ev.motion.y - 20;
     }
-    p.x /= TileGraphic::TILE_WIDTH;
-    p.y /= TileGraphic::TILE_WIDTH;
+    if (p.x >= 0) p.x /= TileGraphic::TILE_WIDTH;
+    if (p.y >= 0) p.y /= TileGraphic::TILE_WIDTH;
+
     return p;
 }
 
@@ -60,16 +62,23 @@ int main(int, char**) {
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
+    EventLoop eventLoop;
 
-    ui::Label label(renderer, font, "My Text");
+    ui::Button label(renderer, font, eventLoop);
+    label.setText("Click Me!!");
+    label.setBackground(255, 0, 0);
+    label.setColor(255, 255, 255);
     label.setPosition({0, 100});
+    label.onClick([]() { std::cout << "Clicked" << std::endl; });
 
     ResearchLab lab;
     Lair lair(15, 11);
-    UserInterface ui(renderer, font);
+    UserInterface ui(renderer, font, &eventLoop);
     Bank bank(100);
     Storyteller storyteller;
+
     Engine engine(&lab, &bank, &lair, &ui, &storyteller);
+    ui.setEngine(&engine);
     lair.setEngine(&engine);
     bank.setEngine(&engine);
     storyteller.setEngine(&engine);
@@ -101,14 +110,15 @@ int main(int, char**) {
     EditState editState = ES_NONE;
     int n = 1;
 
-    EventLoop eventLoop;
     eventLoop.onMouseDown(EventLoop::BUTTON_LEFT, [&](EventLoop::EventType e) {
         auto [x, y] = getTilePosition(event);
+        if (x < 0 || y < 0) return;
         if (!lair.getTile(x, y)) editState = ES_ADD;
         else editState = ES_FORT;
     });
     eventLoop.onMouseDown(EventLoop::BUTTON_RIGHT, [&](EventLoop::EventType e) {
         auto [x, y] = getTilePosition(event);
+        if (x < 0 || y < 0) return;
         if (!lair.getTile(x, y)) return;
         editState = ES_REM;
     });
@@ -138,22 +148,13 @@ int main(int, char**) {
         }
 
         switch (editState) {
-        case ES_FORT:
-            std::cout << "FORT: " << p.x << ", " << p.y << std::endl;
-            lair.fortifyTile(p.x, p.y);
-            break;
-        case ES_ADD:
-            std::cout << "ADD: " << p.x << ", " << p.y << std::endl;
-            lair.addTile(p.x, p.y);
-            break;
-        case ES_REM:
-            std::cout << "REMOVE: " << p.x << ", " << p.y << std::endl;
-            lair.removeTile(p.x, p.y);
-            break;
+        case ES_FORT: lair.fortifyTile(p.x, p.y); break;
+        case ES_ADD: lair.addTile(p.x, p.y); break;
+        case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_NONE: break;
         }
         lab.update(dt);
-        storyteller.update(dt);
+        // storyteller.update(dt);
         trap->update(dt);
         ui.update(dt);
 

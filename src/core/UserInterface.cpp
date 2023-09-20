@@ -7,9 +7,12 @@
 
 #include "lair/Tile.h"
 #include "research/ResearchTask.h"
+#include "ui/Button.h"
 #include "ui/Label.h"
 
 #include <algorithm>
+#include <functional>
+#include <iostream>
 #include <sstream>
 
 void UserInterface::addTile(Tile* tile) {
@@ -66,9 +69,17 @@ void UserInterface::addResearch(ResearchTask* task) {
         TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);
         y += h + 5;
     }
-    ui::Label* g = new ui::Label(m_target, m_pFont, task->getName());
-    g->setPosition({200, y});
-    m_research.emplace_back(task, g);
+    ui::Button* button = new ui::Button(m_target, m_pFont, *m_eventLoop);
+    button->setText(task->getName());
+    button->setPosition({200, y});
+    button->setBackground(0, 0, 0);
+    button->setColor(255, 255, 255);
+    // button->onClick(std::bind(&Engine::researchCancelled, m_pEngine, task));
+    button->onClick([&]() {
+        std::cout << "Clicked" << std::endl;
+        if (m_pEngine) m_pEngine->researchCancelled(task);
+    });
+    m_research.emplace_back(task, button);
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
@@ -86,8 +97,6 @@ bool UserInterface::removeResearch(ResearchTask* task) {
                 m_research.begin();
     if (it == m_research.size()) return false;
 
-    delete m_research[it].second;
-
     for (size_t i = it; i < m_research.size() - 1; i++) {
         m_research[i] = m_research[i + 1];
     }
@@ -95,12 +104,9 @@ bool UserInterface::removeResearch(ResearchTask* task) {
 
     int y = 0;
     for (auto [task, graphic] : m_research) {
-        ui::Label* g = static_cast<ui::Label*>(graphic);
-        g->setPosition({200, y});
-
-        int h;
-        TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);
-        y += h + 5;
+        auto btn = static_cast<ui::Button*>(graphic);
+        graphic->setPosition({200, y});
+        y += btn->getBoundingBox().h + 5;
     }
     return true;
 }

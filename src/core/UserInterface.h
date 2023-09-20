@@ -1,8 +1,10 @@
 #pragma once
 
 #include "SDL_ttf.h"
+#include "core/Engine.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
+#include "ui/Button.h"
 #include "ui/Label.h"
 #include <map>
 #include <vector>
@@ -10,11 +12,18 @@
 class Tile;
 class Hero;
 class ResearchTask;
+class EventLoop;
 
 class UserInterface : public Graphic {
 public:
-    UserInterface(TargetType target, TTF_Font* pFont)
-        : Graphic(target), m_pFont(pFont), m_balance(target, pFont, "$ N/A") {}
+    UserInterface(TargetType target,
+        TTF_Font* pFont,
+        EventLoop* eventLoop,
+        Engine* pEngine = nullptr)
+        : Graphic(target), m_pEngine(pEngine), m_pFont(pFont),
+          m_eventLoop(eventLoop), m_balance(target, pFont, "$ N/A") {}
+
+    inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -35,7 +44,9 @@ public:
     void update(uint32_t dt) override;
 
 private:
+    Engine* m_pEngine;
     TTF_Font* m_pFont;
+    EventLoop* m_eventLoop;
     ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;
     std::map<void*, Graphic*> m_entities;
