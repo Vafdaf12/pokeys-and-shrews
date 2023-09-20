@@ -1,12 +1,15 @@
+
 #include <cassert>
 #include <ctime>
 #include <iostream>
 #include <string>
 
+#include "raylib.h"
+
+/*
 #include "SDL.h"
 #include "SDL_render.h"
 #include "SDL_ttf.h"
-
 #include "entity/TeleportTrap.h"
 #include "graphics/TileGraphic.h"
 
@@ -45,11 +48,9 @@ SDL_Point getTilePosition(SDL_Event ev) {
 }
 
 int main(int, char**) {
-    /*
     test::research_lab();
     test::bank();
     test::research_engine();
-    */
     srand(time(nullptr));
     assert(SDL_Init(SDL_INIT_VIDEO) >= 0);
 
@@ -64,14 +65,12 @@ int main(int, char**) {
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
     EventLoop eventLoop;
-    /*
         ui::Button label(renderer, font, eventLoop);
         label.setText("Click Me!!");
         label.setBackground(255, 0, 0);
         label.setColor(255, 255, 255);
         label.setPosition({0, 100});
         label.onClick([]() { std::cout << "Clicked" << std::endl; });
-    */
     ResearchLab lab;
     Lair lair(15, 11);
     UserInterface ui(renderer, font);
@@ -166,11 +165,23 @@ int main(int, char**) {
             g.draw(renderer);
         }
          label.draw();
-*/
 
         SDL_RenderPresent(renderer);
     }
 
     SDL_Quit();
     return 0;
+}
+
+*/
+int main() {
+    InitWindow(800, 600, "Pokeys & Shrews");
+    Texture2D tex = LoadTexture("res/Hero1.png");
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+        DrawTextureEx(tex, {0, 20}, 0, 5, WHITE);
+        DrawText("Hello World", 0, 0, 20, LIGHTGRAY);
+        EndDrawing();
+    }
 }
