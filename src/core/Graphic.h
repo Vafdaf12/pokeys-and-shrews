@@ -10,7 +10,10 @@ public:
     using TargetType = SDL_Renderer*;
     using Vector = SDL_Point;
 
-    Graphic(TargetType target) : m_target(target) { assert(target); }
+    Graphic(TargetType target, Vector pos = {0, 0})
+        : m_position(pos), m_target(target) {
+        assert(target);
+    }
 
     virtual ~Graphic() {}
     virtual void draw() const = 0;

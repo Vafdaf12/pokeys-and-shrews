@@ -4,6 +4,7 @@
 #include <string>
 
 #include "SDL.h"
+#include "SDL_render.h"
 #include "SDL_ttf.h"
 
 #include "entity/TeleportTrap.h"
@@ -17,6 +18,7 @@
 #include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
+#include "ui/Label.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
@@ -59,6 +61,29 @@ int main(int, char**) {
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
+
+    ui::Label l1(renderer, font, "L1");
+    ui::Label l2(renderer, font, "L2");
+    l1.getBoundingBox();
+    l2.getBoundingBox();
+
+    l1 = l2;
+    l1.getBoundingBox();
+    l2.getBoundingBox();
+
+    l2 = l1;
+    l1.getBoundingBox();
+    l2.getBoundingBox();
+
+    l1 = ui::Label(renderer, font, "L3");
+    l1.getBoundingBox();
+
+    ui::Label l3(l1);
+    l1.getBoundingBox();
+    l3.getBoundingBox();
+
+    ui::Label l4(ui::Label(renderer, font, "L4"));
+    l4.getBoundingBox();
 
     ResearchLab lab;
     Lair lair(15, 11);
@@ -150,18 +175,25 @@ int main(int, char**) {
             break;
         case ES_NONE: break;
         }
+
+        /*
         lab.update(dt);
         storyteller.update(dt);
         trap->update(dt);
         ui.update(dt);
 
         ui.draw();
-        /*
         for (auto& g : explorerGraphics) {
             g.update(dt);
             g.draw(renderer);
         }
         */
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+        l1.draw();
+        l2.draw();
+        l3.draw();
+        l4.draw();
 
         SDL_RenderPresent(renderer);
     }
