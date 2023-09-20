@@ -18,6 +18,7 @@
 #include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
+#include "ui/Button.h"
 #include "ui/Label.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
@@ -61,6 +62,7 @@ int main(int, char**) {
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
+    EventLoop eventLoop;
 
     ResearchLab lab;
     Lair lair(15, 11);
@@ -99,7 +101,6 @@ int main(int, char**) {
     EditState editState = ES_NONE;
     int n = 1;
 
-    EventLoop eventLoop;
     eventLoop.onMouseDown(EventLoop::BUTTON_LEFT, [&](EventLoop::EventType e) {
         auto [x, y] = getTilePosition(event);
         if (!lair.getTile(x, y)) editState = ES_ADD;
@@ -125,7 +126,10 @@ int main(int, char**) {
     });
     eventLoop.onQuit([&](auto) { engine.quit(); });
 
-    storyteller.spawnHero()->getExplorer()->setStart(lair.getTile(0, 0));
+    ui::Button button(renderer, font, eventLoop, "Click Me!!");
+    button.onClick([]() { printf("Clicked\n"); });
+
+    // storyteller.spawnHero()->getExplorer()->setStart(lair.getTile(0, 0));
 
     while (!engine.shouldQuit()) {
         int dt = SDL_GetTicks() - last;
@@ -138,22 +142,13 @@ int main(int, char**) {
         }
 
         switch (editState) {
-        case ES_FORT:
-            std::cout << "FORT: " << p.x << ", " << p.y << std::endl;
-            lair.fortifyTile(p.x, p.y);
-            break;
-        case ES_ADD:
-            std::cout << "ADD: " << p.x << ", " << p.y << std::endl;
-            lair.addTile(p.x, p.y);
-            break;
-        case ES_REM:
-            std::cout << "REMOVE: " << p.x << ", " << p.y << std::endl;
-            lair.removeTile(p.x, p.y);
-            break;
+        case ES_FORT: lair.fortifyTile(p.x, p.y); break;
+        case ES_ADD: lair.addTile(p.x, p.y); break;
+        case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_NONE: break;
         }
 
-        lab.update(dt);
+        // lab.update(dt);
         /*
         storyteller.update(dt);
         trap->update(dt);
@@ -164,7 +159,8 @@ int main(int, char**) {
             g.draw(renderer);
         }
         */
-        ui.draw();
+        // ui.draw();
+        button.draw();
 
         SDL_RenderPresent(renderer);
     }

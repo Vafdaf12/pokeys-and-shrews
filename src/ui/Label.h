@@ -13,7 +13,7 @@ public:
     Label(TargetType target, TTF_Font* font, const std::string& text);
     ~Label();
 
-    void draw() const override;
+    virtual void draw() const override;
 
     // Move semantics
     Label(const Label&);
