@@ -82,16 +82,10 @@ bool UserInterface::removeHero(Hero* task) {
     return true;
 }
 bool UserInterface::removeResearch(ResearchTask* task) {
-    size_t it = std::find_if(m_research.begin(),
-                    m_research.end(),
-                    [&](const auto& p) { return p.first == task; }) -
-                m_research.begin();
-    if (it == m_research.size()) return false;
-
-    for (size_t i = it; i < m_research.size() - 1; i++) {
-        m_research[i] = std::move(m_research[i + 1]);
-    }
-    m_research.pop_back();
+    auto it = std::remove_if(m_research.begin(),
+        m_research.end(),
+        [&](const auto& p) { return p.first == task; });
+    m_research.erase(it);
 
     int y = 0;
     for (auto& [task, label] : m_research) {
