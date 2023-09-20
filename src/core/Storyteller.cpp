@@ -1,5 +1,6 @@
 #include "Storyteller.h"
 #include "hero/Hero.h"
+#include "lair/BreadthFirstExplorer.h"
 #include "lair/DepthFirstExplorer.h"
 
 #include <iterator>
@@ -16,16 +17,17 @@ Hero* Storyteller::spawnHero() {
     auto it = m_spawnTiles.begin();
     std::advance(it, i);
 
-    Hero* hero = new Hero(new DepthFirstExplorer(*it), 10, 1, 10, m_pEngine);
+    Hero* hero = new Hero(new BreadthFirstExplorer(*it), 10, 1, 10, m_pEngine);
     m_pHeroes.emplace_back(hero);
     if (m_pEngine) m_pEngine->heroSpawned(hero);
 
     return hero;
 }
 void Storyteller::update(uint32_t dt) {
-    // m_spawnTimer.update(dt);
+    m_spawnTimer.update(dt);
     if (m_spawnTimer.isComplete()) {
         m_spawnTimer.tick();
+        spawnHero();
     }
     for (Hero* h : m_pHeroes) {
         h->update(dt);

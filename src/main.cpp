@@ -127,8 +127,6 @@ int main(int, char**) {
     });
     eventLoop.onQuit([&](auto) { engine.quit(); });
 
-    storyteller.spawnHero()->getExplorer()->setStart(lair.getTile(0, 0));
-
     while (!engine.shouldQuit()) {
         int dt = SDL_GetTicks() - last;
         last += dt;
