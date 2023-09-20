@@ -1,4 +1,5 @@
 #include "TileGraphic.h"
+#include "core/Resources.h"
 #include "lair/Tile.h"
 #include "raylib.h"
 
@@ -20,7 +21,13 @@ void TileGraphic::draw() {
     } else {
         c = {0xee, 0xee, 0xee, 255};
     }
-    DrawRectangle(m_position.x, m_position.y, TILE_WIDTH, TILE_WIDTH, c);
+
+    Texture2D tex;
+    if (m_tile->m_fortified) tex = Resources::getTexture("res/tile.png");
+    else tex = Resources::getTexture("res/tile_raw.png");
+
+    float scale = TileGraphic::TILE_WIDTH / float(tex.width);
+    DrawTextureEx(tex, m_position, 0, scale, WHITE);
 
     c = {0, 0, 0, 255};
     auto [x, y] = m_position;

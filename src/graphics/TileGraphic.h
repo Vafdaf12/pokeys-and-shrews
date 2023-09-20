@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Graphic.h"
+#include "raylib.h"
 
 class Tile;
 
