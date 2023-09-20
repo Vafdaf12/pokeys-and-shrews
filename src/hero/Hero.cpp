@@ -14,7 +14,7 @@ Hero::Hero(LairExplorer* explorer,
     m_movement = Timer(static_cast<uint32_t>(1000 / speed));
 }
 
-void Hero::update(uint32_t dt) {
+void Hero::update(float dt) {
     m_stunTimer.update(dt);
     m_movement.update(dt);
 

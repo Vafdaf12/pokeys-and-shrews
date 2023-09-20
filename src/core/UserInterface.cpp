@@ -49,7 +49,7 @@ void UserInterface::draw() {
 
     m_balance.draw();
 }
-void UserInterface::update(uint32_t dt) {
+void UserInterface::update(float dt) {
     for (const auto& p : m_graphics) {
         p.second->update(dt);
     }

@@ -5,7 +5,7 @@
 #include <ostream>
 #include <xmemory>
 
-void ResearchLab::update(uint32_t dt) {
+void ResearchLab::update(float dt) {
     if (m_queue.empty()) return;
     m_queue.front()->update(dt);
     if (m_queue.front()->isComplete()) {

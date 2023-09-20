@@ -13,7 +13,7 @@ public:
     Button(Font font, const std::string& text, ClickHandler cb);
 
     void draw() override;
-    void update(uint32_t dt) override;
+    void update(float dt) override;
 
     inline void setBackground(Color c) { m_background = c; }
     inline void onClick(ClickHandler h) { m_onClick = h; }

@@ -11,7 +11,7 @@ public:
     TeleportTrap(uint32_t cooldown, Engine* pEngine = nullptr)
         : TileEntity(pEngine), m_cooldown(cooldown, true) {}
 
-    void update(uint32_t dt) override { m_cooldown.update(dt); }
+    void update(float dt) override { m_cooldown.update(dt); }
     void interact(Hero& hero) override {
         if (!m_cooldown.isComplete()) return;
         hero.getExplorer()->backtrack(3);

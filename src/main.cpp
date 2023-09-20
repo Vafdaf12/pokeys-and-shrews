@@ -92,7 +92,8 @@ int main(int, char**) {
             engine.quit();
         }
 
-        int dt = GetFrameTime() * 1000;
+        float delta = GetFrameTime();
+        int dt = delta * 1000;
 
         Vector2 p = getTilePosition();
         bool tileExists = lair.getTile(p.x, p.y) != nullptr;
@@ -109,7 +110,7 @@ int main(int, char**) {
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(new ResearchTask(
-                "Trap #" + std::to_string(n++), 1000, 10, &engine));
+                "Trap #" + std::to_string(n++), 1.f, 10, &engine));
         }
         if (IsKeyReleased(KEY_UP)) {
             bank.deposit(1);
@@ -124,7 +125,7 @@ int main(int, char**) {
         case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_NONE: break;
         }
-        lab.update(dt);
+        lab.update(delta);
         // storyteller.update(dt);
         trap->update(dt);
         label.update(dt);

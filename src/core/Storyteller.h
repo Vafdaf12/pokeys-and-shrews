@@ -14,7 +14,7 @@ public:
     void addSpawnTile(Tile* tile);
     bool removeSpawnTile(Tile* tile);
 
-    void update(uint32_t dt);
+    void update(float dt);
 
     Hero* spawnHero();
 

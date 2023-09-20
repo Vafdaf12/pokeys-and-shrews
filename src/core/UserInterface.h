@@ -32,7 +32,7 @@ public:
     bool removeHero(Hero* hero);
 
     void draw() override;
-    void update(uint32_t dt) override;
+    void update(float dt) override;
 
     inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
 

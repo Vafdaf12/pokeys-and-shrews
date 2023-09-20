@@ -10,7 +10,7 @@ public:
     HeroGraphic(Hero* explorer);
 
     void draw() override;
-    void update(uint32_t dt) override;
+    void update(float dt) override;
 
 private:
     tweeny::tween<int, int> m_current =

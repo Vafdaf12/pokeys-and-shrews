@@ -9,7 +9,7 @@ public:
     virtual ~Graphic() {}
 
     virtual void draw() = 0;
-    virtual void update(uint32_t dt) {}
+    virtual void update(float dt) {}
 
     inline void setPosition(Vector2 pos) { m_position = pos; }
     inline Vector2 getPosition() const { return m_position; }

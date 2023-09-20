@@ -1,7 +1,6 @@
 #pragma once
 
 #include <list>
-#include <memory>
 
 #include "ResearchTask.h"
 
@@ -14,7 +13,7 @@ public:
     /**
      * Updates the research lab to perform one unit of research
      */
-    void update(uint32_t dt);
+    void update(float dt);
 
     /**
      * Enqueues the passed in item to research

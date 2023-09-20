@@ -12,7 +12,7 @@ void Button::draw() {
     DrawRectangleRec(getBoundingBox(), m_background);
     Label::draw();
 }
-void Button::update(uint32_t dt) {
+void Button::update(float dt) {
     if (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) return;
 
     Vector2 pos = GetMousePosition();

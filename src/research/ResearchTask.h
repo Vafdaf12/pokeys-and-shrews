@@ -13,19 +13,19 @@ class Engine;
 class ResearchTask {
 public:
     ResearchTask(const std::string& trap,
-        uint32_t time,
+        float time,
         int cost,
         Engine* engine = nullptr);
 
     inline int getCost() const { return m_cost; }
-    inline bool isComplete() const { return m_currentTick >= m_totalTicks; }
+    inline bool isComplete() const { return m_currentTime >= m_totalTime; }
     inline const std::string& getName() const { return m_trap; }
 
     /**
      * Updates the research task
      * @param dt The time that has passed since the last update
      */
-    void update(uint32_t dt);
+    void update(float dt);
 
     // Marks the research task as complete
     void complete();
@@ -37,8 +37,8 @@ public:
 
 private:
     std::string m_trap;
-    uint32_t m_totalTicks;
-    uint32_t m_currentTick = 0;
+    float m_totalTime;
+    float m_currentTime = 0;
     int m_cost;
     bool m_active = true;
 

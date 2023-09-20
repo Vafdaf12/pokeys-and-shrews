@@ -20,13 +20,13 @@ void HeroGraphic::draw() {
     float facR = std::clamp((1 - fac) * 2, 0.f, 1.f);
     float facG = std::clamp(fac * 2, 0.f, 1.f);
 
-    uint8_t r = facR * 255;
-    uint8_t g = facG * 255;
+    uint8_t r = uint8_t(facR * 255);
+    uint8_t g = uint8_t(facG * 255);
 
     Color c = {r, g, 0, 100};
     DrawRectangle(x, y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH, c);
 }
-void HeroGraphic::update(uint32_t dt) {
+void HeroGraphic::update(float dt) {
     Tile* tile = m_pHero->getExplorer()->get();
 
     int x = 20 + tile->getX() * TileGraphic::TILE_WIDTH;
@@ -40,5 +40,5 @@ void HeroGraphic::update(uint32_t dt) {
         m_current = tweeny::from(cx, cy).to(x, y).during(100);
     }
 
-    m_current.step(dt);
+    m_current.step(dt * 1000);
 }

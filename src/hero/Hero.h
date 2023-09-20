@@ -14,7 +14,7 @@ public:
         Engine* pEngine = nullptr);
     friend class HeroGraphic;
 
-    void update(uint32_t dt);
+    void update(float dt);
 
     void stun(uint32_t time);
     void takeDamage(uint32_t damage);

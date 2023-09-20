@@ -23,7 +23,7 @@ Hero* Storyteller::spawnHero() {
 
     return hero;
 }
-void Storyteller::update(uint32_t dt) {
+void Storyteller::update(float dt) {
     m_spawnTimer.update(dt);
     if (m_spawnTimer.isComplete()) {
         m_spawnTimer.tick();

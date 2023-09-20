@@ -29,7 +29,7 @@ void LairExplorerGraphic::draw() {
         {m_color.r, m_color.g, m_color.b, 255});
 }
 
-void LairExplorerGraphic::update(uint32_t dt) {
+void LairExplorerGraphic::update(float dt) {
     m_cur.x += static_cast<int>((m_position.x - m_cur.x) / 4.0f);
     m_cur.y += static_cast<int>((m_position.y - m_cur.y) / 4.0f);
     if (std::abs(m_cur.x - m_position.x) < 5) {

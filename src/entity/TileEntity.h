@@ -7,7 +7,7 @@ class Hero;
 class TileEntity {
 public:
     virtual void interact(Hero& hero) = 0;
-    virtual void update(uint32_t dt) {}
+    virtual void update(float dt) {}
 
     inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
 
