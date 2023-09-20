@@ -20,17 +20,22 @@ Label::~Label() {
     if (m_pTexture) SDL_DestroyTexture(m_pTexture);
     if (m_pSurface) SDL_FreeSurface(m_pSurface);
 }
-Label::Label(const Label& rhs)
-    : Graphic(rhs), m_text(rhs.m_text), m_pFont(rhs.m_pFont) {
-    render();
+Label::Label(const Label& rhs) : Label(rhs.m_target, rhs.m_pFont, rhs.m_text) {
+    m_position = rhs.m_position;
+    uint8_t r, g, b;
+    SDL_GetTextureColorMod(m_pTexture, &r, &g, &b);
+    setColor(r, g, b);
 }
+
 Label::Label(Label&& rhs) : Graphic(rhs), m_pFont(rhs.m_pFont) {
     std::swap(m_text, rhs.m_text);
     std::swap(m_pSurface, rhs.m_pSurface);
     std::swap(m_pTexture, rhs.m_pTexture);
 }
 Label& Label::operator=(const Label& rhs) {
-    setPosition(rhs.getPosition());
+    if (this == &rhs) return *this;
+
+    m_position = rhs.m_position;
     m_text = rhs.m_text;
     m_pFont = rhs.m_pFont;
     m_target = rhs.m_target;
@@ -40,16 +45,27 @@ Label& Label::operator=(const Label& rhs) {
     return *this;
 }
 Label& Label::operator=(Label&& rhs) {
-    setPosition(rhs.getPosition());
+    if (this == &rhs) return *this;
+    std::swap(m_position, rhs.m_position);
     std::swap(m_text, rhs.m_text);
     std::swap(m_pSurface, rhs.m_pSurface);
     std::swap(m_pTexture, rhs.m_pTexture);
     std::swap(m_target, rhs.m_target);
     return *this;
 }
+void Label::setText(const std::string& text) {
+    if (text == m_text) return;
+    m_text = text;
+    render();
+}
+void Label::setFont(TTF_Font* font) {
+    if (font == m_pFont) return;
+    m_pFont = font;
+    render();
+}
 
 void Label::render() {
-    SDL_Color col = {255, 255, 255};
+    SDL_Color col = {0, 0, 0, 255};
     if (m_pTexture) {
         SDL_GetTextureColorMod(m_pTexture, &col.r, &col.g, &col.b);
         SDL_DestroyTexture(m_pTexture);
@@ -60,11 +76,7 @@ void Label::render() {
     m_pTexture = SDL_CreateTextureFromSurface(m_target, m_pSurface);
     SDL_SetTextureColorMod(m_pTexture, col.r, col.g, col.b);
 }
-void Label::setText(const std::string& text) {
-    if (m_text == text) return;
-    m_text = text;
-    render();
-}
+
 void Label::setColor(uint8_t r, uint8_t g, uint8_t b) {
     SDL_SetTextureColorMod(m_pTexture, r, g, b);
 }

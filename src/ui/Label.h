@@ -1,4 +1,5 @@
 #pragma once
+#include "SDL_pixels.h"
 #include "SDL_rect.h"
 #include "core/Graphic.h"
 
@@ -22,6 +23,7 @@ public:
 
     void setText(const std::string& text);
     void setColor(uint8_t r, uint8_t g, uint8_t b);
+    void setFont(TTF_Font* font);
 
     SDL_Rect getBoundingBox() const;
     inline const std::string& getText() const { return m_text; }
