@@ -62,29 +62,6 @@ int main(int, char**) {
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
 
-    ui::Label l1(renderer, font, "L1");
-    ui::Label l2(renderer, font, "L2");
-    l1.getBoundingBox();
-    l2.getBoundingBox();
-
-    l1 = l2;
-    l1.getBoundingBox();
-    l2.getBoundingBox();
-
-    l2 = l1;
-    l1.getBoundingBox();
-    l2.getBoundingBox();
-
-    l1 = ui::Label(renderer, font, "L3");
-    l1.getBoundingBox();
-
-    ui::Label l3(l1);
-    l1.getBoundingBox();
-    l3.getBoundingBox();
-
-    ui::Label l4(ui::Label(renderer, font, "L4"));
-    l4.getBoundingBox();
-
     ResearchLab lab;
     Lair lair(15, 11);
     UserInterface ui(renderer, font);
@@ -176,24 +153,18 @@ int main(int, char**) {
         case ES_NONE: break;
         }
 
-        /*
         lab.update(dt);
+        /*
         storyteller.update(dt);
         trap->update(dt);
         ui.update(dt);
 
-        ui.draw();
         for (auto& g : explorerGraphics) {
             g.update(dt);
             g.draw(renderer);
         }
         */
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderClear(renderer);
-        l1.draw();
-        l2.draw();
-        l3.draw();
-        l4.draw();
+        ui.draw();
 
         SDL_RenderPresent(renderer);
     }

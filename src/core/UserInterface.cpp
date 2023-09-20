@@ -3,7 +3,6 @@
 #include "SDL_render.h"
 #include "SDL_ttf.h"
 #include "graphics/HeroGraphic.h"
-#include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
 
 #include "lair/Tile.h"
@@ -11,6 +10,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <utility>
 
 void UserInterface::addTile(Tile* tile) {
     m_graphics[tile] = new TileGraphic(m_target,
@@ -43,7 +43,7 @@ void UserInterface::draw() const {
         p.second->draw();
     }
     for (const auto& p : m_research) {
-        p.second->draw();
+        p.second.draw();
     }
 
     m_balance.draw();
@@ -55,20 +55,18 @@ void UserInterface::update(uint32_t dt) {
     for (const auto& p : m_entities) {
         p.second->update(dt);
     }
-    for (const auto& p : m_research) {
-        p.second->update(dt);
+    for (auto& p : m_research) {
+        p.second.update(dt);
     }
 }
 void UserInterface::addResearch(ResearchTask* task) {
     int y = 0;
-    for (auto [task, graphic] : m_research) {
-        int h;
-        TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);
-        y += h + 5;
+    for (const auto& [task, graphic] : m_research) {
+        y += graphic.getBoundingBox().h + 5;
     }
-    TextGraphic* g = new TextGraphic(m_target, task->getName(), m_pFont);
-    g->setPosition({200, y});
-    m_research.emplace_back(task, g);
+    ui::Label label(m_target, m_pFont, task->getName());
+    label.setPosition({200, y});
+    m_research.emplace_back(task, std::move(label));
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
@@ -86,21 +84,15 @@ bool UserInterface::removeResearch(ResearchTask* task) {
                 m_research.begin();
     if (it == m_research.size()) return false;
 
-    delete m_research[it].second;
-
     for (size_t i = it; i < m_research.size() - 1; i++) {
-        m_research[i] = m_research[i + 1];
+        m_research[i] = std::move(m_research[i + 1]);
     }
     m_research.pop_back();
 
     int y = 0;
-    for (auto [task, graphic] : m_research) {
-        TextGraphic* g = static_cast<TextGraphic*>(graphic);
-        g->setPosition({200, y});
-
-        int h;
-        TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);
-        y += h + 5;
+    for (auto& [task, label] : m_research) {
+        label.setPosition({200, y});
+        y += label.getBoundingBox().h + 5;
     }
     return true;
 }

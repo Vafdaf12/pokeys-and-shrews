@@ -3,7 +3,7 @@
 #include "SDL_ttf.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
-#include "graphics/TextGraphic.h"
+#include "ui/Label.h"
 #include <map>
 #include <vector>
 
@@ -14,7 +14,7 @@ class ResearchTask;
 class UserInterface : public Graphic {
 public:
     UserInterface(TargetType target, TTF_Font* pFont)
-        : Graphic(target), m_pFont(pFont), m_balance(target, "$ N/A", pFont) {}
+        : Graphic(target), m_pFont(pFont), m_balance(target, pFont, "$ N/A") {}
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -36,8 +36,8 @@ public:
 
 private:
     TTF_Font* m_pFont;
-    TextGraphic m_balance;
+    ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;
     std::map<void*, Graphic*> m_entities;
-    std::vector<std::pair<ResearchTask*, Graphic*>> m_research;
+    std::vector<std::pair<ResearchTask*, ui::Label>> m_research;
 };
