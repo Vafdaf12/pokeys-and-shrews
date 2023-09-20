@@ -13,6 +13,11 @@ public:
     Label(TargetType target, TTF_Font* pFont, const std::string& text);
     ~Label();
 
+    Label(const Label&);
+    Label(Label&&);
+    Label& operator=(const Label&);
+    Label& operator=(Label&&);
+
     void draw() const override;
 
     void setText(const std::string& text);

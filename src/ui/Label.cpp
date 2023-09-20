@@ -17,8 +17,35 @@ Label::Label(TargetType target, TTF_Font* pFont, const std::string& text)
     setColor(0, 0, 0);
 }
 Label::~Label() {
-    SDL_DestroyTexture(m_pTexture);
-    SDL_FreeSurface(m_pSurface);
+    if (m_pTexture) SDL_DestroyTexture(m_pTexture);
+    if (m_pSurface) SDL_FreeSurface(m_pSurface);
+}
+Label::Label(const Label& rhs)
+    : Graphic(rhs), m_text(rhs.m_text), m_pFont(rhs.m_pFont) {
+    render();
+}
+Label::Label(Label&& rhs) : Graphic(rhs), m_pFont(rhs.m_pFont) {
+    std::swap(m_text, rhs.m_text);
+    std::swap(m_pSurface, rhs.m_pSurface);
+    std::swap(m_pTexture, rhs.m_pTexture);
+}
+Label& Label::operator=(const Label& rhs) {
+    setPosition(rhs.getPosition());
+    m_text = rhs.m_text;
+    m_pFont = rhs.m_pFont;
+    m_target = rhs.m_target;
+
+    render();
+
+    return *this;
+}
+Label& Label::operator=(Label&& rhs) {
+    setPosition(rhs.getPosition());
+    std::swap(m_text, rhs.m_text);
+    std::swap(m_pSurface, rhs.m_pSurface);
+    std::swap(m_pTexture, rhs.m_pTexture);
+    std::swap(m_target, rhs.m_target);
+    return *this;
 }
 
 void Label::render() {
