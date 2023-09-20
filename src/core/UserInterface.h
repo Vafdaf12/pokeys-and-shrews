@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SDL_ttf.h"
 #include "core/Engine.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
@@ -14,9 +13,8 @@ class ResearchTask;
 
 class UserInterface : public Graphic {
 public:
-    UserInterface(TargetType target, TTF_Font* pFont, Engine* pEngine = nullptr)
-        : Graphic(target), m_pEngine(pEngine), m_pFont(pFont),
-          m_balance(target, pFont, "$ N/A") {}
+    UserInterface(Font font, Engine* pEngine = nullptr)
+        : m_pEngine(pEngine), m_font(font), m_balance(font, "$ N/A") {}
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -33,14 +31,14 @@ public:
     void addHero(Hero* hero);
     bool removeHero(Hero* hero);
 
-    void draw() const override;
+    void draw() override;
     void update(uint32_t dt) override;
 
     inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
 
 private:
     Engine* m_pEngine;
-    TTF_Font* m_pFont;
+    Font m_font;
     ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;
     std::map<void*, Graphic*> m_entities;

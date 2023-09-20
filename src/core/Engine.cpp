@@ -1,8 +1,5 @@
 #include "Engine.h"
 
-#include "SDL_rect.h"
-#include "SDL_render.h"
-
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
 #include "entity/Bank.h"

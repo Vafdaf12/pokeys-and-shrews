@@ -1,44 +1,40 @@
 #include "TileGraphic.h"
 #include "lair/Tile.h"
-
-#include "SDL_render.h"
+#include "raylib.h"
 
 #include <cassert>
 #include <vector>
 
-TileGraphic::TileGraphic(TargetType target, const Tile* tile, int x, int y)
-    : Graphic(target), m_tile(tile) {
+TileGraphic::TileGraphic(const Tile* tile, int x, int y) : m_tile(tile) {
     assert(tile);
-    m_position = {x, y};
+    m_position = {static_cast<float>(x), static_cast<float>(y)};
 }
 
-void TileGraphic::draw() const {
-    SDL_Rect rect = {m_position.x, m_position.y, TILE_WIDTH, TILE_WIDTH};
+void TileGraphic::draw() {
+    Color c = {0xee, 0xee, 0xee, 0xff};
 
     if (m_tile->m_pEntity) {
-        SDL_SetRenderDrawColor(m_target, 0xee, 0xee, 0xaa, 255);
+        c = {0xee, 0xee, 0xaa, 0xff};
     } else if (m_tile->m_fortified) {
-        SDL_SetRenderDrawColor(m_target, 0xaa, 0xee, 0xaa, 255);
+        c = {0xaa, 0xee, 0xaa, 255};
     } else {
-        SDL_SetRenderDrawColor(m_target, 0xee, 0xee, 0xee, 255);
+        c = {0xee, 0xee, 0xee, 255};
     }
-    SDL_RenderFillRect(m_target, &rect);
+    DrawRectangle(m_position.x, m_position.y, TILE_WIDTH, TILE_WIDTH, c);
 
-    SDL_SetRenderDrawColor(m_target, 0, 0, 0, 255);
+    c = {0, 0, 0, 255};
     auto [x, y] = m_position;
 
     if (!m_tile->north) {
-        SDL_RenderDrawLine(m_target, x, y, x + TILE_WIDTH, y);
+        DrawLine(x, y, x + TILE_WIDTH, y, c);
     }
     if (!m_tile->south) {
-        SDL_RenderDrawLine(
-            m_target, x, y + TILE_WIDTH, x + TILE_WIDTH, y + TILE_WIDTH);
+        DrawLine(x, y + TILE_WIDTH, x + TILE_WIDTH, y + TILE_WIDTH, c);
     }
     if (!m_tile->west) {
-        SDL_RenderDrawLine(m_target, x, y, x, y + TILE_WIDTH);
+        DrawLine(x, y, x, y + TILE_WIDTH, c);
     }
     if (!m_tile->east) {
-        SDL_RenderDrawLine(
-            m_target, x + TILE_WIDTH, y, x + TILE_WIDTH, y + TILE_WIDTH);
+        DrawLine(x + TILE_WIDTH, y, x + TILE_WIDTH, y + TILE_WIDTH, c);
     }
 }

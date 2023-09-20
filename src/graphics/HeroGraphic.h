@@ -4,13 +4,12 @@
 #include "tweeny.h"
 
 class Hero;
-struct SDL_Texture;
 
 class HeroGraphic : public Graphic {
 public:
-    HeroGraphic(TargetType target, Hero* explorer);
+    HeroGraphic(Hero* explorer);
 
-    void draw() const override;
+    void draw() override;
     void update(uint32_t dt) override;
 
 private:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/EventLoop.h"
+#include "raylib.h"
 #include "ui/Label.h"
 #include <functional>
 #include <stdint.h>
@@ -10,21 +10,16 @@ class Button : public Label {
 public:
     using ClickHandler = std::function<void()>;
 
-    Button(TargetType target,
-        TTF_Font* font,
-        EventLoop& eventLoop,
-        const std::string& text);
+    Button(Font font, const std::string& text, ClickHandler cb);
 
-    void draw() const override;
+    void draw() override;
+    void update(uint32_t dt) override;
 
-    inline void setBackground(
-        uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255) {
-        m_background = {r, g, b, a};
-    }
+    inline void setBackground(Color c) { m_background = c; }
     inline void onClick(ClickHandler h) { m_onClick = h; }
 
 private:
-    SDL_Color m_background;
+    Color m_background;
     ClickHandler m_onClick;
 };
 } // namespace ui

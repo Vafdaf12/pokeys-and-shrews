@@ -1,6 +1,6 @@
-#include "SDL_pixels.h"
-#include "SDL_rect.h"
+#pragma once
 #include "core/Graphic.h"
+#include "raylib.h"
 
 #include <vector>
 
@@ -8,14 +8,14 @@ class LairExplorer;
 
 class LairExplorerGraphic : public Graphic {
 public:
-    LairExplorerGraphic(TargetType target, LairExplorer* explorer);
+    LairExplorerGraphic(LairExplorer* explorer);
 
-    void draw() const override;
+    void draw() override;
     void update(uint32_t dt) override;
 
 private:
-    SDL_Color m_color;
-    SDL_Point m_cur;
+    Color m_color;
+    Vector2 m_cur;
     LairExplorer* m_pExplorer;
-    std::vector<SDL_Point> m_points;
+    std::vector<Vector2> m_points;
 };

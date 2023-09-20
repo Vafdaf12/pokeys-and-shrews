@@ -1,11 +1,10 @@
 #include "UserInterface.h"
 
-#include "SDL_render.h"
-#include "SDL_ttf.h"
 #include "graphics/HeroGraphic.h"
 #include "graphics/TileGraphic.h"
 
 #include "lair/Tile.h"
+#include "raylib.h"
 #include "research/ResearchTask.h"
 #include "ui/Button.h"
 #include "ui/Label.h"
@@ -17,8 +16,7 @@
 #include <utility>
 
 void UserInterface::addTile(Tile* tile) {
-    m_graphics[tile] = new TileGraphic(m_target,
-        tile,
+    m_graphics[tile] = new TileGraphic(tile,
         tile->getX() * TileGraphic::TILE_WIDTH + 20,
         tile->getY() * TileGraphic::TILE_WIDTH + 20);
 }
@@ -36,9 +34,8 @@ void UserInterface::setBalance(int balance) {
     m_balance.setText(s.str());
 }
 
-void UserInterface::draw() const {
-    SDL_SetRenderDrawColor(m_target, 0xff, 0xff, 0xff, 255);
-    SDL_RenderClear(m_target);
+void UserInterface::draw() {
+    ClearBackground({255, 255, 255, 255});
 
     for (const auto& p : m_graphics) {
         p.second->draw();
@@ -46,7 +43,7 @@ void UserInterface::draw() const {
     for (const auto& p : m_entities) {
         p.second->draw();
     }
-    for (const auto& p : m_research) {
+    for (auto& p : m_research) {
         p.second.draw();
     }
 
@@ -64,17 +61,17 @@ void UserInterface::update(uint32_t dt) {
     }
 }
 void UserInterface::addResearch(ResearchTask* task) {
-    int y = 0;
+    float y = 0;
     for (const auto& [task, graphic] : m_research) {
-        y += graphic.getBoundingBox().h + 5;
+        y += graphic.getBoundingBox().height + 5;
     }
-    ui::Label label(m_target, m_pFont, task->getName());
+    ui::Label label(m_font, task->getName());
     label.setPosition({200, y});
     m_research.emplace_back(task, std::move(label));
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
-    m_entities[task] = new HeroGraphic(m_target, task);
+    m_entities[task] = new HeroGraphic(task);
 }
 bool UserInterface::removeHero(Hero* task) {
     if (m_entities.find(task) == m_entities.end()) return false;
@@ -87,10 +84,10 @@ bool UserInterface::removeResearch(ResearchTask* task) {
         [&](const auto& p) { return p.first == task; });
     m_research.erase(it);
 
-    int y = 0;
+    float y = 0;
     for (auto& [task, label] : m_research) {
         label.setPosition({200, y});
-        y += label.getBoundingBox().h + 5;
+        y += label.getBoundingBox().height + 5;
     }
     return true;
 }

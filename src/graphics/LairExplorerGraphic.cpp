@@ -1,35 +1,32 @@
 #include "LairExplorerGraphic.h"
-#include "SDL_blendmode.h"
-#include "SDL_render.h"
 #include "graphics/TileGraphic.h"
 #include "lair/LairExplorer.h"
+#include "raylib.h"
 #include <cmath>
 
-LairExplorerGraphic::LairExplorerGraphic(
-    TargetType target, LairExplorer* explorer)
-    : Graphic(target), m_pExplorer(explorer) {
+LairExplorerGraphic::LairExplorerGraphic(LairExplorer* explorer)
+    : m_pExplorer(explorer) {
     m_color.r = rand() % 255;
     m_color.g = rand() % 255;
     m_color.b = rand() % 255;
-    m_cur.x = explorer->get()->getX() + 20 + TileGraphic::TILE_WIDTH / 2;
-    m_cur.y = explorer->get()->getY() + 20 + TileGraphic::TILE_WIDTH / 2;
+    m_color.a = 100;
+    m_cur.x = explorer->get()->getX() + 20 + int(TileGraphic::TILE_WIDTH / 2);
+    m_cur.y = explorer->get()->getY() + 20 + int(TileGraphic::TILE_WIDTH / 2);
     m_position = m_cur;
 }
-void LairExplorerGraphic::draw() const {
+void LairExplorerGraphic::draw() {
     Tile* tile = m_pExplorer->get();
     if (!tile) return;
 
-    int x = m_cur.x - TileGraphic::TILE_WIDTH / 2;
-    int y = m_cur.y - TileGraphic::TILE_WIDTH / 2;
+    int x = m_cur.x - int(TileGraphic::TILE_WIDTH / 2);
+    int y = m_cur.y - int(TileGraphic::TILE_WIDTH / 2);
 
-    SDL_Rect rect = {x, y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH};
+    DrawRectangle(
+        x, y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH, m_color);
 
-    SDL_SetRenderDrawBlendMode(m_target, SDL_BLENDMODE_BLEND);
-    SDL_SetRenderDrawColor(m_target, m_color.r, m_color.g, m_color.b, 100);
-    SDL_RenderFillRect(m_target, &rect);
-
-    SDL_SetRenderDrawColor(m_target, m_color.r, m_color.g, m_color.b, 255);
-    SDL_RenderDrawLines(m_target, m_points.data(), m_points.size());
+    DrawLineStrip(m_points.data(),
+        m_points.size(),
+        {m_color.r, m_color.g, m_color.b, 255});
 }
 
 void LairExplorerGraphic::update(uint32_t dt) {
@@ -44,10 +41,10 @@ void LairExplorerGraphic::update(uint32_t dt) {
     Tile* tile = m_pExplorer->get();
     if (!tile) return;
 
-    SDL_Point p = {20 + tile->getX() * TileGraphic::TILE_WIDTH +
-                       (TileGraphic::TILE_WIDTH / 2),
+    Vector2 p = {20 + tile->getX() * TileGraphic::TILE_WIDTH +
+                     float(TileGraphic::TILE_WIDTH) / 2,
         20 + tile->getY() * TileGraphic::TILE_WIDTH +
-            (TileGraphic::TILE_WIDTH / 2)};
+            float(TileGraphic::TILE_WIDTH) / 2};
 
     if (m_points.empty()) {
         m_points.push_back(p);
