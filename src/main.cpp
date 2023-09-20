@@ -4,6 +4,7 @@
 #include <string>
 
 #include "SDL.h"
+#include "SDL_render.h"
 #include "SDL_ttf.h"
 
 #include "entity/TeleportTrap.h"
@@ -63,17 +64,17 @@ int main(int, char**) {
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
     EventLoop eventLoop;
-
-    ui::Button label(renderer, font, eventLoop);
-    label.setText("Click Me!!");
-    label.setBackground(255, 0, 0);
-    label.setColor(255, 255, 255);
-    label.setPosition({0, 100});
-    label.onClick([]() { std::cout << "Clicked" << std::endl; });
-
+    /*
+        ui::Button label(renderer, font, eventLoop);
+        label.setText("Click Me!!");
+        label.setBackground(255, 0, 0);
+        label.setColor(255, 255, 255);
+        label.setPosition({0, 100});
+        label.onClick([]() { std::cout << "Clicked" << std::endl; });
+    */
     ResearchLab lab;
     Lair lair(15, 11);
-    UserInterface ui(renderer, font, &eventLoop);
+    UserInterface ui(renderer, font);
     Bank bank(100);
     Storyteller storyteller;
 
@@ -157,15 +158,15 @@ int main(int, char**) {
         // storyteller.update(dt);
         trap->update(dt);
         ui.update(dt);
-
         ui.draw();
+
         /*
         for (auto& g : explorerGraphics) {
             g.update(dt);
             g.draw(renderer);
         }
-        */
-        label.draw();
+         label.draw();
+*/
 
         SDL_RenderPresent(renderer);
     }

@@ -1,34 +1,36 @@
-#include "Button.h"
-#include "SDL_events.h"
-#include "SDL_mouse.h"
-#include "SDL_rect.h"
-#include "SDL_render.h"
-#include "ui/Label.h"
-#include <concepts>
 
+#include "Button.h"
+#include "SDL_mouse.h"
+#include "SDL_render.h"
+#include <stdio.h>
 using namespace ui;
 
-Button::Button(TargetType target, TTF_Font* pFont, EventLoop& loop)
-    : Label(target, pFont, "") {
+Button::Button(TargetType target,
+    TTF_Font* font,
+    EventLoop& eventLoop,
+    const std::string& text)
+    : Label(target, font, text) {
 
-    loop.onMouseUp(SDL_BUTTON_LEFT, [&](SDL_Event ev) {
-        int x = ev.button.x;
-        int y = ev.button.y;
-        SDL_Rect rect = this->getBoundingBox();
+    eventLoop.onMouseUp(SDL_BUTTON_LEFT, [=](SDL_Event e) {
+        SDL_Rect bb = this->getBoundingBox();
+        int x = e.button.x;
+        int y = e.button.y;
 
-        if (x < rect.x) return;
-        if (y < rect.y) return;
-        if (x > rect.x + rect.w) return;
-        if (y > rect.y + rect.h) return;
-
-        m_onClick();
+        if (x < bb.x) return;
+        if (y < bb.y) return;
+        if (x > bb.x + bb.w) return;
+        if (y > bb.y + bb.h) return;
+        if (m_onClick) m_onClick();
     });
 }
-void Button::draw() const {
-    SDL_Rect rect = getBoundingBox();
-    SDL_SetRenderDrawColor(
-        m_target, m_background.r, m_background.g, m_background.b, 255);
-    SDL_RenderFillRect(m_target, &rect);
 
+void Button::draw() const {
+    SDL_Rect r = getBoundingBox();
+    SDL_SetRenderDrawColor(m_target,
+        m_background.r,
+        m_background.g,
+        m_background.b,
+        m_background.a);
+    SDL_RenderDrawRect(m_target, &r);
     Label::draw();
 }
