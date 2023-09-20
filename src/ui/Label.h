@@ -1,27 +1,29 @@
 #pragma once
-
+#include "SDL_rect.h"
 #include "core/Graphic.h"
 
-#include "SDL_render.h"
 #include "SDL_ttf.h"
+
 #include <string>
 
-class TextGraphic : public Graphic {
-public:
-    TextGraphic(TargetType target, const std::string& text, TTF_Font* pFont);
-    ~TextGraphic();
+namespace ui {
 
-    SDL_Point getRenderSize() const;
+class Label : public Graphic {
+public:
+    Label(TargetType target, TTF_Font* pFont, const std::string& text);
+    ~Label();
 
     void draw() const override;
 
     void setText(const std::string& text);
-    inline const std::string& getText() const { return m_text; }
-
     void setColor(uint8_t r, uint8_t g, uint8_t b);
 
+    SDL_Rect getBoundingBox() const;
+    inline const std::string& getText() const { return m_text; }
+
 private:
-    void renderText();
+    void render();
+
     std::string m_text;
 
     SDL_Surface* m_pSurface = nullptr;
@@ -29,3 +31,5 @@ private:
 
     TTF_Font* m_pFont;
 };
+
+} // namespace ui

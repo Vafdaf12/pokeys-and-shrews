@@ -17,6 +17,7 @@
 #include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
+#include "ui/Label.h"
 
 // SDL defines a main function itself, so it has to be undefined such that the
 // following main is picked up correctly
@@ -59,6 +60,9 @@ int main(int, char**) {
         SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     TTF_Font* font =
         ResourceManager::instance().loadFont("Monocraft-no-ligatures.ttf", 16);
+
+    ui::Label label(renderer, font, "My Text");
+    label.setPosition({0, 100});
 
     ResearchLab lab;
     Lair lair(15, 11);
@@ -162,6 +166,7 @@ int main(int, char**) {
             g.draw(renderer);
         }
         */
+        label.draw();
 
         SDL_RenderPresent(renderer);
     }

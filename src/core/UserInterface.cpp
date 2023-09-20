@@ -3,11 +3,11 @@
 #include "SDL_render.h"
 #include "SDL_ttf.h"
 #include "graphics/HeroGraphic.h"
-#include "graphics/TextGraphic.h"
 #include "graphics/TileGraphic.h"
 
 #include "lair/Tile.h"
 #include "research/ResearchTask.h"
+#include "ui/Label.h"
 
 #include <algorithm>
 #include <sstream>
@@ -66,7 +66,7 @@ void UserInterface::addResearch(ResearchTask* task) {
         TTF_SizeText(m_pFont, task->getName().c_str(), NULL, &h);
         y += h + 5;
     }
-    TextGraphic* g = new TextGraphic(m_target, task->getName(), m_pFont);
+    ui::Label* g = new ui::Label(m_target, m_pFont, task->getName());
     g->setPosition({200, y});
     m_research.emplace_back(task, g);
 }
@@ -95,7 +95,7 @@ bool UserInterface::removeResearch(ResearchTask* task) {
 
     int y = 0;
     for (auto [task, graphic] : m_research) {
-        TextGraphic* g = static_cast<TextGraphic*>(graphic);
+        ui::Label* g = static_cast<ui::Label*>(graphic);
         g->setPosition({200, y});
 
         int h;
