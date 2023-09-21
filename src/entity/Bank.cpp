@@ -7,13 +7,13 @@
 void Bank::deposit(int amt) {
     assert(amt >= 0);
     m_balance += amt;
-    if (m_pEngine) m_pEngine->balanceChanged(m_balance);
+    if (m_pEngine) m_pEngine->balanceChanged(this, m_balance);
 }
 
 void Bank::withdraw(int amt) {
     assert(amt >= 0);
     m_balance -= amt;
-    if (m_pEngine) m_pEngine->balanceChanged(m_balance);
+    if (m_pEngine) m_pEngine->balanceChanged(this, m_balance);
 }
 
 bool Bank::sufficientFunds(int amt) const {

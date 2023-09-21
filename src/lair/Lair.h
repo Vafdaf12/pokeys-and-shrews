@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/GameObject.h"
 #include "lair/LairExplorer.h"
 #include "lair/Tile.h"
 
@@ -7,7 +8,7 @@
 
 class Engine;
 
-class Lair {
+class Lair : public GameObject {
 public:
     friend class LairGraphic;
     enum ExploreType {
@@ -31,7 +32,6 @@ public:
     inline size_t getHeight() const { return m_height; }
 
 private:
-    Engine* m_pEngine;
     size_t index(int x, int y) const;
     size_t m_width, m_height;
     std::vector<Tile*> m_tiles;

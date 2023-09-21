@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Engine.h"
+#include "core/GameObject.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
 #include "raylib.h"
@@ -13,12 +14,12 @@ class Tile;
 class Hero;
 class ResearchTask;
 
-class UserInterface : public Graphic {
+class UserInterface : public Graphic, public GameObject {
 public:
     constexpr static Vector2 MAP_OFFSET = {200, 20};
 
     UserInterface(Font font, Engine* pEngine = nullptr)
-        : m_pEngine(pEngine), m_font(font), m_balance(font, "$ N/A") {}
+        : GameObject(pEngine), m_font(font), m_balance(font, "$ N/A") {}
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -47,7 +48,6 @@ public:
     inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
 
 private:
-    Engine* m_pEngine;
     Font m_font;
     ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;

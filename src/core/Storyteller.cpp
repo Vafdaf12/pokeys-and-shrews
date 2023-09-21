@@ -19,7 +19,7 @@ Hero* Storyteller::spawnHero() {
 
     Hero* hero = new Hero(new BreadthFirstExplorer(*it), 10, 1, 10, m_pEngine);
     m_pHeroes.emplace_back(hero);
-    if (m_pEngine) m_pEngine->heroSpawned(hero);
+    if (m_pEngine) m_pEngine->heroSpawned(this, hero);
 
     return hero;
 }

@@ -39,7 +39,7 @@ void Hero::stun(uint32_t time) {
 void Hero::takeDamage(uint32_t damage) {
     if (m_remainingHealth <= damage) {
         m_remainingHealth = 0;
-        if (m_pEngine) m_pEngine->heroDied(this);
+        if (m_pEngine) m_pEngine->heroDied(this, this);
     } else m_remainingHealth -= damage;
 }
 Graphic* Hero::createGraphic() const { return new HeroGraphic(this); }

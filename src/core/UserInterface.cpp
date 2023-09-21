@@ -71,7 +71,7 @@ void UserInterface::addResearch(ResearchTask* task) {
         y += graphic.getBoundingBox().height + 5;
     }
     ui::Button label(m_font, task->getName(), [=]() {
-        if (m_pEngine) m_pEngine->researchCancelled(task);
+        if (m_pEngine) m_pEngine->researchCancelled(this, task);
     });
     label.setPosition({0, y});
     m_research.emplace_back(task, std::move(label));

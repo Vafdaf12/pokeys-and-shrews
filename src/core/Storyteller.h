@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/GameObject.h"
 #include "core/Timer.h"
 #include <list>
 
@@ -7,9 +8,9 @@ class Tile;
 class Engine;
 class Hero;
 
-class Storyteller {
+class Storyteller : public GameObject {
 public:
-    inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
+    inline Storyteller(Engine* engine = nullptr) : GameObject(engine) {}
 
     void addSpawnTile(Tile* tile);
     bool removeSpawnTile(Tile* tile);
@@ -20,7 +21,6 @@ public:
 
 private:
     Timer m_spawnTimer = Timer(3);
-    Engine* m_pEngine = nullptr;
     std::list<Tile*> m_spawnTiles;
     std::list<Hero*> m_pHeroes;
 };

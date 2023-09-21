@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/GameObject.h"
 #include <stdint.h>
 #include <string>
 
@@ -10,7 +11,7 @@ class Engine;
  * complete. A research task plays the role of a Command in the Command Pattern,
  * with the Engine (TODO) being the Receiver
  */
-class ResearchTask {
+class ResearchTask : public GameObject {
 public:
     ResearchTask(const std::string& trap,
         float time,
@@ -41,6 +42,4 @@ private:
     float m_currentTime = 0;
     int m_cost;
     bool m_active = true;
-
-    Engine* m_pEngine;
 };

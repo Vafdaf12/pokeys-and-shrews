@@ -4,7 +4,7 @@
 #include <cassert>
 
 Lair::Lair(size_t w, size_t h, Engine* pEngine)
-    : m_pEngine(pEngine), m_width(w), m_height(h), m_tiles(w * h, nullptr) {}
+    : GameObject(pEngine), m_width(w), m_height(h), m_tiles(w * h, nullptr) {}
 
 bool Lair::fortifyTile(int x, int y) {
     if (x < 0 || y < 0) return false;
@@ -12,7 +12,7 @@ bool Lair::fortifyTile(int x, int y) {
     size_t i = index(x, y);
     if (!m_tiles[i]) return false;
     m_tiles[i]->fortify();
-    if (m_pEngine) m_pEngine->tileFortified(m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileFortified(this, m_tiles[i]);
     return true;
 }
 bool Lair::removeTile(int x, int y) {
@@ -39,7 +39,7 @@ bool Lair::removeTile(int x, int y) {
         m_tiles[e]->setNeighbour(nullptr, Tile::West);
     }
 
-    if (m_pEngine) m_pEngine->tileRemoved(m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileRemoved(this, m_tiles[i]);
     m_tiles[i] = nullptr;
 
     return true;
@@ -64,7 +64,7 @@ Tile* Lair::addTile(int x, int y) {
     if (x < m_width - 1) {
         m_tiles[i]->setNeighbour(m_tiles[index(x + 1, y)], Tile::East);
     }
-    if (m_pEngine) m_pEngine->tileAdded(m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileAdded(this, m_tiles[i]);
 
     return m_tiles[i];
 }
@@ -81,7 +81,7 @@ bool Lair::addEntity(int x, int y, TileEntity* entity) {
     if (!m_tiles[i]) return false;
 
     m_tiles[i]->setEntity(entity);
-    if (m_pEngine) m_pEngine->tileEntityAdded(m_tiles[i], entity);
+    if (m_pEngine) m_pEngine->tileEntityAdded(this, m_tiles[i], entity);
     return true;
 }
 

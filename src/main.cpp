@@ -113,8 +113,9 @@ int main(int, char**) {
             else editState = ES_REM;
         }
         if (IsKeyReleased(KEY_TAB)) {
-            engine.researchRequested(new ResearchTask(
-                "Trap #" + std::to_string(n++), 5.f, 10, &engine));
+            engine.researchRequested(nullptr,
+                new ResearchTask(
+                    "Trap #" + std::to_string(n++), 5.f, 10, &engine));
         }
         if (IsKeyReleased(KEY_UP)) {
             bank.deposit(1);

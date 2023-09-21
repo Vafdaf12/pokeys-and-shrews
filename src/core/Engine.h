@@ -12,6 +12,7 @@ class Lair;
 class Tile;
 class Hero;
 class TileEntity;
+class GameObject;
 
 class Engine {
 public:
@@ -27,31 +28,31 @@ public:
      * Event triggered when a request is made to queue a task for research
      * @return Whether the task was successfully queued
      */
-    bool researchRequested(ResearchTask* pTask);
+    bool researchRequested(GameObject* sender, ResearchTask* pTask);
 
     // Event triggered when a research task has completed
-    void researchCompleted(ResearchTask* pTask);
+    void researchCompleted(GameObject* sender, ResearchTask* pTask);
 
     // Event triggered when a research task has been cancelled
-    void researchCancelled(ResearchTask* pTask);
+    void researchCancelled(GameObject* sender, ResearchTask* pTask);
 
     // Event triggered when a tile is added to the lair
-    void tileAdded(Tile* tile);
+    void tileAdded(GameObject* sender, Tile* tile);
 
     // Event triggered when a tile is removed from the lair
-    void tileRemoved(Tile* tile);
+    void tileRemoved(GameObject* sender, Tile* tile);
 
     // Event triggered when a tile is fortified
-    void tileFortified(Tile* tile);
+    void tileFortified(GameObject* sender, Tile* tile);
 
     // Event triggered when a request is made to place an entity on a tile
-    void tileEntityAdded(Tile* tile, TileEntity* entity);
+    void tileEntityAdded(GameObject* sender, Tile* tile, TileEntity* entity);
 
     // Event triggered when the balance in the bank is changed
-    void balanceChanged(int balance);
+    void balanceChanged(GameObject* sender, int balance);
 
-    void heroSpawned(Hero* hero);
-    void heroDied(Hero* hero);
+    void heroSpawned(GameObject* sender, Hero* hero);
+    void heroDied(GameObject* sender, Hero* hero);
 
     void heroInteracted(TileEntity* entity, Hero* hero);
 
