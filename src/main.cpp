@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+#include "editor/EntityEditor.h"
 #include "raylib.h"
 
 #include "entity/TeleportTrap.h"
@@ -82,6 +83,8 @@ int main(int, char**) {
     UserInterface ui(font);
     Bank bank(100);
     Storyteller storyteller;
+    EntityEditor entityEditor(font);
+    entityEditor.setPosition({0, 200});
 
     Engine engine(&lab, &bank, &lair, &ui, &storyteller);
     ui.setEngine(&engine);
@@ -94,6 +97,9 @@ int main(int, char**) {
     Timer timer(100);
     EditState editState = ES_NONE;
     int n = 1;
+
+    entityEditor.addEntity(new DamageTrap(2, &engine), "Damage");
+    entityEditor.addEntity(new TeleportTrap(2.f, &engine), "Teleport");
 
     while (!engine.shouldQuit()) {
         if (WindowShouldClose()) {
@@ -135,14 +141,18 @@ int main(int, char**) {
         case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_REME: lair.removeEntity(p.x, p.y); break;
         case ES_NONE: break;
-        case ES_TRAP: lair.addEntity(p.x, p.y, new TeleportTrap(2.0f, &engine));
+        case ES_TRAP:
+            lair.addEntity(p.x, p.y, entityEditor.getActive()->clone());
+            break;
         }
         lab.update(delta);
         storyteller.update(delta);
         ui.update(delta);
+        entityEditor.update(delta);
 
         BeginDrawing();
         ui.draw();
+        entityEditor.draw();
 
         EndDrawing();
     }

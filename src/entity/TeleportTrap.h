@@ -12,6 +12,9 @@ public:
     TeleportTrap(float cooldown, Engine* pEngine = nullptr)
         : TileEntity(pEngine), m_cooldown(cooldown, true) {}
 
+    inline TileEntity* clone() const override {
+        return new TeleportTrap(m_cooldown.getTime(), m_pEngine);
+    }
     inline Graphic* createGraphic() const override {
         return new TeleportTrapGraphic(this);
     }

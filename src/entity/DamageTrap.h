@@ -15,6 +15,9 @@ public:
         hero.takeDamage(m_damage);
         hero.stun(2);
     }
+    inline TileEntity* clone() const override {
+        return new DamageTrap(m_damage, m_pEngine);
+    }
     inline Graphic* createGraphic() const override {
         return new DamageTrapGraphic(this);
     }

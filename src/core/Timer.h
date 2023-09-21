@@ -12,6 +12,7 @@ public:
     inline void reset() { m_current = 0; }
     inline void tick() { m_current -= m_time; }
     inline void setTime(float time) { m_time = time; }
+    inline float getTime() const { return m_time; }
 
 private:
     float m_time;

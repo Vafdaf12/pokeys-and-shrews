@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <ostream>
+#include <valarray>
 
 #include "TileEntity.h"
 #include "core/Engine.h"
@@ -13,6 +14,10 @@ public:
         : TileEntity(engine), m_balance(balance) {}
 
     inline int getBalance() const { return m_balance; }
+
+    inline TileEntity* clone() const override {
+        return new Bank(m_balance, m_pEngine);
+    }
 
     /// Deposits the given amount into the bank
     void deposit(int amt);

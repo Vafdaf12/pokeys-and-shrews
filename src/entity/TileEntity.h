@@ -10,4 +10,5 @@ public:
     using GameObject::GameObject;
     virtual void interact(Hero& hero) = 0;
     virtual void update(float dt) {}
+    virtual TileEntity* clone() const = 0;
 };
