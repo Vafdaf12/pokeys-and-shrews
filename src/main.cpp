@@ -54,10 +54,6 @@ int main(int, char**) {
 
     Font font = GetFontDefault();
 
-    ui::Button label(
-        font, "Click Me", []() { std::cout << "Clicked" << std::endl; });
-    label.setPosition({0, 100});
-
     ResearchLab lab;
     Lair lair(11, 11);
     UserInterface ui(font);
@@ -137,13 +133,11 @@ int main(int, char**) {
         lab.update(delta);
         storyteller.update(delta);
         trap->update(delta);
-        label.update(delta);
         ui.update(delta);
 
         BeginDrawing();
         ui.draw();
 
-        label.draw();
         EndDrawing();
     }
 

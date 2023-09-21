@@ -66,14 +66,14 @@ void UserInterface::update(float dt) {
     }
 }
 void UserInterface::addResearch(ResearchTask* task) {
-    float y = 0;
+    float y = m_balance.getBoundingBox().height + 20;
     for (const auto& [task, graphic] : m_research) {
         y += graphic.getBoundingBox().height + 5;
     }
     ui::Button label(m_font, task->getName(), [=]() {
         if (m_pEngine) m_pEngine->researchCancelled(task);
     });
-    label.setPosition({200, y});
+    label.setPosition({0, y});
     m_research.emplace_back(task, std::move(label));
 }
 void UserInterface::addHero(Hero* task) {
@@ -94,9 +94,9 @@ bool UserInterface::removeResearch(ResearchTask* task) {
     if (it == m_research.end()) return false;
     m_research.erase(it);
 
-    float y = 0;
+    float y = m_balance.getBoundingBox().height + 20;
     for (auto& [task, label] : m_research) {
-        label.setPosition({200, y});
+        label.setPosition({0, y});
         y += label.getBoundingBox().height + 5;
     }
     return true;

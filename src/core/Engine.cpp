@@ -32,8 +32,8 @@ void Engine::researchCompleted(ResearchTask* pTask) {
 
 void Engine::researchCancelled(ResearchTask* pTask) {
     assert(pTask);
+    if (!m_pLab->cancel(pTask)) return;
     m_pMenu->removeResearch(pTask);
-    m_pLab->cancel(pTask);
     std::cout << "[ENGINE] research cancelled: " << *pTask << std::endl;
     m_pBank->deposit(pTask->getCost());
 }
