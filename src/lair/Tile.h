@@ -19,6 +19,7 @@ public:
 
     inline void setEntity(TileEntity* trap) { m_pEntity = trap; }
     inline TileEntity* getEntity() { return m_pEntity; }
+    inline bool isFortified() const { return m_fortified; }
 
 private:
     int x, y;

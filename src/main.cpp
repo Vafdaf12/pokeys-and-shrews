@@ -24,7 +24,13 @@
 
 long time_step(long time, long fps) { return (time * fps / 1000); }
 
-enum EditState { ES_NONE = 0, ES_FORT = 2, ES_ADD = 1, ES_REM = -1 };
+enum EditState {
+    ES_NONE = 0,
+    ES_FORT = 2,
+    ES_ADD = 1,
+    ES_REM = -1,
+    ES_TRAP = 3
+};
 
 Vector2 getTilePosition() {
     Vector2 pos = GetMousePosition();
@@ -96,17 +102,18 @@ int main(int, char**) {
         int dt = delta * 1000;
 
         Vector2 p = getTilePosition();
-        bool tileExists = lair.getTile(p.x, p.y) != nullptr;
+        Tile* tile = lair.getTile(p.x, p.y);
+
+        editState = ES_NONE;
 
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            editState = tileExists ? ES_FORT : ES_ADD;
+            if (tile && tile->isFortified())
+                editState = tile->getEntity() ? ES_NONE : ES_TRAP;
+            else if (tile) editState = ES_FORT;
+            else editState = ES_ADD;
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-            editState = tileExists ? ES_REM : ES_NONE;
-        }
-        if (IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) ||
-            IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-            editState = ES_NONE;
+            editState = tile ? ES_REM : ES_NONE;
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(new ResearchTask(
@@ -124,6 +131,7 @@ int main(int, char**) {
         case ES_ADD: lair.addTile(p.x, p.y); break;
         case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_NONE: break;
+        case ES_TRAP: lair.addEntity(p.x, p.y, new DamageTrap(1, &engine));
         }
         lab.update(delta);
         storyteller.update(delta);

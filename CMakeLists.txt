@@ -30,6 +30,7 @@ FetchContent_MakeAvailable(raylib tweeny)
 file(GLOB SRCFILES
     src/*.cpp
     src/**/*.cpp
+    src/**/**/*.cpp
 )
 
 # Add executable

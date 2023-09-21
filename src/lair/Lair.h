@@ -21,6 +21,8 @@ public:
     Tile* addTile(int x, int y);
     Tile* getTile(int x, int y);
 
+    bool addEntity(int x, int y, TileEntity* entity);
+
     LairExplorer* createExplorer(ExploreType type) const;
 
     inline void setEngine(Engine* e) { m_pEngine = e; }
