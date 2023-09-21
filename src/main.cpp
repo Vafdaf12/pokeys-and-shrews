@@ -1,6 +1,7 @@
 
 #include <cassert>
 #include <ctime>
+#include <ctype.h>
 #include <iostream>
 #include <string>
 
@@ -44,6 +45,27 @@ Vector2 getTilePosition() {
 
     return pos;
 }
+void loadMap(const std::string& filename, Lair& lair, Bank& bank) {
+    char* data = LoadFileText(filename.c_str());
+    int x = 0;
+    int y = 0;
+    for (size_t i = 0; data[i] != '\0'; i++, x++) {
+        if (data[i] == '\n') {
+            while (data[i] == '\n' || data[i] == '\r')
+                i++;
+            x = 0;
+            y++;
+        }
+        if (isspace(data[i])) continue;
+
+        Tile* tile = lair.addTile(x, y);
+        if (data[i] != '_') lair.fortifyTile(x, y);
+        if (data[i] == 'B') {
+            lair.addEntity(x, y, &bank);
+            tile->bake();
+        }
+    }
+}
 
 int main(int, char**) {
     // test::research_lab();
@@ -67,19 +89,7 @@ int main(int, char**) {
     bank.setEngine(&engine);
     storyteller.setEngine(&engine);
 
-    lair.addTile(1, 0);
-    lair.addTile(0, 0);
-    lair.addTile(1, 1);
-    lair.addTile(2, 1);
-    lair.addTile(2, 2);
-    lair.addTile(3, 1)->fortify();
-    lair.addTile(3, 2)->fortify();
-
-    lair.addEntity(3, 2, &bank);
-    lair.getTile(3, 2)->bake();
-
-    lair.removeTile(1, 0);
-    lair.addTile(1, 0);
+    loadMap("res/map.txt", lair, bank);
 
     Timer timer(100);
     EditState editState = ES_NONE;
