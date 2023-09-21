@@ -3,6 +3,7 @@
 #include "TileEntity.h"
 
 #include "core/Engine.h"
+#include "graphics/trap/DamageTrapGraphic.h"
 #include "hero/Hero.h"
 
 class DamageTrap : public TileEntity {
@@ -13,6 +14,9 @@ public:
     void interact(Hero& hero) override {
         hero.takeDamage(m_damage);
         hero.stun(2000);
+    }
+    inline Graphic* createGraphic() const override {
+        return new DamageTrapGraphic(this);
     }
 
 private:
