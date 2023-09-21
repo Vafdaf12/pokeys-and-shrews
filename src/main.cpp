@@ -34,8 +34,9 @@ enum EditState {
 
 Vector2 getTilePosition() {
     Vector2 pos = GetMousePosition();
-    pos.x -= 20;
-    pos.y -= 20;
+
+    pos.x -= UserInterface::MAP_OFFSET.x;
+    pos.y -= UserInterface::MAP_OFFSET.y;
 
     if (pos.x >= 0) pos.x /= TileGraphic::TILE_WIDTH;
     if (pos.y >= 0) pos.y /= TileGraphic::TILE_WIDTH;
@@ -58,7 +59,7 @@ int main(int, char**) {
     label.setPosition({0, 100});
 
     ResearchLab lab;
-    Lair lair(15, 11);
+    Lair lair(11, 11);
     UserInterface ui(font);
     Bank bank(100);
     Storyteller storyteller;
@@ -99,7 +100,6 @@ int main(int, char**) {
         }
 
         float delta = GetFrameTime();
-        int dt = delta * 1000;
 
         Vector2 p = getTilePosition();
         Tile* tile = lair.getTile(p.x, p.y);

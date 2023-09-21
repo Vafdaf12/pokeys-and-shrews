@@ -19,8 +19,8 @@
 
 void UserInterface::addTile(Tile* tile) {
     m_graphics[tile] = new TileGraphic(tile,
-        tile->getX() * TileGraphic::TILE_WIDTH + 20,
-        tile->getY() * TileGraphic::TILE_WIDTH + 20);
+        tile->getX() * TileGraphic::TILE_WIDTH + MAP_OFFSET.x,
+        tile->getY() * TileGraphic::TILE_WIDTH + MAP_OFFSET.y);
 }
 bool UserInterface::removeTile(Tile* tile) {
     auto it = m_graphics.find(tile);

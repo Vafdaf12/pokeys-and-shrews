@@ -3,6 +3,7 @@
 #include "core/Engine.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
+#include "raylib.h"
 #include "ui/Button.h"
 #include "ui/Label.h"
 #include <map>
@@ -14,6 +15,8 @@ class ResearchTask;
 
 class UserInterface : public Graphic {
 public:
+    constexpr static Vector2 MAP_OFFSET = {200, 20};
+
     UserInterface(Font font, Engine* pEngine = nullptr)
         : m_pEngine(pEngine), m_font(font), m_balance(font, "$ N/A") {}
 

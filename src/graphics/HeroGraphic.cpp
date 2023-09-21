@@ -1,5 +1,7 @@
 #include "HeroGraphic.h"
 
+#include "core/Engine.h"
+#include "core/UserInterface.h"
 #include "raylib.h"
 #include "tween.h"
 #include "tweeny.h"
@@ -29,8 +31,10 @@ void HeroGraphic::draw() {
 void HeroGraphic::update(float dt) {
     Tile* tile = m_pHero->getExplorer()->get();
 
-    int x = 20 + tile->getX() * TileGraphic::TILE_WIDTH;
-    int y = 20 + tile->getY() * TileGraphic::TILE_WIDTH;
+    int x =
+        UserInterface::MAP_OFFSET.x + tile->getX() * TileGraphic::TILE_WIDTH;
+    int y =
+        UserInterface::MAP_OFFSET.y + tile->getY() * TileGraphic::TILE_WIDTH;
     auto [cx, cy] = m_current.peek();
     auto [tx, ty] = m_current.peek(1.f);
 
