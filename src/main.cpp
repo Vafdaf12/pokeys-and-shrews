@@ -113,7 +113,8 @@ int main(int, char**) {
             else editState = ES_ADD;
         }
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-            editState = tile ? ES_REM : ES_NONE;
+            if (!tile || (tile && tile->isFortified())) editState = ES_NONE;
+            else editState = ES_REM;
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(new ResearchTask(
