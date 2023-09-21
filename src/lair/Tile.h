@@ -20,10 +20,14 @@ public:
     inline void setEntity(TileEntity* trap) { m_pEntity = trap; }
     inline TileEntity* getEntity() { return m_pEntity; }
     inline bool isFortified() const { return m_fortified; }
+    inline bool isBaked() const { return m_baked; }
+
+    inline void bake() { m_baked = true; }
 
 private:
     int x, y;
     bool m_fortified = false;
+    bool m_baked = false;
     Tile* west = nullptr;
     Tile* east = nullptr;
     Tile* north = nullptr;

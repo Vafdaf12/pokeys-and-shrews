@@ -28,7 +28,8 @@ enum EditState {
     ES_NONE = 0,
     ES_FORT = 2,
     ES_ADD = 1,
-    ES_REM = -1,
+    ES_REM = -2,
+    ES_REME = -1,
     ES_TRAP = 3
 };
 
@@ -75,6 +76,7 @@ int main(int, char**) {
     lair.addTile(3, 2)->fortify();
 
     lair.addEntity(3, 2, &bank);
+    lair.getTile(3, 2)->bake();
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
@@ -101,9 +103,9 @@ int main(int, char**) {
             else if (tile) editState = ES_FORT;
             else editState = ES_ADD;
         }
-        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-            if (!tile || (tile && tile->isFortified())) editState = ES_NONE;
-            else editState = ES_REM;
+        if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT) && tile) {
+            if (!tile->isFortified()) editState = ES_REM;
+            else if (tile->getEntity() && !tile->isBaked()) editState = ES_REME;
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(nullptr,
@@ -121,6 +123,7 @@ int main(int, char**) {
         case ES_FORT: lair.fortifyTile(p.x, p.y); break;
         case ES_ADD: lair.addTile(p.x, p.y); break;
         case ES_REM: lair.removeTile(p.x, p.y); break;
+        case ES_REME: lair.removeEntity(p.x, p.y); break;
         case ES_NONE: break;
         case ES_TRAP: lair.addEntity(p.x, p.y, new DamageTrap(1, &engine));
         }

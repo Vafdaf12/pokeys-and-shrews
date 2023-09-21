@@ -23,6 +23,7 @@ public:
     Tile* getTile(int x, int y);
 
     bool addEntity(int x, int y, TileEntity* entity);
+    bool removeEntity(int x, int y);
 
     LairExplorer* createExplorer(ExploreType type) const;
 

@@ -88,3 +88,7 @@ void Engine::tileEntityAdded(
     GameObject* sender, Tile* tile, TileEntity* entity) {
     m_pMenu->addTileEntity(tile, entity);
 }
+void Engine::tileEntityRemoved(
+    GameObject* sender, Tile* tile, TileEntity* entity) {
+    m_pMenu->removeTileEntity(entity);
+}

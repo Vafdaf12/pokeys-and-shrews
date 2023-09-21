@@ -75,13 +75,23 @@ Tile* Lair::getTile(int x, int y) {
     return m_tiles[i];
 }
 bool Lair::addEntity(int x, int y, TileEntity* entity) {
-    if (x < 0 || y < 0) return false;
-    if (x >= m_width || y >= m_height) return false;
-    size_t i = index(x, y);
-    if (!m_tiles[i]) return false;
+    Tile* tile = getTile(x, y);
+    if (!tile) return false;
 
-    m_tiles[i]->setEntity(entity);
-    if (m_pEngine) m_pEngine->tileEntityAdded(this, m_tiles[i], entity);
+    tile->setEntity(entity);
+    if (m_pEngine) m_pEngine->tileEntityAdded(this, tile, entity);
+    return true;
+}
+bool Lair::removeEntity(int x, int y) {
+    Tile* tile = getTile(x, y);
+    if (!tile) return false;
+    if (tile->isBaked()) return false;
+
+    TileEntity* entity = tile->getEntity();
+    if (!entity) return false;
+    tile->setEntity(nullptr);
+
+    if (m_pEngine) m_pEngine->tileEntityRemoved(this, tile, entity);
     return true;
 }
 

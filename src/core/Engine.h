@@ -48,6 +48,9 @@ public:
     // Event triggered when a request is made to place an entity on a tile
     void tileEntityAdded(GameObject* sender, Tile* tile, TileEntity* entity);
 
+    // Event triggered when a request is made to place an entity on a tile
+    void tileEntityRemoved(GameObject* sender, Tile* tile, TileEntity* entity);
+
     // Event triggered when the balance in the bank is changed
     void balanceChanged(GameObject* sender, int balance);
 
