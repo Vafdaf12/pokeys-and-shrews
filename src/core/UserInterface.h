@@ -20,8 +20,14 @@ public:
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
 
+    /// Adds a graphics a render a tile entity
+    void addTileEntity(Tile* tile, TileEntity* entity);
+
     /// Removes the graphic corresponding the passed-in tile
     bool removeTile(Tile* tile);
+
+    /// Removes the graphic corresponding the passed-in tile entity
+    bool removeTileEntity(TileEntity* entity);
 
     /// Sets the displayed bank balance
     void setBalance(int balance);
@@ -42,6 +48,7 @@ private:
     Font m_font;
     ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;
+    std::map<void*, Graphic*> m_tileEntities;
     std::map<void*, Graphic*> m_entities;
     std::vector<std::pair<ResearchTask*, ui::Button>> m_research;
 };

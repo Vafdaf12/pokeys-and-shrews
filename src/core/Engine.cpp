@@ -72,3 +72,6 @@ void Engine::heroDied(Hero* hero) {
 void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
     if (entity == m_pBank) quit();
 }
+void Engine::tileEntityAdded(Tile* tile, TileEntity* entity) {
+    m_pMenu->addTileEntity(tile, entity);
+}

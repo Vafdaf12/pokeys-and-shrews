@@ -1,17 +1,13 @@
 #pragma once
 
 #include "core/Engine.h"
+#include "core/GameObject.h"
 
 class Hero;
 
-class TileEntity {
+class TileEntity : public GameObject {
 public:
+    using GameObject::GameObject;
     virtual void interact(Hero& hero) = 0;
     virtual void update(float dt) {}
-
-    inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
-
-protected:
-    TileEntity(Engine* pEngine) : m_pEngine(pEngine) {}
-    Engine* m_pEngine;
 };

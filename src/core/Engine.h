@@ -44,6 +44,9 @@ public:
     // Event triggered when a tile is fortified
     void tileFortified(Tile* tile);
 
+    // Event triggered when a request is made to place an entity on a tile
+    void tileEntityAdded(Tile* tile, TileEntity* entity);
+
     // Event triggered when the balance in the bank is changed
     void balanceChanged(int balance);
 

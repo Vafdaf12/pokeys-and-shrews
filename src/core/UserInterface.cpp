@@ -3,6 +3,7 @@
 #include "graphics/HeroGraphic.h"
 #include "graphics/TileGraphic.h"
 
+#include "entity/TileEntity.h"
 #include "hero/Hero.h"
 #include "lair/Tile.h"
 #include "raylib.h"
@@ -39,6 +40,9 @@ void UserInterface::draw() {
     ClearBackground({255, 255, 255, 255});
 
     for (const auto& p : m_graphics) {
+        p.second->draw();
+    }
+    for (const auto& p : m_tileEntities) {
         p.second->draw();
     }
     for (const auto& p : m_entities) {
@@ -95,5 +99,23 @@ bool UserInterface::removeResearch(ResearchTask* task) {
         label.setPosition({200, y});
         y += label.getBoundingBox().height + 5;
     }
+    return true;
+}
+void UserInterface::addTileEntity(Tile* tile, TileEntity* entity) {
+    assert(tile);
+    assert(entity);
+    assert(m_graphics.find(tile) != m_graphics.end());
+    Graphic* tg = static_cast<TileGraphic*>(m_graphics[tile]);
+
+    Graphic* graphic = entity->createGraphic();
+    graphic->setPosition(tg->getPosition());
+    m_tileEntities[entity] = graphic;
+}
+bool UserInterface::removeTileEntity(TileEntity* entity) {
+    assert(entity);
+    auto it = m_tileEntities.find(entity);
+    if (it == m_tileEntities.end()) return false;
+    delete it->second;
+    m_tileEntities.erase(entity);
     return true;
 }

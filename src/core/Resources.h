@@ -17,4 +17,3 @@ public:
 private:
     static std::unordered_map<std::string, Texture2D> m_textures;
 };
-std::unordered_map<std::string, Texture2D> Resources::m_textures;
