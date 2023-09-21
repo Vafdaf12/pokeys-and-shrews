@@ -13,6 +13,7 @@ bool Storyteller::removeSpawnTile(Tile* tile) {
 }
 
 Hero* Storyteller::spawnHero() {
+    if (m_spawnTiles.size() == 0) return nullptr;
     size_t i = static_cast<size_t>(rand()) % m_spawnTiles.size();
     auto it = m_spawnTiles.begin();
     std::advance(it, i);

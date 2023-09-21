@@ -138,7 +138,7 @@ int main(int, char**) {
         case ES_TRAP: lair.addEntity(p.x, p.y, new DamageTrap(1, &engine));
         }
         lab.update(delta);
-        // storyteller.update(delta);
+        storyteller.update(delta);
         ui.update(delta);
 
         BeginDrawing();
