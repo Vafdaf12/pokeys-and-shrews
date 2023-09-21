@@ -135,7 +135,7 @@ int main(int, char**) {
         case ES_REM: lair.removeTile(p.x, p.y); break;
         case ES_REME: lair.removeEntity(p.x, p.y); break;
         case ES_NONE: break;
-        case ES_TRAP: lair.addEntity(p.x, p.y, new DamageTrap(1, &engine));
+        case ES_TRAP: lair.addEntity(p.x, p.y, new TeleportTrap(2.0f, &engine));
         }
         lab.update(delta);
         storyteller.update(delta);
