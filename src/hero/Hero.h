@@ -3,6 +3,7 @@
 #include "core/Engine.h"
 #include "core/GameObject.h"
 #include "core/Timer.h"
+#include "graphics/HeroGraphic.h"
 #include "lair/Lair.h"
 #include "lair/LairExplorer.h"
 
@@ -15,11 +16,13 @@ public:
         Engine* pEngine = nullptr);
 
     friend class HeroGraphic;
-    Graphic* createGraphic() const override;
+    inline Graphic* createGraphic() const override {
+        return new HeroGraphic(this);
+    }
 
     void update(float dt);
 
-    void stun(uint32_t time);
+    void stun(float time);
     void takeDamage(uint32_t damage);
 
     inline bool isDead() const { return m_remainingHealth == 0; }

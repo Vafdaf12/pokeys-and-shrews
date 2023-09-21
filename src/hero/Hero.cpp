@@ -32,7 +32,7 @@ void Hero::update(float dt) {
     if (trap) trap->interact(*this);
 }
 
-void Hero::stun(uint32_t time) {
+void Hero::stun(float time) {
     m_stunTimer.setTime(time);
     m_stunTimer.reset();
 }
@@ -42,4 +42,3 @@ void Hero::takeDamage(uint32_t damage) {
         if (m_pEngine) m_pEngine->heroDied(this, this);
     } else m_remainingHealth -= damage;
 }
-Graphic* Hero::createGraphic() const { return new HeroGraphic(this); }

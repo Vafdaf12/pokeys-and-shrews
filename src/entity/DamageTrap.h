@@ -13,7 +13,7 @@ public:
 
     void interact(Hero& hero) override {
         hero.takeDamage(m_damage);
-        hero.stun(2000);
+        hero.stun(2);
     }
     inline Graphic* createGraphic() const override {
         return new DamageTrapGraphic(this);
