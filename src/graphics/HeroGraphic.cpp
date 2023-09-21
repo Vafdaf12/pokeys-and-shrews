@@ -1,6 +1,7 @@
 #include "HeroGraphic.h"
 
 #include "core/Engine.h"
+#include "core/Resources.h"
 #include "core/UserInterface.h"
 #include "raylib.h"
 #include "tween.h"
@@ -13,20 +14,36 @@
 #include <iostream>
 #include <stdio.h>
 
-HeroGraphic::HeroGraphic(const Hero* hero) : m_pHero(hero) {}
+HeroGraphic::HeroGraphic(const Hero* hero)
+    : m_texture(Resources::getTexture("res/Hero1.png")), m_pHero(hero) {}
+Color getHealthColor(float fac) {
+    float facR = std::clamp((1 - fac) * 2, 0.f, 1.f);
+    float facG = std::clamp(fac * 2, 0.f, 1.f);
+    uint8_t r = uint8_t(facR * 255);
+    uint8_t g = uint8_t(facG * 255);
 
+    return {r, g, 0, 255};
+}
 void HeroGraphic::draw() {
     auto [x, y] = m_current.peek();
 
     float fac = (float)m_pHero->m_remainingHealth / m_pHero->m_totalHealth;
-    float facR = std::clamp((1 - fac) * 2, 0.f, 1.f);
-    float facG = std::clamp(fac * 2, 0.f, 1.f);
+    float scale = TileGraphic::TILE_WIDTH / float(m_texture.width);
 
-    uint8_t r = uint8_t(facR * 255);
-    uint8_t g = uint8_t(facG * 255);
+    Color c = getHealthColor(fac);
+    Vector2 p{static_cast<float>(x), static_cast<float>(y)};
 
-    Color c = {r, g, 0, 100};
-    DrawRectangle(x, y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH, c);
+    DrawTextureEx(m_texture, p, 0, scale, WHITE);
+    DrawRectangle(p.x + 4,
+        p.y + TileGraphic::TILE_WIDTH - 8,
+        TileGraphic::TILE_WIDTH - 8,
+        4,
+        BLACK);
+    DrawRectangle(p.x + 4,
+        p.y + TileGraphic::TILE_WIDTH - 8,
+        (TileGraphic::TILE_WIDTH - 8) * fac,
+        4,
+        c);
 }
 void HeroGraphic::update(float dt) {
     Tile* tile = m_pHero->getExplorer()->get();
