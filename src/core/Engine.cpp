@@ -79,7 +79,10 @@ void Engine::heroDied(GameObject* sender, Hero* hero) {
     m_pBank->deposit(hero->getTotalHealth());
 }
 void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
-    if (entity == m_pBank) quit();
+    if (entity == m_pBank) {
+        std::cout << "[ENGINE] bank discovered!!!" << std::endl;
+        quit();
+    }
 }
 void Engine::tileEntityAdded(
     GameObject* sender, Tile* tile, TileEntity* entity) {

@@ -5,6 +5,7 @@
 
 #include "TileEntity.h"
 #include "core/Engine.h"
+#include "graphics/BankGraphic.h"
 
 class Bank : public TileEntity {
 public:
@@ -23,6 +24,10 @@ public:
     bool sufficientFunds(int amt) const;
 
     void interact(Hero& hero) override;
+
+    inline Graphic* createGraphic() const override {
+        return new BankGraphic(this);
+    }
 
     friend inline std::ostream& operator<<(std::ostream& out, const Bank& b) {
         return (out << "Bank(" << b.m_balance << ")");

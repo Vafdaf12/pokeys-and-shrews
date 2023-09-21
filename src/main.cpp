@@ -52,7 +52,7 @@ int main(int, char**) {
 
     InitWindow(800, 600, "Pokeys & Shrews");
 
-    Font font = GetFontDefault();
+    Font font = LoadFont("res/Monocraft-no-ligatures.ttf");
 
     ResearchLab lab;
     Lair lair(11, 11);
@@ -71,17 +71,10 @@ int main(int, char**) {
     lair.addTile(1, 1);
     lair.addTile(2, 1);
     lair.addTile(2, 2);
-    TeleportTrap* trap = new TeleportTrap(5000);
-    {
-        Tile* t = lair.addTile(3, 1);
-        t->setEntity(trap);
-        t->fortify();
-    }
-    {
-        Tile* t = lair.addTile(3, 2);
-        t->setEntity(&bank);
-        t->fortify();
-    }
+    lair.addTile(3, 1)->fortify();
+    lair.addTile(3, 2)->fortify();
+
+    lair.addEntity(3, 2, &bank);
 
     lair.removeTile(1, 0);
     lair.addTile(1, 0);
@@ -132,8 +125,7 @@ int main(int, char**) {
         case ES_TRAP: lair.addEntity(p.x, p.y, new DamageTrap(1, &engine));
         }
         lab.update(delta);
-        storyteller.update(delta);
-        trap->update(delta);
+        // storyteller.update(delta);
         ui.update(delta);
 
         BeginDrawing();
