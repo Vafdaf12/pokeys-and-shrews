@@ -11,7 +11,7 @@
 #include <iostream>
 #include <stdio.h>
 
-HeroGraphic::HeroGraphic(Hero* hero) : m_pHero(hero) {}
+HeroGraphic::HeroGraphic(const Hero* hero) : m_pHero(hero) {}
 
 void HeroGraphic::draw() {
     auto [x, y] = m_current.peek();
@@ -40,5 +40,5 @@ void HeroGraphic::update(float dt) {
         m_current = tweeny::from(cx, cy).to(x, y).during(100);
     }
 
-    m_current.step(dt * 1000);
+    m_current.step(dt / 0.1f);
 }

@@ -3,6 +3,7 @@
 #include "graphics/HeroGraphic.h"
 #include "graphics/TileGraphic.h"
 
+#include "hero/Hero.h"
 #include "lair/Tile.h"
 #include "raylib.h"
 #include "research/ResearchTask.h"
@@ -73,10 +74,12 @@ void UserInterface::addResearch(ResearchTask* task) {
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
-    m_entities[task] = new HeroGraphic(task);
+    m_entities[task] = task->createGraphic();
 }
 bool UserInterface::removeHero(Hero* task) {
-    if (m_entities.find(task) == m_entities.end()) return false;
+    auto it = m_entities.find(task);
+    if (it == m_entities.end()) return false;
+    delete it->second;
     m_entities.erase(task);
     return true;
 }

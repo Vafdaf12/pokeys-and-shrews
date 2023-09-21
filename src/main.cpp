@@ -126,10 +126,10 @@ int main(int, char**) {
         case ES_NONE: break;
         }
         lab.update(delta);
-        // storyteller.update(dt);
-        trap->update(dt);
-        label.update(dt);
-        ui.update(dt);
+        storyteller.update(delta);
+        trap->update(delta);
+        label.update(delta);
+        ui.update(delta);
 
         BeginDrawing();
         ui.draw();

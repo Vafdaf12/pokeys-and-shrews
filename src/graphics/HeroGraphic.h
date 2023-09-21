@@ -7,7 +7,7 @@ class Hero;
 
 class HeroGraphic : public Graphic {
 public:
-    HeroGraphic(Hero* explorer);
+    HeroGraphic(const Hero* explorer);
 
     void draw() override;
     void update(float dt) override;
@@ -15,5 +15,5 @@ public:
 private:
     tweeny::tween<int, int> m_current =
         tweeny::from(-1, -1).to(-1, -1).during(2000);
-    Hero* m_pHero;
+    const Hero* m_pHero;
 };

@@ -1,6 +1,7 @@
 #include "Hero.h"
 
 #include "entity/TileEntity.h"
+#include "graphics/HeroGraphic.h"
 
 #include <cassert>
 
@@ -9,9 +10,9 @@ Hero::Hero(LairExplorer* explorer,
     float speed,
     uint32_t damage,
     Engine* pEngine)
-    : m_pExplorer(explorer), m_pEngine(pEngine), m_totalHealth(health),
+    : GameObject(pEngine), m_pExplorer(explorer), m_totalHealth(health),
       m_damage(damage), m_remainingHealth(health) {
-    m_movement = Timer(static_cast<uint32_t>(1000 / speed));
+    m_movement = Timer(1 / speed);
 }
 
 void Hero::update(float dt) {
@@ -41,3 +42,4 @@ void Hero::takeDamage(uint32_t damage) {
         if (m_pEngine) m_pEngine->heroDied(this);
     } else m_remainingHealth -= damage;
 }
+Graphic* Hero::createGraphic() const { return new HeroGraphic(this); }

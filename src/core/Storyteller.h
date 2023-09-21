@@ -19,7 +19,7 @@ public:
     Hero* spawnHero();
 
 private:
-    Timer m_spawnTimer = Timer(3000);
+    Timer m_spawnTimer = Timer(3);
     Engine* m_pEngine = nullptr;
     std::list<Tile*> m_spawnTiles;
     std::list<Hero*> m_pHeroes;
