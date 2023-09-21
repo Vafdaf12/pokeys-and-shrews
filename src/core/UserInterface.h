@@ -3,6 +3,7 @@
 #include "core/Engine.h"
 #include "core/Graphic.h"
 #include "core/UserInterface.h"
+#include "ui/Button.h"
 #include "ui/Label.h"
 #include <map>
 #include <vector>
@@ -42,5 +43,5 @@ private:
     ui::Label m_balance;
     std::map<void*, Graphic*> m_graphics;
     std::map<void*, Graphic*> m_entities;
-    std::vector<std::pair<ResearchTask*, ui::Label>> m_research;
+    std::vector<std::pair<ResearchTask*, ui::Button>> m_research;
 };

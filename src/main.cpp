@@ -110,7 +110,7 @@ int main(int, char**) {
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(new ResearchTask(
-                "Trap #" + std::to_string(n++), 1.f, 10, &engine));
+                "Trap #" + std::to_string(n++), 5.f, 10, &engine));
         }
         if (IsKeyReleased(KEY_UP)) {
             bank.deposit(1);

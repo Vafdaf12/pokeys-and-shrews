@@ -65,7 +65,9 @@ void UserInterface::addResearch(ResearchTask* task) {
     for (const auto& [task, graphic] : m_research) {
         y += graphic.getBoundingBox().height + 5;
     }
-    ui::Label label(m_font, task->getName());
+    ui::Button label(m_font, task->getName(), [=]() {
+        if (m_pEngine) m_pEngine->researchCancelled(task);
+    });
     label.setPosition({200, y});
     m_research.emplace_back(task, std::move(label));
 }
@@ -82,6 +84,7 @@ bool UserInterface::removeResearch(ResearchTask* task) {
     auto it = std::remove_if(m_research.begin(),
         m_research.end(),
         [&](const auto& p) { return p.first == task; });
+    if (it == m_research.end()) return false;
     m_research.erase(it);
 
     float y = 0;
