@@ -48,42 +48,6 @@ void Game::init() {
     _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
 }
 
-void Game::execute() {
-    std::queue<TileEntity*> traps;
-    traps.push(new DamageTrap(2, _engine.get()));
-    traps.push(new TeleportTrap(2.f, _engine.get()));
-
-    while (!WindowShouldClose()) {
-        handleInput();
-        update(GetFrameTime());
-        BeginDrawing();
-        draw();
-        EndDrawing();
-    }
-}
-void Game::cleanup() {}
-
-Game::EditAction Game::getAction() const {
-    Vector2 p = getWorldSpacePosition(GetMousePosition());
-    if (p.x < 0 || p.y < 0) return EditAction::None;
-
-    Tile* tile = _lair->getTile(p.x, p.y);
-
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        if (!tile) return EditAction::AddTile;
-        if (!tile->isFortified()) return EditAction::Fortify;
-        if (tile->getEntity()) return EditAction::AddEntity;
-    }
-    if (!tile) return EditAction::None;
-    if (tile->isBaked()) return EditAction::None;
-
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-        if (!tile->isFortified()) return EditAction::RemoveTile;
-        if (tile->getEntity()) return EditAction::RemoveEntity;
-    }
-    return EditAction::None;
-}
-
 void Game::handleInput() {
     Vector2 p = getWorldSpacePosition(GetMousePosition());
     int x = static_cast<int>(p.x);
@@ -153,6 +117,27 @@ void Game::loadMap(const std::string& path) {
         tile->bake();
     }
 }
+Game::EditAction Game::getAction() const {
+    Vector2 p = getWorldSpacePosition(GetMousePosition());
+    if (p.x < 0 || p.y < 0) return EditAction::None;
+
+    Tile* tile = _lair->getTile(p.x, p.y);
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (!tile) return EditAction::AddTile;
+        if (!tile->isFortified()) return EditAction::Fortify;
+        if (tile->getEntity()) return EditAction::AddEntity;
+    }
+    if (!tile) return EditAction::None;
+    if (tile->isBaked()) return EditAction::None;
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+        if (!tile->isFortified()) return EditAction::RemoveTile;
+        if (tile->getEntity()) return EditAction::RemoveEntity;
+    }
+    return EditAction::None;
+}
+
 Vector2 Game::getWorldSpacePosition(Vector2 pos) const {
     pos.x -= UserInterface::MAP_OFFSET.x;
     pos.y -= UserInterface::MAP_OFFSET.y;
@@ -161,4 +146,14 @@ Vector2 Game::getWorldSpacePosition(Vector2 pos) const {
     pos.y /= TileGraphic::TILE_WIDTH;
 
     return pos;
+}
+
+void Game::execute() {
+    while (!WindowShouldClose()) {
+        handleInput();
+        update(GetFrameTime());
+        BeginDrawing();
+        draw();
+        EndDrawing();
+    }
 }

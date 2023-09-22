@@ -4,8 +4,11 @@
 #include "util/out.h"
 #include "util/util.h"
 
+#include <algorithm>
 #include <exception>
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -20,7 +23,25 @@ void SmartContractDemo::init() {
     int count = util::input("Number of parties: ");
     std::cout << count << std::endl;
 
+    std::string line;
+    std::cout << "Auto-vote parties: " << std::endl;
+    std::getline(std::cin, line);
+    std::stringstream stream(line);
+
     m_pContract = new SmartContract(name, count);
+    while (!stream.eof()) {
+        int x;
+        stream >> x;
+        if (stream.fail()) continue;
+        m_observers.emplace_back(new ContractObserver([=](SmartContract* c) {
+            try {
+                c->voteComplete(x);
+                std::cout << "[" << x << "] Auto-vote to complete" << std::endl;
+            } catch (const std::exception&) {
+            }
+        }));
+        m_pContract->subscribe(m_observers.back().get());
+    }
 }
 void SmartContractDemo::execute() {
     static const std::vector<std::string> OPERATIONS = {"Add Condition",
@@ -56,6 +77,7 @@ void SmartContractDemo::execute() {
         } catch (const std::exception& e) {
             lastError = e.what();
         }
+        std::cin.get();
 
     } while (opt != -1);
 }

@@ -1,15 +1,23 @@
 #pragma once
 
+#include "contract/SmartContract.h"
+#include <functional>
 #include <string>
 #include <vector>
 
 class ContractState;
+class SmartContract;
 
 enum class VoteState { Negotiate, Accept, Complete };
 
 class ContractObserver {
 public:
-    virtual void notify() = 0;
+    using Callback = std::function<void(SmartContract*)>;
+    ContractObserver(Callback cb) : m_callback(cb) {}
+    virtual void notify(SmartContract* c) { m_callback(c); }
+
+private:
+    std::function<void(SmartContract*)> m_callback;
 };
 
 class SmartContract {
@@ -37,7 +45,7 @@ private:
         if (s == m_pState) return;
         m_pState = s;
         for (auto o : m_observers)
-            o->notify();
+            o->notify(this);
     }
     std::string m_name;
 
