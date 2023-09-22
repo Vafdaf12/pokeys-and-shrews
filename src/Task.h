@@ -9,11 +9,10 @@ public:
         execute();
         cleanup();
     }
+    static Task* create(int task);
 
 protected:
     virtual void init() {}
     virtual void execute() = 0;
     virtual void cleanup() {}
-
-    static Task* create(int task);
 };
