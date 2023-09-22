@@ -2,9 +2,10 @@
 #include "core/Engine.h"
 
 #include <cassert>
+#include <memory>
 
 Lair::Lair(size_t w, size_t h, Engine* pEngine)
-    : GameObject(pEngine), m_width(w), m_height(h), m_tiles(w * h, nullptr) {}
+    : GameObject(pEngine), m_width(w), m_height(h), m_tiles(w * h) {}
 
 bool Lair::fortifyTile(int x, int y) {
     if (x < 0 || y < 0) return false;
@@ -12,7 +13,7 @@ bool Lair::fortifyTile(int x, int y) {
     size_t i = index(x, y);
     if (!m_tiles[i]) return false;
     m_tiles[i]->fortify();
-    if (m_pEngine) m_pEngine->tileFortified(this, m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileFortified(this, m_tiles[i].get());
     return true;
 }
 bool Lair::removeTile(int x, int y) {
@@ -39,7 +40,7 @@ bool Lair::removeTile(int x, int y) {
         m_tiles[e]->setNeighbour(nullptr, Tile::West);
     }
 
-    if (m_pEngine) m_pEngine->tileRemoved(this, m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileRemoved(this, m_tiles[i].get());
     m_tiles[i] = nullptr;
 
     return true;
@@ -48,31 +49,31 @@ Tile* Lair::addTile(int x, int y) {
     if (x < 0 || y < 0) return nullptr;
     if (x >= m_width || y >= m_height) return nullptr;
     size_t i = index(x, y);
-    if (m_tiles[i]) return m_tiles[i];
+    if (m_tiles[i]) return m_tiles[i].get();
 
-    m_tiles[i] = new Tile(x, y);
+    m_tiles[i] = std::make_unique<Tile>(x, y);
 
     if (y > 0) {
-        m_tiles[i]->setNeighbour(m_tiles[index(x, y - 1)], Tile::North);
+        m_tiles[i]->setNeighbour(m_tiles[index(x, y - 1)].get(), Tile::North);
     }
     if (y < m_height - 1) {
-        m_tiles[i]->setNeighbour(m_tiles[index(x, y + 1)], Tile::South);
+        m_tiles[i]->setNeighbour(m_tiles[index(x, y + 1)].get(), Tile::South);
     }
     if (x > 0) {
-        m_tiles[i]->setNeighbour(m_tiles[index(x - 1, y)], Tile::West);
+        m_tiles[i]->setNeighbour(m_tiles[index(x - 1, y)].get(), Tile::West);
     }
     if (x < m_width - 1) {
-        m_tiles[i]->setNeighbour(m_tiles[index(x + 1, y)], Tile::East);
+        m_tiles[i]->setNeighbour(m_tiles[index(x + 1, y)].get(), Tile::East);
     }
-    if (m_pEngine) m_pEngine->tileAdded(this, m_tiles[i]);
+    if (m_pEngine) m_pEngine->tileAdded(this, m_tiles[i].get());
 
-    return m_tiles[i];
+    return m_tiles[i].get();
 }
 Tile* Lair::getTile(int x, int y) {
     if (x < 0 || y < 0) return nullptr;
     if (x >= m_width || y >= m_height) return nullptr;
     size_t i = index(x, y);
-    return m_tiles[i];
+    return m_tiles[i].get();
 }
 bool Lair::addEntity(int x, int y, TileEntity* entity) {
     Tile* tile = getTile(x, y);

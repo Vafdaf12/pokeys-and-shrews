@@ -4,6 +4,7 @@
 #include "lair/LairExplorer.h"
 #include "lair/Tile.h"
 
+#include <memory>
 #include <vector>
 
 class Engine;
@@ -35,5 +36,5 @@ public:
 private:
     size_t index(int x, int y) const;
     size_t m_width, m_height;
-    std::vector<Tile*> m_tiles;
+    std::vector<std::unique_ptr<Tile>> m_tiles;
 };
