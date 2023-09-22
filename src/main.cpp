@@ -3,6 +3,7 @@
 #include <ctime>
 #include <ctype.h>
 #include <iostream>
+#include <queue>
 #include <string>
 
 #include "debug/LabelResearch.h"
@@ -18,6 +19,7 @@
 #include "entity/DamageTrap.h"
 #include "lair/Lair.h"
 #include "research/ResearchLab.h"
+#include "research/TrapResearch.h"
 #include "ui/Button.h"
 #include "ui/Label.h"
 
@@ -87,7 +89,7 @@ int main(int, char**) {
     EntityEditor entityEditor(font);
     entityEditor.setPosition({0, 200});
 
-    Engine engine(&lab, &bank, &lair, &ui, &storyteller);
+    Engine engine(&lab, &bank, &lair, &ui, &storyteller, &entityEditor);
     ui.setEngine(&engine);
     lair.setEngine(&engine);
     bank.setEngine(&engine);
@@ -99,8 +101,9 @@ int main(int, char**) {
     EditState editState = ES_NONE;
     int n = 1;
 
-    entityEditor.addEntity(new DamageTrap(2, &engine), "Damage");
-    entityEditor.addEntity(new TeleportTrap(2.f, &engine), "Teleport");
+    std::queue<TileEntity*> traps;
+    traps.push(new DamageTrap(2, &engine));
+    traps.push(new TeleportTrap(2.f, &engine));
 
     while (!engine.shouldQuit()) {
         if (WindowShouldClose()) {
@@ -124,10 +127,11 @@ int main(int, char**) {
             if (!tile->isFortified()) editState = ES_REM;
             else if (tile->getEntity() && !tile->isBaked()) editState = ES_REME;
         }
-        if (IsKeyReleased(KEY_TAB)) {
-            engine.researchRequested(nullptr,
-                new LabelResearch(
-                    "Trap #" + std::to_string(n++), 5.f, 10, &engine));
+        if (IsKeyReleased(KEY_TAB) && !traps.empty()) {
+            if (engine.researchRequested(nullptr,
+                    new TrapResearch(traps.front(), 5.f, 10, &engine))) {
+                traps.pop();
+            }
         }
         if (IsKeyReleased(KEY_UP)) {
             bank.deposit(1);
@@ -143,7 +147,8 @@ int main(int, char**) {
         case ES_REME: lair.removeEntity(p.x, p.y); break;
         case ES_NONE: break;
         case ES_TRAP:
-            lair.addEntity(p.x, p.y, entityEditor.getActive()->clone());
+            if (entityEditor.getActive())
+                lair.addEntity(p.x, p.y, entityEditor.getActive()->clone());
             break;
         }
         lab.update(delta);

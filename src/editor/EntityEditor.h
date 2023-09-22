@@ -17,7 +17,7 @@ public:
     void draw() override;
     void update(float dt) override;
 
-    void addEntity(TileEntity* entity, const std::string& name);
+    void addEntity(TileEntity* entity);
 
     inline TileEntity* getActive() { return m_pActive; }
 

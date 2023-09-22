@@ -6,7 +6,6 @@
 #include "entity/TileEntity.h"
 #include "ui/Button.h"
 
-
 Rectangle inset(const Rectangle& r, float insets) {
     return {
         r.x - insets,
@@ -31,7 +30,7 @@ void EntityEditor::update(float dt) {
     }
 }
 
-void EntityEditor::addEntity(TileEntity* entity, const std::string& text) {
+void EntityEditor::addEntity(TileEntity* entity) {
     assert(entity);
 
     float y = m_position.y;
@@ -39,8 +38,9 @@ void EntityEditor::addEntity(TileEntity* entity, const std::string& text) {
         Graphic* g = btn.getGraphic();
         y += g->getBoundingBox().height + 5;
     }
-    ui::Button btn(
-        entity->createGraphic(), [=]() { this->m_pActive = entity; });
+    ui::Button btn(entity->createGraphic(), [=]() {
+        this->m_pActive = this->m_pActive == entity ? nullptr : entity;
+    });
     btn.getGraphic()->setPosition({m_position.x, y});
     m_available.emplace(entity, std::move(btn));
 }
