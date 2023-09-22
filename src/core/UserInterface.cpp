@@ -64,14 +64,15 @@ void UserInterface::update(float dt) {
 }
 void UserInterface::addResearch(ResearchTask* task) {
     float y = m_balance.getBoundingBox().height + 20;
-    for (const auto& [task, graphic] : m_research) {
-        y += graphic.getBoundingBox().height + 5;
+    for (const auto& [task, btn] : m_research) {
+        y += btn.getGraphic()->getBoundingBox().height + 5;
     }
-    ui::Button label(m_font, task->getName(), [=]() {
+    ui::Button btn(task->createGraphic(), [=]() {
         if (m_pEngine) m_pEngine->researchCancelled(this, task);
     });
-    label.setPosition({0, y});
-    m_research.emplace_back(task, std::move(label));
+
+    btn.getGraphic()->setPosition({0, y});
+    m_research.emplace_back(task, std::move(btn));
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
@@ -90,9 +91,10 @@ bool UserInterface::removeResearch(ResearchTask* task) {
     m_research.erase(it);
 
     float y = m_balance.getBoundingBox().height + 20;
-    for (auto& [task, label] : m_research) {
-        label.setPosition({0, y});
-        y += label.getBoundingBox().height + 5;
+    for (auto& [task, btn] : m_research) {
+        Graphic* label = btn.getGraphic();
+        label->setPosition({0, y});
+        y += label->getBoundingBox().height + 5;
     }
     return true;
 }

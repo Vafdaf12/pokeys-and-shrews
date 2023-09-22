@@ -48,6 +48,10 @@ public:
     void update(float dt) override;
 
     inline void setEngine(Engine* pEngine) { m_pEngine = pEngine; }
+    inline Rectangle getBoundingBox() const override {
+        assert(false && "Not bounding box for user interface");
+        return {0, 0, 0, 0};
+    }
 
 private:
     Font m_font;

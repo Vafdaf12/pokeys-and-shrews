@@ -68,3 +68,9 @@ void LairExplorerGraphic::update(float dt) {
     }
     m_position = m_points.back();
 }
+Rectangle LairExplorerGraphic::getBoundingBox() const {
+    return {m_position.x,
+        m_position.y,
+        TileGraphic::TILE_WIDTH,
+        TileGraphic::TILE_WIDTH};
+}

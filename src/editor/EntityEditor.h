@@ -21,6 +21,11 @@ public:
 
     inline TileEntity* getActive() { return m_pActive; }
 
+    inline Rectangle getBoundingBox() const override {
+        assert(false && "Not bounding box for entity editor");
+        return {0, 0, 0, 0};
+    }
+
 private:
     Font m_font;
 

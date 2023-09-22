@@ -11,3 +11,9 @@ void DamageTrapGraphic::draw() {
     float scale = TileGraphic::TILE_WIDTH / float(m_texture.width);
     DrawTextureEx(m_texture, m_position, 0, scale, WHITE);
 }
+Rectangle DamageTrapGraphic::getBoundingBox() const {
+    return {m_position.x,
+        m_position.y,
+        TileGraphic::TILE_WIDTH,
+        TileGraphic::TILE_WIDTH};
+}

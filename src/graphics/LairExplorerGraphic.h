@@ -13,6 +13,8 @@ public:
     void draw() override;
     void update(float dt) override;
 
+    Rectangle getBoundingBox() const override;
+
 private:
     Color m_color;
     Vector2 m_cur;

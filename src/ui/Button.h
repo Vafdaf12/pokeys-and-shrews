@@ -1,25 +1,32 @@
 #pragma once
 
+#include "core/Graphic.h"
 #include "raylib.h"
 #include "ui/Label.h"
 #include <functional>
+#include <memory>
 #include <stdint.h>
 
 namespace ui {
-class Button : public Label {
+
+// TODO: Button is currently completely loose-standing, but it might benefit to
+// implement it as a decorator
+class Button {
 public:
     using ClickHandler = std::function<void()>;
 
-    Button(Font font, const std::string& text, ClickHandler cb);
+    inline Button(Graphic* graphic, ClickHandler cb)
+        : m_pGraphic(graphic), m_callback(cb) {}
 
-    void draw() override;
-    void update(float dt) override;
+    void update(float dt);
 
-    inline void setBackground(Color c) { m_background = c; }
-    inline void onClick(ClickHandler h) { m_onClick = h; }
+    inline void draw() { m_pGraphic->draw(); }
+
+    inline Graphic* getGraphic() const { return m_pGraphic; }
+    inline void onClick(ClickHandler h) { m_callback = h; }
 
 private:
-    Color m_background;
-    ClickHandler m_onClick;
+    Graphic* m_pGraphic;
+    ClickHandler m_callback;
 };
 } // namespace ui

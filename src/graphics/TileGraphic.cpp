@@ -45,3 +45,9 @@ void TileGraphic::draw() {
         DrawLine(x + TILE_WIDTH, y, x + TILE_WIDTH, y + TILE_WIDTH, c);
     }
 }
+Rectangle TileGraphic::getBoundingBox() const {
+    return {m_position.x,
+        m_position.y,
+        TileGraphic::TILE_WIDTH,
+        TileGraphic::TILE_WIDTH};
+}

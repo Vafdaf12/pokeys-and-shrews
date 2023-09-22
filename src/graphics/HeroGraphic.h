@@ -13,6 +13,8 @@ public:
     void draw() override;
     void update(float dt) override;
 
+    Rectangle getBoundingBox() const override;
+
 private:
     Texture2D m_texture;
     tweeny::tween<int, int> m_current =

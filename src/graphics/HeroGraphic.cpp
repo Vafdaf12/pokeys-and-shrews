@@ -63,3 +63,9 @@ void HeroGraphic::update(float dt) {
 
     m_current.step(dt / 0.1f);
 }
+Rectangle HeroGraphic::getBoundingBox() const {
+    return {m_position.x,
+        m_position.y,
+        TileGraphic::TILE_WIDTH,
+        TileGraphic::TILE_WIDTH};
+}

@@ -11,9 +11,11 @@ Rectangle Label::getBoundingBox() const {
     return {m_position.x, m_position.y, size.x, size.y};
 }
 
-void Label::setText(const std::string& text) { m_text = text; }
-void Label::setTextColor(Color c) { m_color = c; }
-
 void Label::draw() {
-    DrawTextEx(m_font, m_text.c_str(), m_position, 32, 1, m_color);
+    if (m_background.a > 0) {
+        Rectangle rect = getBoundingBox();
+        DrawRectangle(rect.x, rect.y, rect.width, rect.height, m_background);
+    }
+
+    DrawTextEx(m_font, m_text.c_str(), m_position, 32, 1, m_foreground);
 }

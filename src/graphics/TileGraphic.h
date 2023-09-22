@@ -11,6 +11,8 @@ public:
 
     void draw() override;
 
+    Rectangle getBoundingBox() const override;
+
     static constexpr int TILE_WIDTH = 50;
 
 private:

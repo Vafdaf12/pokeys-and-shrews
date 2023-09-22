@@ -14,6 +14,8 @@ public:
     inline void setPosition(Vector2 pos) { m_position = pos; }
     inline Vector2 getPosition() const { return m_position; }
 
+    virtual Rectangle getBoundingBox() const = 0;
+
 protected:
     Vector2 m_position = {0, 0};
 };
