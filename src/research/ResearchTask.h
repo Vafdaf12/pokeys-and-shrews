@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/GameObject.h"
+#include "core/Timer.h"
 #include <stdint.h>
 #include <string>
 
@@ -13,14 +14,11 @@ class Engine;
  */
 class ResearchTask : public GameObject {
 public:
-    ResearchTask(const std::string& trap,
-        float time,
-        int cost,
-        Engine* engine = nullptr);
+    inline ResearchTask(float time, int cost, Engine* engine = nullptr)
+        : GameObject(engine), m_timer(time), m_cost(cost) {}
 
     inline int getCost() const { return m_cost; }
-    inline bool isComplete() const { return m_currentTime >= m_totalTime; }
-    inline const std::string& getName() const { return m_trap; }
+    inline bool isComplete() const { return m_timer.isComplete(); }
 
     /**
      * Updates the research task
@@ -28,18 +26,16 @@ public:
      */
     void update(float dt);
 
-    // Marks the research task as complete
-    void complete();
+    virtual void complete() = 0;
+    virtual void cancel() = 0;
 
-    // Marks the research task as cancelled
-    void cancel();
+    virtual std::string toString() const { return "ResearchTask(\?\?\?)"; }
 
-    friend std::ostream& operator<<(std::ostream&, const ResearchTask&);
+    friend std::ostream& operator<<(std::ostream& out, const ResearchTask& t) {
+        return out << t.toString();
+    }
 
 private:
-    std::string m_trap;
-    float m_totalTime;
-    float m_currentTime = 0;
+    Timer m_timer;
     int m_cost;
-    bool m_active = true;
 };

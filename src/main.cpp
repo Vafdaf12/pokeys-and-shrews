@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 
+#include "debug/LabelResearch.h"
 #include "editor/EntityEditor.h"
 #include "raylib.h"
 
@@ -125,7 +126,7 @@ int main(int, char**) {
         }
         if (IsKeyReleased(KEY_TAB)) {
             engine.researchRequested(nullptr,
-                new ResearchTask(
+                new LabelResearch(
                     "Trap #" + std::to_string(n++), 5.f, 10, &engine));
         }
         if (IsKeyReleased(KEY_UP)) {
