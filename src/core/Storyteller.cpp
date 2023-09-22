@@ -3,6 +3,7 @@
 #include "lair/BreadthFirstExplorer.h"
 #include "lair/DepthFirstExplorer.h"
 
+#include <algorithm>
 #include <iterator>
 #include <list>
 #include <stdlib.h>
@@ -19,10 +20,19 @@ Hero* Storyteller::spawnHero() {
     std::advance(it, i);
 
     Hero* hero = new Hero(new BreadthFirstExplorer(*it), 10, 1, 10, m_pEngine);
-    m_pHeroes.emplace_back(hero);
-    if (m_pEngine) m_pEngine->heroSpawned(this, hero);
+    m_heroes.push_back(hero);
 
+    if (m_pEngine) m_pEngine->heroSpawned(this, hero);
     return hero;
+}
+void Storyteller::killHero(Hero* hero) {
+    auto it = std::find(m_heroes.begin(), m_heroes.end(), hero);
+    std::swap(*it, m_heroes.back());
+    m_heroes.pop_back();
+    m_current++;
+    if (m_pEngine) {
+        m_pEngine->waveProgressed(m_required, m_current);
+    }
 }
 void Storyteller::update(float dt) {
     m_spawnTimer.update(dt);
@@ -30,7 +40,7 @@ void Storyteller::update(float dt) {
         m_spawnTimer.tick();
         spawnHero();
     }
-    for (Hero* h : m_pHeroes) {
+    for (Hero* h : m_heroes) {
         h->update(dt);
     }
 }

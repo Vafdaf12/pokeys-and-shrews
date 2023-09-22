@@ -63,6 +63,8 @@ public:
 
     void trapUnlocked(GameObject* sender, TileEntity* entity);
 
+    void waveProgressed(uint32_t required, uint32_t current);
+
     inline bool shouldQuit() const { return m_shouldQuit; }
     inline void quit() { m_shouldQuit = true; }
 

@@ -32,9 +32,21 @@ void UserInterface::setBalance(int balance) {
     s << "$ " << balance;
     m_balance.setText(s.str());
 }
+void UserInterface::setProgress(uint32_t current, uint32_t total) {
+    std::stringstream s;
+    s << current << "/" << total;
+    m_progress.setText(s.str());
+}
 
 void UserInterface::draw() {
     ClearBackground({255, 255, 255, 255});
+
+    m_balance.setPosition({0, 0});
+    std::vector<ui::Label*> labels = {&m_balance, &m_progress};
+    for (int i = 1; i < labels.size(); i++) {
+        Rectangle rect = labels[i - 1]->getBoundingBox();
+        labels[i]->setPosition({rect.x + rect.width + 20, rect.y});
+    }
 
     for (const auto& p : m_graphics) {
         p.second->draw();
@@ -50,6 +62,7 @@ void UserInterface::draw() {
     }
 
     m_balance.draw();
+    m_progress.draw();
 }
 void UserInterface::update(float dt) {
     for (const auto& p : m_graphics) {

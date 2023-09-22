@@ -49,7 +49,8 @@ Vector2 getTilePosition() {
 
     return pos;
 }
-void loadMap(const std::string& filename, Lair& lair, Bank& bank) {
+void loadMap(
+    const std::string& filename, Lair& lair, Bank& bank, Engine& engine) {
     char* data = LoadFileText(filename.c_str());
     int x = 0;
     int y = 0;
@@ -66,6 +67,10 @@ void loadMap(const std::string& filename, Lair& lair, Bank& bank) {
         if (data[i] != '_') lair.fortifyTile(x, y);
         if (data[i] == 'B') {
             lair.addEntity(x, y, &bank);
+            tile->bake();
+        }
+        if (data[i] == 'T') {
+            lair.addEntity(x, y, new DamageTrap(2, &engine));
             tile->bake();
         }
     }
@@ -85,7 +90,7 @@ int main(int, char**) {
     Lair lair(11, 11);
     UserInterface ui(font);
     Bank bank(100);
-    Storyteller storyteller;
+    Storyteller storyteller(3);
     EntityEditor entityEditor(font);
     entityEditor.setPosition({0, 200});
 
@@ -95,7 +100,7 @@ int main(int, char**) {
     bank.setEngine(&engine);
     storyteller.setEngine(&engine);
 
-    loadMap("res/map.txt", lair, bank);
+    loadMap("res/map.txt", lair, bank, engine);
 
     Timer timer(100);
     EditState editState = ES_NONE;
@@ -108,6 +113,7 @@ int main(int, char**) {
     while (!engine.shouldQuit()) {
         if (WindowShouldClose()) {
             engine.quit();
+            continue;
         }
 
         float delta = GetFrameTime();

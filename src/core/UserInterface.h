@@ -21,7 +21,8 @@ public:
     constexpr static Vector2 MAP_OFFSET = {200, 20};
 
     UserInterface(Font font, Engine* pEngine = nullptr)
-        : GameObject(pEngine), m_font(font), m_balance(font, "$ N/A") {}
+        : GameObject(pEngine), m_font(font), m_balance(font, "$"),
+          m_progress(font, "0/0") {}
 
     /// Adds a graphics a render a tile
     void addTile(Tile* tile);
@@ -37,6 +38,9 @@ public:
 
     /// Sets the displayed bank balance
     void setBalance(int balance);
+
+    /// Sets the displayed wave progress
+    void setProgress(uint32_t current, uint32_t total);
 
     void addResearch(ResearchTask* task);
     bool removeResearch(ResearchTask* task);
@@ -56,6 +60,7 @@ public:
 private:
     Font m_font;
     ui::Label m_balance;
+    ui::Label m_progress;
     std::map<const void*, std::unique_ptr<Graphic>> m_graphics;
     std::map<const void*, std::unique_ptr<Graphic>> m_tileEntities;
     std::map<const void*, std::unique_ptr<Graphic>> m_entities;

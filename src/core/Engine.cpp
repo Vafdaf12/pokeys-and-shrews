@@ -77,6 +77,7 @@ void Engine::heroDied(GameObject* sender, Hero* hero) {
     std::cout << "[ENGINE] hero died" << std::endl;
     m_pMenu->removeHero(hero);
     m_pBank->deposit(hero->getTotalHealth());
+    m_pStoryteller->killHero(hero);
 }
 void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
     if (entity == m_pBank) {
@@ -94,4 +95,7 @@ void Engine::tileEntityRemoved(
 }
 void Engine::trapUnlocked(GameObject* sender, TileEntity* entity) {
     m_entityEditor->addEntity(entity);
+}
+void Engine::waveProgressed(uint32_t required, uint32_t current) {
+    m_pMenu->setProgress(current, required);
 }
