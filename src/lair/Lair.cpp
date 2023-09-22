@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <memory>
+#include <sstream>
 
 Lair::Lair(size_t w, size_t h, Engine* pEngine)
     : GameObject(pEngine), m_width(w), m_height(h), m_tiles(w * h) {}
@@ -108,3 +109,14 @@ void Lair::reset() {
 }
 
 size_t Lair::index(int x, int y) const { return y * m_width + x; }
+
+std::string Lair::toString() const {
+    std::stringstream out;
+    for (size_t i = 0; i < m_tiles.size(); i++) {
+        if (i % m_width == 0) out << "\n";
+        if (!m_tiles[i]) out << " ";
+        else if (m_tiles[i]->isFortified()) out << 'X';
+        else out << m_tiles[i]->toString();
+    }
+    return out.str().substr(1);
+}

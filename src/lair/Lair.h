@@ -5,6 +5,7 @@
 #include "lair/Tile.h"
 
 #include <memory>
+#include <string>
 #include <vector>
 
 class Engine;
@@ -12,10 +13,6 @@ class Engine;
 class Lair : public GameObject {
 public:
     friend class LairGraphic;
-    enum ExploreType {
-        DEPTH_FIRST,
-        BREADTH_FIRST,
-    };
     Lair(size_t w, size_t h, Engine* pEngine = nullptr);
 
     bool removeTile(int x, int y);
@@ -26,14 +23,13 @@ public:
     bool addEntity(int x, int y, TileEntity* entity);
     bool removeEntity(int x, int y);
 
-    LairExplorer* createExplorer(ExploreType type) const;
-
     inline void setEngine(Engine* e) { m_pEngine = e; }
 
     inline size_t getWidth() const { return m_width; }
     inline size_t getHeight() const { return m_height; }
 
     void reset();
+    std::string toString() const;
 
 private:
     size_t index(int x, int y) const;

@@ -24,6 +24,8 @@ public:
 
     inline void bake() { m_baked = true; }
 
+    char toString() const;
+
 private:
     int x, y;
     bool m_fortified = false;
