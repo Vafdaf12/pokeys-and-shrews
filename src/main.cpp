@@ -64,15 +64,16 @@ void loadMap(
         if (isspace(data[i])) continue;
 
         Tile* tile = lair.addTile(x, y);
-        if (data[i] != '_') lair.fortifyTile(x, y);
+        if (data[i] != '_') {
+            lair.fortifyTile(x, y);
+        }
         if (data[i] == 'B') {
             lair.addEntity(x, y, &bank);
-            tile->bake();
         }
         if (data[i] == 'T') {
             lair.addEntity(x, y, new DamageTrap(4, &engine));
-            tile->bake();
         }
+        tile->bake();
     }
 }
 

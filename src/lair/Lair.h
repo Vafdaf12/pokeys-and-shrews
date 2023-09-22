@@ -33,6 +33,8 @@ public:
     inline size_t getWidth() const { return m_width; }
     inline size_t getHeight() const { return m_height; }
 
+    void reset();
+
 private:
     size_t index(int x, int y) const;
     size_t m_width, m_height;

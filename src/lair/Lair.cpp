@@ -94,6 +94,17 @@ bool Lair::removeEntity(int x, int y) {
 
     if (m_pEngine) m_pEngine->tileEntityRemoved(this, tile, entity);
     return true;
+};
+void Lair::reset() {
+    for (auto& tile : m_tiles) {
+        if (!tile) continue;
+        if (tile->isBaked()) continue;
+        TileEntity* ent = tile->getEntity();
+        if (m_pEngine) {
+            if (ent) m_pEngine->tileEntityRemoved(this, tile.get(), ent);
+            m_pEngine->tileRemoved(this, tile.get());
+        }
+    }
 }
 
 size_t Lair::index(int x, int y) const { return y * m_width + x; }

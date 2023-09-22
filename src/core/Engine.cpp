@@ -103,5 +103,8 @@ void Engine::trapUnlocked(GameObject* sender, TileEntity* entity) {
 }
 void Engine::waveProgressed(uint32_t required, uint32_t current) {
     m_pMenu->setProgress(current, required);
-    if (current >= required) m_pStoryteller->reset();
+    if (current >= required) {
+        m_pLair->reset();
+        m_pStoryteller->reset();
+    }
 }
