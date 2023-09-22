@@ -11,8 +11,6 @@ SmartContract::SmartContract(const std::string& name, int parties)
     : m_name(name), m_votes(parties, VoteState::Negotiate),
       m_pState(new Negotiate(this)) {}
 
-SmartContract::~SmartContract() { delete m_pState; }
-
 void SmartContract::addCondition(const std::string& cond) {
     m_pState->addCondition(cond);
 }
