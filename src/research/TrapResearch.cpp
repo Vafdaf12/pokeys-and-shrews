@@ -1,4 +1,5 @@
 #include "TrapResearch.h"
+#include "graphics/research/TrapResearchGraphic.h"
 
 void TrapResearch::complete() {
     if (m_pEngine) {
@@ -10,5 +11,5 @@ void TrapResearch::cancel() {
     if (m_pEngine) m_pEngine->researchCancelled(this, this);
 }
 Graphic* TrapResearch::createGraphic() const {
-    return m_entity->createGraphic();
+    return new TrapResearchGraphic(this);
 }

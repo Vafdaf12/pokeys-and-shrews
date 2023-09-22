@@ -5,12 +5,12 @@
 class TrapResearch;
 
 class TrapResearchGraphic : public Graphic {
-
+public:
     TrapResearchGraphic(const TrapResearch* trap);
     void draw() override;
     Rectangle getBoundingBox() const override;
 
 private:
     Graphic* m_graphic;
-    TrapResearch* m_research;
+    const TrapResearch* m_research;
 };

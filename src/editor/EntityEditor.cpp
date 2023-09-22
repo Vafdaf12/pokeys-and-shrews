@@ -5,21 +5,14 @@
 
 #include "entity/TileEntity.h"
 #include "ui/Button.h"
+#include "util/util.h"
 
-Rectangle inset(const Rectangle& r, float insets) {
-    return {
-        r.x - insets,
-        r.y - insets,
-        r.width + 2 * insets,
-        r.height + 2 * insets,
-    };
-}
 void EntityEditor::draw() {
     for (auto& [e, btn] : m_available) {
         btn.draw();
 
         if (e == m_pActive) {
-            Rectangle rect = inset(btn.getGraphic()->getBoundingBox(), 2);
+            Rectangle rect = util::inset(btn.getGraphic()->getBoundingBox(), 2);
             DrawRectangleLinesEx(rect, 1, RED);
         }
     }

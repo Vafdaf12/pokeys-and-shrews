@@ -13,6 +13,7 @@ public:
     inline void tick() { m_current -= m_time; }
     inline void setTime(float time) { m_time = time; }
     inline float getTime() const { return m_time; }
+    inline float getProgress() const { return m_current / m_time; }
 
 private:
     float m_time;

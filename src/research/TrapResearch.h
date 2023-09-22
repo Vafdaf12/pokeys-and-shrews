@@ -8,6 +8,7 @@
 
 class TrapResearch : public ResearchTask {
 public:
+    friend class TrapResearchGraphic;
     TrapResearch(
         TileEntity* entity, float time, int cost, Engine* engine = nullptr)
         : ResearchTask(time, cost, engine), m_entity(entity) {}

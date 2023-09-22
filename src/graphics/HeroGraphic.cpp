@@ -9,6 +9,7 @@
 
 #include "graphics/TileGraphic.h"
 #include "hero/Hero.h"
+#include "util/util.h"
 
 #include <algorithm>
 #include <iostream>
@@ -34,15 +35,12 @@ void HeroGraphic::draw() {
     Vector2 p{static_cast<float>(x), static_cast<float>(y)};
 
     DrawTextureEx(m_texture, p, 0, scale, WHITE);
-    DrawRectangle(p.x + 4,
-        p.y + TileGraphic::TILE_WIDTH - 8,
-        TileGraphic::TILE_WIDTH - 8,
+
+    util::drawProgress(
+        {p.x, p.y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH},
         4,
-        BLACK);
-    DrawRectangle(p.x + 4,
-        p.y + TileGraphic::TILE_WIDTH - 8,
-        (TileGraphic::TILE_WIDTH - 8) * fac,
         4,
+        fac,
         c);
 }
 void HeroGraphic::update(float dt) {
