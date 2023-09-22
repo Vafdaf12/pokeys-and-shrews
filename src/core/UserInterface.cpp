@@ -18,16 +18,13 @@
 #include <utility>
 
 void UserInterface::addTile(Tile* tile) {
-    m_graphics[tile] = new TileGraphic(tile,
+    m_graphics[tile] = std::make_unique<TileGraphic>(tile,
         tile->getX() * TileGraphic::TILE_WIDTH + MAP_OFFSET.x,
         tile->getY() * TileGraphic::TILE_WIDTH + MAP_OFFSET.y);
 }
 bool UserInterface::removeTile(Tile* tile) {
-    auto it = m_graphics.find(tile);
-    if (it == m_graphics.end()) return false;
-    Graphic* g = it->second;
-    m_graphics.erase(it->first);
-    delete g;
+    if (m_graphics.find(tile) == m_graphics.end()) return false;
+    m_graphics.erase(tile);
     return true;
 }
 void UserInterface::setBalance(int balance) {
@@ -78,12 +75,10 @@ void UserInterface::addResearch(ResearchTask* task) {
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
-    m_entities[task] = task->createGraphic();
+    m_entities[task] = std::unique_ptr<Graphic>(task->createGraphic());
 }
 bool UserInterface::removeHero(Hero* task) {
-    auto it = m_entities.find(task);
-    if (it == m_entities.end()) return false;
-    delete it->second;
+    if (m_entities.find(task) == m_entities.end()) return false;
     m_entities.erase(task);
     return true;
 }
@@ -105,17 +100,15 @@ void UserInterface::addTileEntity(Tile* tile, TileEntity* entity) {
     assert(tile);
     assert(entity);
     assert(m_graphics.find(tile) != m_graphics.end());
-    Graphic* tg = static_cast<TileGraphic*>(m_graphics[tile]);
+    Vector2 pos = m_graphics[tile]->getPosition();
 
-    Graphic* graphic = entity->createGraphic();
-    graphic->setPosition(tg->getPosition());
-    m_tileEntities[entity] = graphic;
+    std::unique_ptr<Graphic> graphic(entity->createGraphic());
+    graphic->setPosition(pos);
+    m_tileEntities[entity] = std::move(graphic);
 }
 bool UserInterface::removeTileEntity(TileEntity* entity) {
     assert(entity);
-    auto it = m_tileEntities.find(entity);
-    if (it == m_tileEntities.end()) return false;
-    delete it->second;
+    if (m_tileEntities.find(entity) == m_tileEntities.end()) return false;
     m_tileEntities.erase(entity);
     return true;
 }

@@ -7,7 +7,9 @@
 #include "raylib.h"
 #include "ui/Button.h"
 #include "ui/Label.h"
+
 #include <map>
+#include <memory>
 #include <vector>
 
 class Tile;
@@ -50,8 +52,8 @@ public:
 private:
     Font m_font;
     ui::Label m_balance;
-    std::map<void*, Graphic*> m_graphics;
-    std::map<void*, Graphic*> m_tileEntities;
-    std::map<void*, Graphic*> m_entities;
+    std::map<const void*, std::unique_ptr<Graphic>> m_graphics;
+    std::map<const void*, std::unique_ptr<Graphic>> m_tileEntities;
+    std::map<const void*, std::unique_ptr<Graphic>> m_entities;
     std::vector<std::pair<ResearchTask*, ui::Button>> m_research;
 };
