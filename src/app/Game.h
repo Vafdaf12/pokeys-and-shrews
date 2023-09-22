@@ -14,15 +14,6 @@
 
 class Game : public Task {
 private:
-    enum class EditAction {
-        None,
-        Fortify,
-        AddTile,
-        RemoveTile,
-        AddEntity,
-        RemoveEntity
-    };
-
     void init() override;
     void execute() override;
     void cleanup() override;
@@ -31,10 +22,7 @@ private:
     void draw();
     void handleInput();
 
-    EditAction getAction() const;
-
     void loadMap(const std::string& path);
-    Vector2 getWorldSpacePosition(Vector2 pos) const;
 
 private:
     // Resources

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "editor/EntityEditor.h"
+#include "editor/LairEditor.h"
 #include <map>
 
 class UserInterface;
@@ -24,7 +25,8 @@ public:
         Storyteller* pStoryteller,
         EntityEditor* ee)
         : m_pStoryteller(pStoryteller), m_pMenu(pMenu), m_pLab(pLab),
-          m_pBank(pBank), m_pLair(pLair), m_entityEditor(ee) {}
+          m_pBank(pBank), m_pLair(pLair), m_entityEditor(ee),
+          m_tileEditor(pLair, this) {}
 
     /**
      * Event triggered when a request is made to queue a task for research
@@ -68,6 +70,8 @@ public:
     inline bool shouldQuit() const { return m_shouldQuit; }
     inline void quit() { m_shouldQuit = true; }
 
+    inline LairEditor& tileEditor() { return m_tileEditor; }
+
 private:
     bool m_shouldQuit = false;
     Storyteller* m_pStoryteller;
@@ -76,4 +80,5 @@ private:
     Bank* m_pBank;
     Lair* m_pLair;
     EntityEditor* m_entityEditor;
+    LairEditor m_tileEditor;
 };

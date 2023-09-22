@@ -1,6 +1,6 @@
 #include "Task.h"
 
 int main(int, char**) {
-    Task* task = Task::create(2);
+    Task* task = Task::create(1);
     task->run();
 }

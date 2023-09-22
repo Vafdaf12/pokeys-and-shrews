@@ -24,18 +24,6 @@ public:
         : GameObject(pEngine), m_font(font), m_balance(font, "$"),
           m_progress(font, "0/0") {}
 
-    /// Adds a graphics a render a tile
-    void addTile(Tile* tile);
-
-    /// Adds a graphics a render a tile entity
-    void addTileEntity(Tile* tile, TileEntity* entity);
-
-    /// Removes the graphic corresponding the passed-in tile
-    bool removeTile(Tile* tile);
-
-    /// Removes the graphic corresponding the passed-in tile entity
-    bool removeTileEntity(TileEntity* entity);
-
     /// Sets the displayed bank balance
     void setBalance(int balance);
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/GameObject.h"
 #include "core/Graphic.h"
 #include "lair/Lair.h"
 #include "raylib.h"
@@ -10,9 +11,9 @@
 
 class TileEntity;
 
-class EntityEditor : public Graphic {
+class EntityEditor : public Graphic, public GameObject {
 public:
-    EntityEditor(Font font) : m_font(font) {}
+    EntityEditor(Font font) : GameObject(nullptr), m_font(font) {}
 
     void draw() override;
     void update(float dt) override;

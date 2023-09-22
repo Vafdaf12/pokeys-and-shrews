@@ -63,32 +63,7 @@ void Game::execute() {
 }
 void Game::cleanup() {}
 
-Game::EditAction Game::getAction() const {
-    Vector2 p = getWorldSpacePosition(GetMousePosition());
-    if (p.x < 0 || p.y < 0) return EditAction::None;
-
-    Tile* tile = _lair->getTile(p.x, p.y);
-
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        if (!tile) return EditAction::AddTile;
-        if (!tile->isFortified()) return EditAction::Fortify;
-        if (tile->getEntity()) return EditAction::AddEntity;
-    }
-    if (!tile) return EditAction::None;
-    if (tile->isBaked()) return EditAction::None;
-
-    if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-        if (!tile->isFortified()) return EditAction::RemoveTile;
-        if (tile->getEntity()) return EditAction::RemoveEntity;
-    }
-    return EditAction::None;
-}
-
 void Game::handleInput() {
-    Vector2 p = getWorldSpacePosition(GetMousePosition());
-    int x = static_cast<int>(p.x);
-    int y = static_cast<int>(p.y);
-
     if (IsKeyReleased(KEY_TAB) && !_researchQueue.empty()) {
         if (_engine->researchRequested(nullptr,
                 new TrapResearch(
@@ -102,27 +77,16 @@ void Game::handleInput() {
     if (IsKeyReleased(KEY_DOWN)) {
         if (_bank->sufficientFunds(1)) _bank->withdraw(1);
     }
-
-    EditAction action = getAction();
-    switch (action) {
-    case EditAction::Fortify: _lair->fortifyTile(x, y); break;
-    case EditAction::AddTile: _lair->addTile(x, y); break;
-    case EditAction::RemoveTile: _lair->removeTile(x, y); break;
-    case EditAction::RemoveEntity: _lair->removeEntity(x, y); break;
-    case EditAction::AddEntity:
-        if (_entityEditor->getActive())
-            _lair->addEntity(x, y, _entityEditor->getActive()->clone());
-        break;
-    default: break;
-    }
 }
 void Game::update(float dt) {
     _lab->update(dt);
     _storyteller->update(dt);
     _gui->update(dt);
     _entityEditor->update(dt);
+    _engine->tileEditor().update(dt);
 }
 void Game::draw() {
+    _engine->tileEditor().draw();
     _gui->draw();
     _entityEditor->draw();
 }
@@ -152,13 +116,4 @@ void Game::loadMap(const std::string& path) {
         }
         tile->bake();
     }
-}
-Vector2 Game::getWorldSpacePosition(Vector2 pos) const {
-    pos.x -= UserInterface::MAP_OFFSET.x;
-    pos.y -= UserInterface::MAP_OFFSET.y;
-
-    pos.x /= TileGraphic::TILE_WIDTH;
-    pos.y /= TileGraphic::TILE_WIDTH;
-
-    return pos;
 }

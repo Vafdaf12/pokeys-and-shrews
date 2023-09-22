@@ -48,18 +48,30 @@ void Engine::researchCancelled(GameObject* sender, ResearchTask* pTask) {
 }
 
 void Engine::tileAdded(GameObject* sender, Tile* tile) {
-    m_pMenu->addTile(tile);
+    if (sender == &m_tileEditor) {
+        m_pLair->addTile(tile->getX(), tile->getY());
+        return;
+    }
+    m_tileEditor.addTile(*tile);
     m_pStoryteller->addSpawnTile(tile);
     std::cout << "[ENGINE] tile added at: (" << tile->getX() << ", "
               << tile->getY() << ")" << std::endl;
 }
 void Engine::tileRemoved(GameObject* sender, Tile* tile) {
-    m_pMenu->removeTile(tile);
+    if (sender == &m_tileEditor) {
+        m_pLair->removeTile(tile->getX(), tile->getY());
+        return;
+    }
+    m_tileEditor.removeTile(*tile);
     m_pStoryteller->removeSpawnTile(tile);
     std::cout << "[ENGINE] tile removed at: (" << tile->getX() << ", "
               << tile->getY() << ")" << std::endl;
 }
 void Engine::tileFortified(GameObject* sender, Tile* tile) {
+    if (sender == &m_tileEditor) {
+        m_pLair->fortifyTile(tile->getX(), tile->getY());
+        return;
+    }
     m_pStoryteller->removeSpawnTile(tile);
     std::cout << "[ENGINE] tile fortified at: (" << tile->getX() << ", "
               << tile->getY() << ")" << std::endl;
@@ -92,11 +104,21 @@ void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
 }
 void Engine::tileEntityAdded(
     GameObject* sender, Tile* tile, TileEntity* entity) {
-    m_pMenu->addTileEntity(tile, entity);
+    if (sender == &m_tileEditor) {
+        if (!m_entityEditor->getActive()) return;
+        TileEntity* entity = m_entityEditor->getActive()->clone();
+        m_pLair->addEntity(tile->getX(), tile->getY(), entity);
+        return;
+    }
+    m_tileEditor.addTileEntity(*tile, *entity);
 }
 void Engine::tileEntityRemoved(
     GameObject* sender, Tile* tile, TileEntity* entity) {
-    m_pMenu->removeTileEntity(entity);
+    if (sender == &m_tileEditor) {
+        m_pLair->removeTile(tile->getX(), tile->getY());
+        return;
+    }
+    m_tileEditor.removeTileEntity(*entity);
 }
 void Engine::trapUnlocked(GameObject* sender, TileEntity* entity) {
     m_entityEditor->addEntity(entity);
