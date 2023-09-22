@@ -1,4 +1,5 @@
 #include "Storyteller.h"
+#include "core/Storyteller.h"
 #include "hero/Hero.h"
 #include "lair/BreadthFirstExplorer.h"
 #include "lair/DepthFirstExplorer.h"
@@ -40,7 +41,17 @@ void Storyteller::update(float dt) {
         m_spawnTimer.tick();
         spawnHero();
     }
+    if (m_heroes.empty()) return;
     for (Hero* h : m_heroes) {
         h->update(dt);
     }
+}
+void Storyteller::reset() {
+    m_current = 0;
+    for (Hero* h : m_heroes) {
+        if (m_pEngine) m_pEngine->heroDied(this, h);
+        delete h;
+    }
+    m_heroes.clear();
+    m_spawnTimer.reset();
 }

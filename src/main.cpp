@@ -70,7 +70,7 @@ void loadMap(
             tile->bake();
         }
         if (data[i] == 'T') {
-            lair.addEntity(x, y, new DamageTrap(2, &engine));
+            lair.addEntity(x, y, new DamageTrap(4, &engine));
             tile->bake();
         }
     }

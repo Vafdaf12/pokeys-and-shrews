@@ -2,8 +2,7 @@
 
 #include "core/GameObject.h"
 #include "core/Timer.h"
-#include <list>
-#include <memory>
+#include <vector>
 
 class Tile;
 class Engine;
@@ -24,10 +23,12 @@ public:
 
     void nextWave(uint32_t required);
 
+    void reset();
+
 private:
     uint32_t m_required;
     uint32_t m_current = 0;
     Timer m_spawnTimer = Timer(3);
-    std::list<Tile*> m_spawnTiles;
-    std::list<Hero*> m_heroes;
+    std::vector<Tile*> m_spawnTiles;
+    std::vector<Hero*> m_heroes;
 };
