@@ -16,8 +16,9 @@
 #include <stdio.h>
 
 HeroGraphic::HeroGraphic(const Hero* hero)
-    : m_texture(Resources::getTexture("res/Hero1.png")), m_pHero(hero) {}
+    : m_texture(Resources::getTexture("res/eduardo.png")), m_pHero(hero) {}
 Color getHealthColor(float fac) {
+
     float facR = std::clamp((1 - fac) * 2, 0.f, 1.f);
     float facG = std::clamp(fac * 2, 0.f, 1.f);
     uint8_t r = uint8_t(facR * 255);
