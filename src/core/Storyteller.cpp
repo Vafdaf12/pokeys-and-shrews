@@ -68,3 +68,9 @@ void Storyteller::nextWave() {
     }
     if (m_pEngine) m_pEngine->waveProgressed(m_required, 0);
 }
+bool Storyteller::isHeroOnTile(const Tile* tile) const {
+    for (Hero* h : m_heroes) {
+        if (h->getExplorer()->get() == tile) return true;
+    }
+    return false;
+}

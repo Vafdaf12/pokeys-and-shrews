@@ -60,7 +60,8 @@ void Engine::tileAdded(GameObject* sender, Tile* tile) {
 }
 void Engine::tileRemoved(GameObject* sender, Tile* tile) {
     if (sender == &m_tileEditor) {
-        m_pLair->removeTile(tile->getX(), tile->getY());
+        if (!m_pStoryteller->isHeroOnTile(tile))
+            m_pLair->removeTile(tile->getX(), tile->getY());
         return;
     }
     m_tileEditor.removeTile(*tile);
@@ -113,7 +114,7 @@ void Engine::tileEntityAdded(
 void Engine::tileEntityRemoved(
     GameObject* sender, Tile* tile, TileEntity* entity) {
     if (sender == &m_tileEditor) {
-        m_pLair->removeTile(tile->getX(), tile->getY());
+        m_pLair->removeEntity(tile->getX(), tile->getY());
         return;
     }
     m_tileEditor.removeTileEntity(*entity);

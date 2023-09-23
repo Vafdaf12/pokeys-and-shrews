@@ -26,6 +26,8 @@ public:
 
     void reset();
 
+    bool isHeroOnTile(const Tile* tile) const;
+
 private:
     uint32_t m_currentWave = 0;
     uint32_t m_totalWaves;
