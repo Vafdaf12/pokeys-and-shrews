@@ -40,6 +40,7 @@ void Game::init() {
         _trapSelector.get());
 
     _gui->setEngine(_engine.get());
+    _lab->setEngine(_engine.get());
     _lair->setEngine(_engine.get());
     _bank->setEngine(_engine.get());
     _storyteller->setEngine(_engine.get());
@@ -49,10 +50,6 @@ void Game::init() {
 
     _researchQueue.push(new DamageTrap(2, _engine.get()));
     _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
-    if (_engine->researchRequested(nullptr,
-            new TrapResearch(_researchQueue.front(), 5.f, 10, _engine.get()))) {
-        _researchQueue.pop();
-    }
 }
 
 void Game::execute() {

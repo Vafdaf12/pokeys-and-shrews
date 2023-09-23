@@ -14,7 +14,7 @@ public:
         : ResearchTask(time, cost, engine), m_entity(entity) {}
 
     void complete() override;
-    void cancel() override;
+    void cancel() override {}
     gfx::Graphic* createGraphic() const override;
 
     inline std::string toString() const override {

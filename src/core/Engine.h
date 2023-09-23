@@ -6,7 +6,6 @@
 #include "render/Drawable.h"
 #include <map>
 
-
 class UserInterface;
 class Storyteller;
 class ResearchTask;

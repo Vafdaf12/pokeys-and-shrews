@@ -4,13 +4,16 @@
 #include <ostream>
 
 #include "ResearchTask.h"
+#include "core/GameObject.h"
 
 /**
  * Manages the completion of research tasks submitted to it, but does not manage
  * any memory pertaining to a research task
  */
-class ResearchLab {
+class ResearchLab : public GameObject {
 public:
+    inline ResearchLab(Engine* engine = nullptr) : GameObject(engine) {}
+
     /**
      * Updates the research lab to perform one unit of research
      */
@@ -32,5 +35,5 @@ public:
     friend std::ostream& operator<<(std::ostream&, const ResearchLab&);
 
 private:
-    std::list<ResearchTask*> m_queue;
+    std::list<std::unique_ptr<ResearchTask>> m_queue;
 };

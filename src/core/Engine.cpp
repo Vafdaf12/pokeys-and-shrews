@@ -15,15 +15,24 @@
 
 bool Engine::researchRequested(GameObject* sender, ResearchTask* pTask) {
     assert(pTask);
+
+    // Research has been successfully queued
+    if (sender == m_pLab) {
+        m_pBank->withdraw(pTask->getCost());
+        m_researchManager.addResearch(pTask);
+        std::cout << "[ENGINE] research queued: " << pTask->toString()
+                  << std::endl;
+        return true;
+    }
+
+    // Request is made from in-game object
     if (!m_pBank->sufficientFunds(pTask->getCost())) {
         std::cout << "[ENGINE] insuffient funds: " << pTask->toString()
                   << std::endl;
         return false;
     }
-    m_pBank->withdraw(pTask->getCost());
-    m_pLab->enqueue(pTask);
-    m_researchManager.addResearch(pTask);
 
+    m_pLab->enqueue(pTask);
     return true;
 }
 
@@ -37,19 +46,22 @@ void Engine::researchCompleted(GameObject* sender, ResearchTask* pTask) {
 void Engine::researchCancelled(GameObject* sender, ResearchTask* pTask) {
     assert(pTask);
 
-    // Request sent from research lab
-    if (sender == pTask) {
+    // Task has been successfully removed
+    if (sender == m_pLab) {
         m_researchManager.removeResearch(pTask);
+        return;
     }
 
     // Request sent from user interface
-    if (sender == &m_researchManager) {
-        if (m_pLab->cancel(pTask)) {
-            m_pBank->deposit(pTask->getCost());
-            std::cout << "[ENGINE] research cancelled: " << pTask->toString()
-                      << std::endl;
-        }
+    if (!m_pLab->cancel(pTask)) {
+        std::cout << "[ENGINE] cancel research failed: " << pTask->toString()
+                  << std::endl;
+        return;
     }
+
+    m_pBank->deposit(pTask->getCost());
+    std::cout << "[ENGINE] research cancelled: " << pTask->toString()
+              << std::endl;
 }
 
 void Engine::tileAdded(GameObject* sender, Tile* tile) {
