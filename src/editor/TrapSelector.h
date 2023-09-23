@@ -38,5 +38,6 @@ private:
     Font m_font;
 
     const TileEntity* m_pActive = nullptr;
-    std::map<const TileEntity*, gfx::Drawable*> m_available;
+    std::map<const TileEntity*, std::unique_ptr<gfx::DrawableDecorator>>
+        m_available;
 };

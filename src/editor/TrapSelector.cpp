@@ -27,20 +27,22 @@ void TrapSelector::setActive(const TileEntity* active) {
 
     // Add new decorated frame
     if (!m_pActive) {
-        gfx::Drawable* g = m_available[active];
+        gfx::Drawable* g = m_available[active].release();
         const static float p = 4;
         const static Texture2D tex =
             Resources::getTexture("res/frame_small.png");
 
         float s = TileGraphic::TILE_WIDTH;
-        m_available[active] = new gfx::Frame(
+        m_available[active] = std::make_unique<gfx::Frame>(
             tex, std::unique_ptr<gfx::Drawable>(g), p, s, gfx::Frame::Fg);
     }
 
     // Remove frame
     else if (!active) {
-        gfx::Frame* f = (gfx::Frame*)(m_available[m_pActive]);
-        m_available[m_pActive] = f->unwrap();
+        gfx::Frame* f =
+            static_cast<gfx::Frame*>(m_available[m_pActive].release());
+        m_available[m_pActive] =
+            std::unique_ptr<ui::Button>(f->unwrap<ui::Button>());
         delete f;
     }
     // Move frames
@@ -58,11 +60,12 @@ void TrapSelector::addEntity(const TileEntity* entity) {
     for (const auto& [e, btn] : m_available) {
         y += btn->getBoundingBox().height + 5;
     }
-    ui::Button* btn =
-        new ui::Button(std::unique_ptr<gfx::Drawable>(entity->createGraphic()),
-            [=]() { setActive(this->m_pActive == entity ? nullptr : entity); });
+    auto btn = std::make_unique<ui::Button>(
+        std::unique_ptr<gfx::Drawable>(entity->createGraphic()),
+        [=]() { setActive(this->m_pActive == entity ? nullptr : entity); });
+
     btn->getInternal<gfx::Graphic>()->setPosition({m_position.x, y});
-    m_available.emplace(entity, btn);
+    m_available.emplace(entity, std::move(btn));
     layout();
 }
 void TrapSelector::layout() {
@@ -72,11 +75,13 @@ void TrapSelector::layout() {
         int y = i / 2;
         gfx::Graphic* g;
         if (m_pActive == p) {
-            g = static_cast<gfx::Frame*>(btn)
+
+            g = static_cast<gfx::Frame*>(btn.get())
                     ->getInternal<ui::Button>()
                     ->getInternal<gfx::Graphic>();
         } else {
-            g = static_cast<ui::Button*>(btn)->getInternal<gfx::Graphic>();
+            g = static_cast<ui::Button*>(btn.get())
+                    ->getInternal<gfx::Graphic>();
         }
         Vector2 v = OFFSET;
         v.x += x * WIDTH.x;
