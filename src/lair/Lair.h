@@ -23,8 +23,6 @@ public:
     bool addEntity(int x, int y, TileEntity* entity);
     bool removeEntity(int x, int y);
 
-    inline void setEngine(Engine* e) { m_pEngine = e; }
-
     inline size_t getWidth() const { return m_width; }
     inline size_t getHeight() const { return m_height; }
 

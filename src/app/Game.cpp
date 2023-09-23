@@ -20,6 +20,7 @@
 void Game::init() {
     srand(static_cast<unsigned int>(time(nullptr)));
 
+    SetTraceLogLevel(LOG_WARNING);
     InitWindow(800, 600, "Pokeys & Shrews");
     _font = LoadFont("res/Monocraft-no-ligatures.ttf");
 
@@ -44,6 +45,7 @@ void Game::init() {
     _storyteller->setEngine(_engine.get());
 
     loadMap("res/map.txt");
+    _bank->setBalance(100);
 
     _researchQueue.push(new DamageTrap(2, _engine.get()));
     _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
@@ -96,15 +98,14 @@ void Game::update(float dt) {
     _gui->update(dt);
     _entityEditor->update(dt);
     _engine->tileEditor().update(dt);
+    _engine->researchManager()->update(dt);
 }
 void Game::draw() {
     ClearBackground({103, 30, 19, 255});
     _engine->tileEditor().draw();
     _gui->draw();
+    _engine->researchManager()->draw();
     _entityEditor->draw();
-
-    auto [x, y] = GetMousePosition();
-    printf("%i, %i\n", (int)x, (int)y);
 }
 
 void Game::loadMap(const std::string& path) {

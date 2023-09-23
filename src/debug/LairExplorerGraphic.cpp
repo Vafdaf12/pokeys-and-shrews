@@ -2,6 +2,7 @@
 
 #include "core/Engine.h"
 #include "core/UserInterface.h"
+#include "editor/LairEditor.h"
 #include "graphics/TileGraphic.h"
 #include "lair/LairExplorer.h"
 #include "raylib.h"
@@ -13,7 +14,7 @@ LairExplorerGraphic::LairExplorerGraphic(LairExplorer* explorer)
     m_color.g = rand() % 255;
     m_color.b = rand() % 255;
     m_color.a = 100;
-    m_cur = UserInterface::MAP_OFFSET;
+    m_cur = LairEditor::MAP_OFFSET;
     m_cur.x += explorer->get()->getX() + int(TileGraphic::TILE_WIDTH / 2);
     m_cur.y += explorer->get()->getY() + int(TileGraphic::TILE_WIDTH / 2);
     m_position = m_cur;
@@ -45,7 +46,7 @@ void LairExplorerGraphic::update(float dt) {
     Tile* tile = m_pExplorer->get();
     if (!tile) return;
 
-    Vector2 p = UserInterface::MAP_OFFSET;
+    Vector2 p = LairEditor::MAP_OFFSET;
     p.x += tile->getX() * TileGraphic::TILE_WIDTH +
            float(TileGraphic::TILE_WIDTH) / 2;
 

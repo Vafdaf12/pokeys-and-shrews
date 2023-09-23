@@ -26,7 +26,6 @@ UserInterface::UserInterface(Font font, Engine* pEngine)
     m_balance.setPosition({70, 17});
     m_balance.setForeground(textColor);
     m_progress.setPosition({680, 17});
-    ;
 }
 void UserInterface::setBalance(int balance) {
     m_balance.setText(std::to_string(balance));
@@ -54,9 +53,6 @@ void UserInterface::draw() {
     for (const auto& p : m_entities) {
         p.second->draw();
     }
-    for (auto& p : m_research) {
-        p.second.draw();
-    }
 
     m_balance.draw();
     m_progress.draw();
@@ -68,21 +64,6 @@ void UserInterface::update(float dt) {
     for (const auto& p : m_entities) {
         p.second->update(dt);
     }
-    for (auto& p : m_research) {
-        p.second.update(dt);
-    }
-}
-void UserInterface::addResearch(ResearchTask* task) {
-    float y = m_balance.getBoundingBox().height + 20;
-    for (const auto& [task, btn] : m_research) {
-        y += btn.getInternal()->getBoundingBox().height + 5;
-    }
-    ui::Button btn(std::unique_ptr<gfx::Graphic>(task->createGraphic()), [=]() {
-        if (m_pEngine) m_pEngine->researchCancelled(this, task);
-    });
-
-    btn.getInternal<gfx::Graphic>()->setPosition({0, y});
-    m_research.emplace_back(task, std::move(btn));
 }
 void UserInterface::addHero(Hero* task) {
     assert(m_entities.find(task) == m_entities.end());
@@ -91,20 +72,5 @@ void UserInterface::addHero(Hero* task) {
 bool UserInterface::removeHero(Hero* task) {
     if (m_entities.find(task) == m_entities.end()) return false;
     m_entities.erase(task);
-    return true;
-}
-bool UserInterface::removeResearch(ResearchTask* task) {
-    auto it = std::remove_if(m_research.begin(),
-        m_research.end(),
-        [&](const auto& p) { return p.first == task; });
-    if (it == m_research.end()) return false;
-    m_research.erase(it);
-
-    float y = m_balance.getBoundingBox().height + 20;
-    for (auto& [task, btn] : m_research) {
-        gfx::Graphic* label = btn.getInternal<gfx::Graphic>();
-        label->setPosition({0, y});
-        y += label->getBoundingBox().height + 5;
-    }
     return true;
 }

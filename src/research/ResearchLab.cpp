@@ -30,7 +30,7 @@ bool ResearchLab::cancel(ResearchTask* task) {
 std::ostream& operator<<(std::ostream& out, const ResearchLab& lab) {
     out << "ResearchLab";
     for (const auto& item : lab.m_queue) {
-        out << "\n- " << *item;
+        out << "\n- " << item->toString();
     }
     return out;
 }

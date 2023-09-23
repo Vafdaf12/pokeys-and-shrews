@@ -12,9 +12,9 @@
 
 class TileEntity;
 
-class EntityEditor : public gfx::Graphic, public GameObject {
+class EntityEditor : public gfx::Graphic {
 public:
-    EntityEditor(Font font) : GameObject(nullptr), m_font(font) {}
+    EntityEditor(Font font) : m_font(font) {}
 
     void draw() override;
     void update(float dt) override;

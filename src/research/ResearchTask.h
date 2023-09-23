@@ -32,10 +32,6 @@ public:
 
     virtual std::string toString() const { return "ResearchTask(\?\?\?)"; }
 
-    friend std::ostream& operator<<(std::ostream& out, const ResearchTask& t) {
-        return out << t.toString();
-    }
-
 private:
     Timer m_timer;
     int m_cost;

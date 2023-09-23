@@ -2,6 +2,7 @@
 
 #include "editor/EntityEditor.h"
 #include "editor/LairEditor.h"
+#include "editor/ResearchManager.h"
 #include "render/Drawable.h"
 #include <map>
 
@@ -26,7 +27,7 @@ public:
         EntityEditor* ee)
         : m_pStoryteller(pStoryteller), m_pMenu(pMenu), m_pLab(pLab),
           m_pBank(pBank), m_pLair(pLair), m_entityEditor(ee),
-          m_tileEditor(pLair, this) {}
+          m_tileEditor(pLair, this), m_researchManager(this) {}
 
     /**
      * Event triggered when a request is made to queue a task for research
@@ -75,14 +76,20 @@ public:
     inline void quit() { m_shouldQuit = true; }
 
     inline LairEditor& tileEditor() { return m_tileEditor; }
+    inline ResearchManager* researchManager() { return &m_researchManager; }
 
 private:
+    static constexpr int TILE_COST = 10;
+    static constexpr int FORT_COST = 10;
+
     bool m_shouldQuit = false;
-    Storyteller* m_pStoryteller;
-    UserInterface* m_pMenu;
-    ResearchLab* m_pLab;
-    Bank* m_pBank;
-    Lair* m_pLair;
-    EntityEditor* m_entityEditor;
+    Storyteller* m_pStoryteller = nullptr;
+    UserInterface* m_pMenu = nullptr;
+    ResearchLab* m_pLab = nullptr;
+    Bank* m_pBank = nullptr;
+    Lair* m_pLair = nullptr;
+    EntityEditor* m_entityEditor = nullptr;
+
     LairEditor m_tileEditor;
+    ResearchManager m_researchManager;
 };

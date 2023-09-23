@@ -16,19 +16,22 @@
 bool Engine::researchRequested(GameObject* sender, ResearchTask* pTask) {
     assert(pTask);
     if (!m_pBank->sufficientFunds(pTask->getCost())) {
-        std::cout << "[ENGINE] insuffient funds: " << *pTask << std::endl;
+        std::cout << "[ENGINE] insuffient funds: " << pTask->toString()
+                  << std::endl;
         return false;
     }
     m_pBank->withdraw(pTask->getCost());
     m_pLab->enqueue(pTask);
-    m_pMenu->addResearch(pTask);
+    m_researchManager.addResearch(pTask);
+
     return true;
 }
 
 void Engine::researchCompleted(GameObject* sender, ResearchTask* pTask) {
     assert(pTask);
-    m_pMenu->removeResearch(pTask);
-    std::cout << "[ENGINE] research completed: " << *pTask << std::endl;
+    m_researchManager.removeResearch(pTask);
+    std::cout << "[ENGINE] research completed: " << pTask->toString()
+              << std::endl;
 }
 
 void Engine::researchCancelled(GameObject* sender, ResearchTask* pTask) {
@@ -36,23 +39,27 @@ void Engine::researchCancelled(GameObject* sender, ResearchTask* pTask) {
 
     // Request sent from research lab
     if (sender == pTask) {
-        m_pMenu->removeResearch(pTask);
+        m_researchManager.removeResearch(pTask);
     }
 
     // Request sent from user interface
-    if (sender == m_pMenu) {
+    if (sender == &m_researchManager) {
         if (m_pLab->cancel(pTask)) {
             m_pBank->deposit(pTask->getCost());
-            std::cout << "[ENGINE] research cancelled: " << *pTask << std::endl;
+            std::cout << "[ENGINE] research cancelled: " << pTask->toString()
+                      << std::endl;
         }
     }
 }
 
 void Engine::tileAdded(GameObject* sender, Tile* tile) {
     if (sender == &m_tileEditor) {
-        m_pLair->addTile(tile->getX(), tile->getY());
+        if (m_pBank->sufficientFunds(TILE_COST)) {
+            m_pLair->addTile(tile->getX(), tile->getY());
+        }
         return;
     }
+    m_pBank->withdraw(TILE_COST);
     m_tileEditor.addTile(*tile);
     m_pStoryteller->addSpawnTile(tile);
     std::cout << "[ENGINE] tile added at: (" << tile->getX() << ", "
@@ -64,6 +71,7 @@ void Engine::tileRemoved(GameObject* sender, Tile* tile) {
             m_pLair->removeTile(tile->getX(), tile->getY());
         return;
     }
+    m_pBank->deposit(TILE_COST);
     m_tileEditor.removeTile(*tile);
     m_pStoryteller->removeSpawnTile(tile);
     std::cout << "[ENGINE] tile removed at: (" << tile->getX() << ", "
@@ -71,9 +79,12 @@ void Engine::tileRemoved(GameObject* sender, Tile* tile) {
 }
 void Engine::tileFortified(GameObject* sender, Tile* tile) {
     if (sender == &m_tileEditor) {
-        m_pLair->fortifyTile(tile->getX(), tile->getY());
+        if (m_pBank->sufficientFunds(FORT_COST)) {
+            m_pLair->fortifyTile(tile->getX(), tile->getY());
+        }
         return;
     }
+    m_pBank->withdraw(FORT_COST);
     m_pStoryteller->removeSpawnTile(tile);
     std::cout << "[ENGINE] tile fortified at: (" << tile->getX() << ", "
               << tile->getY() << ")" << std::endl;

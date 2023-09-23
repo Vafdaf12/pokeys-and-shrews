@@ -3,6 +3,7 @@
 #include "core/Engine.h"
 #include "core/Resources.h"
 #include "core/UserInterface.h"
+#include "editor/LairEditor.h"
 #include "raylib.h"
 #include "tween.h"
 #include "tweeny.h"
@@ -47,10 +48,8 @@ void HeroGraphic::draw() {
 void HeroGraphic::update(float dt) {
     Tile* tile = m_pHero->getExplorer()->get();
 
-    int x =
-        UserInterface::MAP_OFFSET.x + tile->getX() * TileGraphic::TILE_WIDTH;
-    int y =
-        UserInterface::MAP_OFFSET.y + tile->getY() * TileGraphic::TILE_WIDTH;
+    int x = LairEditor::MAP_OFFSET.x + tile->getX() * TileGraphic::TILE_WIDTH;
+    int y = LairEditor::MAP_OFFSET.y + tile->getY() * TileGraphic::TILE_WIDTH;
     auto [cx, cy] = m_current.peek();
     auto [tx, ty] = m_current.peek(1.f);
 

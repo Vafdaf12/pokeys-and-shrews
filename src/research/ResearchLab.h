@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <ostream>
 
 #include "ResearchTask.h"
 
