@@ -4,6 +4,7 @@
 
 namespace gfx {
 class Frame : public DrawableDecorator {
+public:
     Frame(std::unique_ptr<Drawable> internal, int padding);
 
     virtual void draw() override;

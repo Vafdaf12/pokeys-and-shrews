@@ -52,6 +52,11 @@ public:
         return static_cast<D*>(_pInternal.get());
     }
 
+    template <IsDrawable D = Drawable>
+    inline D* unwrap() {
+        return static_cast<D*>(_pInternal.release());
+    }
+
 protected:
     inline DrawableDecorator(std::unique_ptr<Drawable> internal)
         : _pInternal(std::move(internal)) {}

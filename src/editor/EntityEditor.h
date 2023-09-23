@@ -10,7 +10,6 @@
 #include <map>
 #include <vector>
 
-
 class TileEntity;
 
 class EntityEditor : public gfx::Graphic, public GameObject {
@@ -20,9 +19,9 @@ public:
     void draw() override;
     void update(float dt) override;
 
-    void addEntity(TileEntity* entity);
+    void addEntity(const TileEntity* entity);
 
-    inline TileEntity* getActive() { return m_pActive; }
+    inline const TileEntity* getActive() { return m_pActive; }
 
     inline Rectangle getBoundingBox() const override {
         assert(false && "Not bounding box for entity editor");
@@ -30,8 +29,10 @@ public:
     }
 
 private:
+    void setActive(const TileEntity* active);
+
     Font m_font;
 
-    TileEntity* m_pActive = nullptr;
-    std::map<TileEntity*, ui::Button> m_available;
+    const TileEntity* m_pActive = nullptr;
+    std::map<const TileEntity*, gfx::Drawable*> m_available;
 };

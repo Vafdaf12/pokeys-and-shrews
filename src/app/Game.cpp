@@ -28,7 +28,7 @@ void Game::init() {
     _storyteller = std::make_unique<Storyteller>(3, 3);
     _gui = std::make_unique<UserInterface>(_font);
     _entityEditor = std::make_unique<EntityEditor>(_font);
-    _entityEditor->setPosition({0, 200});
+    _entityEditor->setPosition({20, 200});
 
     _engine = std::make_unique<Engine>(_lab.get(),
         _bank.get(),
@@ -46,6 +46,10 @@ void Game::init() {
 
     _researchQueue.push(new DamageTrap(2, _engine.get()));
     _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
+    if (_engine->researchRequested(nullptr,
+            new TrapResearch(_researchQueue.front(), 5.f, 10, _engine.get()))) {
+        _researchQueue.pop();
+    }
 }
 
 void Game::execute() {
