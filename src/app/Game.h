@@ -3,7 +3,7 @@
 
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
-#include "editor/EntityEditor.h"
+#include "editor/TrapSelector.h"
 #include "entity/Bank.h"
 #include "raylib.h"
 #include "research/ResearchLab.h"
@@ -36,7 +36,7 @@ private:
     std::unique_ptr<UserInterface> _gui;
     std::unique_ptr<Bank> _bank;
     std::unique_ptr<Storyteller> _storyteller;
-    std::unique_ptr<EntityEditor> _entityEditor;
+    std::unique_ptr<TrapSelector> _trapSelector;
 
     // Utility & Debug
     std::queue<TileEntity*> _researchQueue;

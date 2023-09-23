@@ -3,7 +3,7 @@
 #include "core/Engine.h"
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
-#include "editor/EntityEditor.h"
+#include "editor/TrapSelector.h"
 #include "entity/Bank.h"
 #include "entity/DamageTrap.h"
 #include "entity/TeleportTrap.h"
@@ -29,15 +29,15 @@ void Game::init() {
     _bank = std::make_unique<Bank>(100);
     _storyteller = std::make_unique<Storyteller>(3, 3);
     _gui = std::make_unique<UserInterface>(_font);
-    _entityEditor = std::make_unique<EntityEditor>(_font);
-    _entityEditor->setPosition({20, 200});
+    _trapSelector = std::make_unique<TrapSelector>(_font);
+    _trapSelector->setPosition({20, 200});
 
     _engine = std::make_unique<Engine>(_lab.get(),
         _bank.get(),
         _lair.get(),
         _gui.get(),
         _storyteller.get(),
-        _entityEditor.get());
+        _trapSelector.get());
 
     _gui->setEngine(_engine.get());
     _lair->setEngine(_engine.get());
@@ -96,7 +96,7 @@ void Game::update(float dt) {
     _lab->update(dt);
     _storyteller->update(dt);
     _gui->update(dt);
-    _entityEditor->update(dt);
+    _trapSelector->update(dt);
     _engine->tileEditor().update(dt);
     _engine->researchManager()->update(dt);
 }
@@ -105,7 +105,7 @@ void Game::draw() {
     _engine->tileEditor().draw();
     _gui->draw();
     _engine->researchManager()->draw();
-    _entityEditor->draw();
+    _trapSelector->draw();
 }
 
 void Game::loadMap(const std::string& path) {

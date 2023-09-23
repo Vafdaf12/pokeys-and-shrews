@@ -3,7 +3,7 @@
 
 #include "core/Storyteller.h"
 #include "core/UserInterface.h"
-#include "editor/EntityEditor.h"
+#include "editor/TrapSelector.h"
 #include "entity/Bank.h"
 #include "raylib.h"
 #include "research/ResearchLab.h"

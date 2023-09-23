@@ -1,10 +1,11 @@
 #pragma once
 
-#include "editor/EntityEditor.h"
 #include "editor/LairEditor.h"
 #include "editor/ResearchManager.h"
+#include "editor/TrapSelector.h"
 #include "render/Drawable.h"
 #include <map>
+
 
 class UserInterface;
 class Storyteller;
@@ -24,7 +25,7 @@ public:
         Lair* pLair,
         UserInterface* pMenu,
         Storyteller* pStoryteller,
-        EntityEditor* ee)
+        TrapSelector* ee)
         : m_pStoryteller(pStoryteller), m_pMenu(pMenu), m_pLab(pLab),
           m_pBank(pBank), m_pLair(pLair), m_entityEditor(ee),
           m_tileEditor(pLair, this), m_researchManager(this) {}
@@ -88,7 +89,7 @@ private:
     ResearchLab* m_pLab = nullptr;
     Bank* m_pBank = nullptr;
     Lair* m_pLair = nullptr;
-    EntityEditor* m_entityEditor = nullptr;
+    TrapSelector* m_entityEditor = nullptr;
 
     LairEditor m_tileEditor;
     ResearchManager m_researchManager;

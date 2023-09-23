@@ -1,4 +1,4 @@
-#include "EntityEditor.h"
+#include "TrapSelector.h"
 
 #include "core/Resources.h"
 #include "graphics/TileGraphic.h"
@@ -11,18 +11,18 @@
 #include "ui/Button.h"
 #include "util/util.h"
 
-void EntityEditor::draw() {
+void TrapSelector::draw() {
     for (auto& [e, btn] : m_available) {
         btn->draw();
     }
 }
-void EntityEditor::update(float dt) {
+void TrapSelector::update(float dt) {
     for (auto& [e, btn] : m_available) {
         btn->update(dt);
     }
 }
 
-void EntityEditor::setActive(const TileEntity* active) {
+void TrapSelector::setActive(const TileEntity* active) {
     if (active == m_pActive) return;
 
     // Add new decorated frame
@@ -51,7 +51,7 @@ void EntityEditor::setActive(const TileEntity* active) {
 
     m_pActive = active;
 }
-void EntityEditor::addEntity(const TileEntity* entity) {
+void TrapSelector::addEntity(const TileEntity* entity) {
     assert(entity);
 
     float y = m_position.y;
@@ -63,4 +63,26 @@ void EntityEditor::addEntity(const TileEntity* entity) {
             [=]() { setActive(this->m_pActive == entity ? nullptr : entity); });
     btn->getInternal<gfx::Graphic>()->setPosition({m_position.x, y});
     m_available.emplace(entity, btn);
+    layout();
+}
+void TrapSelector::layout() {
+    size_t i = 0;
+    for (auto& [p, btn] : m_available) {
+        int x = i % 2;
+        int y = i / 2;
+        gfx::Graphic* g;
+        if (m_pActive == p) {
+            g = static_cast<gfx::Frame*>(btn)
+                    ->getInternal<ui::Button>()
+                    ->getInternal<gfx::Graphic>();
+        } else {
+            g = static_cast<ui::Button*>(btn)->getInternal<gfx::Graphic>();
+        }
+        Vector2 v = OFFSET;
+        v.x += x * WIDTH.x;
+        v.y += y * WIDTH.y;
+        g->setPosition(v);
+
+        i++;
+    }
 }

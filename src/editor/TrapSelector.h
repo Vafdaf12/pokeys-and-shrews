@@ -12,9 +12,9 @@
 
 class TileEntity;
 
-class EntityEditor : public gfx::Graphic {
+class TrapSelector : public gfx::Graphic {
 public:
-    EntityEditor(Font font) : m_font(font) {}
+    TrapSelector(Font font) : m_font(font) {}
 
     void draw() override;
     void update(float dt) override;
@@ -29,7 +29,11 @@ public:
     }
 
 private:
+    static constexpr gfx::Vec2 OFFSET = {20, 390};
+    static constexpr gfx::Vec2 WIDTH = {75, 75};
+
     void setActive(const TileEntity* active);
+    void layout();
 
     Font m_font;
 
