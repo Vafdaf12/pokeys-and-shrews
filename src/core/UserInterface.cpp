@@ -68,13 +68,13 @@ void UserInterface::update(float dt) {
 void UserInterface::addResearch(ResearchTask* task) {
     float y = m_balance.getBoundingBox().height + 20;
     for (const auto& [task, btn] : m_research) {
-        y += btn.getGraphic()->getBoundingBox().height + 5;
+        y += btn.getInternal()->getBoundingBox().height + 5;
     }
-    ui::Button btn(task->createGraphic(), [=]() {
+    ui::Button btn(std::unique_ptr<gfx::Graphic>(task->createGraphic()), [=]() {
         if (m_pEngine) m_pEngine->researchCancelled(this, task);
     });
 
-    btn.getGraphic()->setPosition({0, y});
+    btn.getInternal<gfx::Graphic>()->setPosition({0, y});
     m_research.emplace_back(task, std::move(btn));
 }
 void UserInterface::addHero(Hero* task) {
@@ -95,7 +95,7 @@ bool UserInterface::removeResearch(ResearchTask* task) {
 
     float y = m_balance.getBoundingBox().height + 20;
     for (auto& [task, btn] : m_research) {
-        gfx::Graphic* label = btn.getGraphic();
+        gfx::Graphic* label = btn.getInternal<gfx::Graphic>();
         label->setPosition({0, y});
         y += label->getBoundingBox().height + 5;
     }

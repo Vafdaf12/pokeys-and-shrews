@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <type_traits>
 
 #include "raylib.h"
 
@@ -26,6 +27,9 @@ public:
     virtual Rect getBoundingBox() const = 0;
 };
 
+template <class T>
+concept IsDrawable = std::is_base_of<Drawable, T>::value;
+
 class Graphic : public Drawable {
 public:
     inline void setPosition(Vector2 pos) { m_position = pos; }
@@ -43,7 +47,10 @@ public:
         return _pInternal->getBoundingBox();
     };
 
-    inline Drawable* getInternal() const { return _pInternal.get(); }
+    template <IsDrawable D = Drawable>
+    inline D* getInternal() const {
+        return static_cast<D*>(_pInternal.get());
+    }
 
 protected:
     inline DrawableDecorator(std::unique_ptr<Drawable> internal)

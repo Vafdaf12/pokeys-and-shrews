@@ -11,22 +11,18 @@ namespace ui {
 
 // TODO: Button is currently completely loose-standing, but it might benefit to
 // implement it as a decorator
-class Button {
+class Button : public gfx::DrawableDecorator {
 public:
     using ClickHandler = std::function<void()>;
 
-    inline Button(gfx::Graphic* graphic, ClickHandler cb)
-        : m_pGraphic(graphic), m_callback(cb) {}
+    inline Button(std::unique_ptr<gfx::Drawable> graphic, ClickHandler cb)
+        : gfx::DrawableDecorator(std::move(graphic)), m_callback(cb) {}
 
     void update(float dt);
 
-    inline void draw() { m_pGraphic->draw(); }
-
-    inline gfx::Graphic* getGraphic() const { return m_pGraphic; }
     inline void onClick(ClickHandler h) { m_callback = h; }
 
 private:
-    gfx::Graphic* m_pGraphic;
     ClickHandler m_callback;
 };
 } // namespace ui
