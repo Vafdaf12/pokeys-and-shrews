@@ -20,6 +20,8 @@ public:
     Tile* addTile(int x, int y);
     Tile* getTile(int x, int y);
 
+    void update(float dt);
+
     bool addEntity(int x, int y, TileEntity* entity);
     bool removeEntity(int x, int y);
 

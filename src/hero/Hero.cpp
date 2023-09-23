@@ -24,12 +24,16 @@ void Hero::update(float dt) {
         while (m_movement.isComplete())
             m_movement.tick();
         m_pExplorer->next();
+        m_interactTimer.reset();
     }
 
+    m_interactTimer.update(dt);
+    if (!m_interactTimer.isComplete()) return;
     Tile* tile = m_pExplorer->get();
     assert(tile);
     TileEntity* trap = tile->getEntity();
     if (trap) trap->interact(*this);
+    m_interactTimer.reset();
 }
 
 void Hero::stun(float time) {

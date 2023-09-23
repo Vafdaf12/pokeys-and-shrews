@@ -1,5 +1,6 @@
 #include "Lair.h"
 #include "core/Engine.h"
+#include "entity/TileEntity.h"
 
 #include <cassert>
 #include <memory>
@@ -119,4 +120,11 @@ std::string Lair::toString() const {
         else out << m_tiles[i]->toString();
     }
     return out.str().substr(1);
+}
+void Lair::update(float dt) {
+    for (auto& tile : m_tiles) {
+        if (!tile) continue;
+        if (!tile->getEntity()) continue;
+        tile->getEntity()->update(dt);
+    }
 }

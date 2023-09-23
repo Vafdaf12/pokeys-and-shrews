@@ -32,6 +32,7 @@ public:
     inline uint32_t getDamage() const { return m_damage; }
 
 private:
+    Timer m_interactTimer = Timer(0.2f);
     Timer m_stunTimer;
     Timer m_movement;
     LairExplorer* m_pExplorer;

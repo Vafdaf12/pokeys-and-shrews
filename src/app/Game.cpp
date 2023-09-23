@@ -93,6 +93,7 @@ void Game::handleInput() {
     }
 }
 void Game::update(float dt) {
+    _lair->update(dt);
     _lab->update(dt);
     _storyteller->update(dt);
     _gui->update(dt);
