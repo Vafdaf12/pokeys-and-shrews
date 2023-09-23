@@ -17,7 +17,7 @@
 #include "research/TrapResearch.h"
 
 void Game::init() {
-    srand(time(nullptr));
+    srand(static_cast<unsigned int>(time(nullptr)));
 
     InitWindow(800, 600, "Pokeys & Shrews");
     _font = LoadFont("res/Monocraft-no-ligatures.ttf");
@@ -25,7 +25,7 @@ void Game::init() {
     _lab = std::make_unique<ResearchLab>();
     _lair = std::make_unique<Lair>(11, 11);
     _bank = std::make_unique<Bank>(100);
-    _storyteller = std::make_unique<Storyteller>(3);
+    _storyteller = std::make_unique<Storyteller>(3, 3);
     _gui = std::make_unique<UserInterface>(_font);
     _entityEditor = std::make_unique<EntityEditor>(_font);
     _entityEditor->setPosition({0, 200});
@@ -53,7 +53,11 @@ void Game::execute() {
     traps.push(new DamageTrap(2, _engine.get()));
     traps.push(new TeleportTrap(2.f, _engine.get()));
 
-    while (!WindowShouldClose()) {
+    while (!_engine->shouldQuit()) {
+        if (WindowShouldClose()) {
+            _engine->quit();
+            continue;
+        }
         handleInput();
         update(GetFrameTime());
         BeginDrawing();

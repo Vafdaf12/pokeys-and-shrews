@@ -7,6 +7,7 @@
 #include "hero/Hero.h"
 #include "lair/Lair.h"
 #include "lair/Tile.h"
+#include "raylib.h"
 #include "research/ResearchLab.h"
 #include "research/ResearchTask.h"
 
@@ -97,10 +98,7 @@ void Engine::heroDied(GameObject* sender, Hero* hero) {
     m_pStoryteller->killHero(hero);
 }
 void Engine::heroInteracted(TileEntity* entity, Hero* hero) {
-    if (entity == m_pBank) {
-        std::cout << "[ENGINE] bank discovered!!!" << std::endl;
-        quit();
-    }
+    if (entity == m_pBank) gameOver(entity);
 }
 void Engine::tileEntityAdded(
     GameObject* sender, Tile* tile, TileEntity* entity) {
@@ -125,8 +123,20 @@ void Engine::trapUnlocked(GameObject* sender, TileEntity* entity) {
 }
 void Engine::waveProgressed(uint32_t required, uint32_t current) {
     m_pMenu->setProgress(current, required);
-    if (current >= required) {
-        m_pLair->reset();
-        m_pStoryteller->reset();
-    }
+}
+
+void Engine::waveCompleted(GameObject* sender) {
+    std::cout << "[ENGINE] Wave completed!!" << std::endl;
+    m_pLair->reset();
+    m_pStoryteller->reset();
+
+    m_pStoryteller->nextWave();
+}
+void Engine::gameWon(GameObject* sender) {
+    std::cout << "[ENGINE] You defeated all the heroes!!" << std::endl;
+    m_shouldQuit = true;
+}
+void Engine::gameOver(GameObject* sender) {
+    std::cout << "[ENGINE] bank discovered!!!" << std::endl;
+    m_shouldQuit = true;
 }

@@ -10,8 +10,9 @@ class Hero;
 
 class Storyteller : public GameObject {
 public:
-    inline Storyteller(uint32_t required, Engine* engine = nullptr)
-        : GameObject(engine), m_required(required) {}
+    inline Storyteller(
+        uint32_t required, uint32_t waves, Engine* engine = nullptr)
+        : GameObject(engine), m_totalWaves(waves), m_required(required) {}
 
     void addSpawnTile(Tile* tile);
     bool removeSpawnTile(Tile* tile);
@@ -21,11 +22,14 @@ public:
     Hero* spawnHero();
     void killHero(Hero* hero);
 
-    void nextWave(uint32_t required);
+    void nextWave();
 
     void reset();
 
 private:
+    uint32_t m_currentWave = 0;
+    uint32_t m_totalWaves;
+
     uint32_t m_required;
     uint32_t m_current = 0;
     Timer m_spawnTimer = Timer(3);

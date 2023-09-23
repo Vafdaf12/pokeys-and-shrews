@@ -32,7 +32,9 @@ void Storyteller::killHero(Hero* hero) {
     m_heroes.pop_back();
     m_current++;
     if (m_pEngine) {
-        m_pEngine->waveProgressed(m_required, m_current);
+        if (m_current < m_required)
+            m_pEngine->waveProgressed(m_required, m_current);
+        else m_pEngine->waveCompleted(this);
     }
 }
 void Storyteller::update(float dt) {
@@ -54,4 +56,15 @@ void Storyteller::reset() {
     }
     m_heroes.clear();
     m_spawnTimer.reset();
+    if (m_pEngine) m_pEngine->waveProgressed(m_required, 0);
+}
+
+void Storyteller::nextWave() {
+    m_currentWave++;
+    m_required += 2;
+    if (m_currentWave >= m_totalWaves) {
+        if (m_pEngine) m_pEngine->gameWon(this);
+        return;
+    }
+    if (m_pEngine) m_pEngine->waveProgressed(m_required, 0);
 }

@@ -25,6 +25,8 @@ public:
     /// Withdraws the given amount from the bank
     void withdraw(int amt);
 
+    inline void setBalance(int b) { m_balance = b; }
+
     ///@return Whether there are sufficient funds for a withdrawl
     bool sufficientFunds(int amt) const;
 
