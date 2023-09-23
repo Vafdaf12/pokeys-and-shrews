@@ -94,6 +94,7 @@ void Game::update(float dt) {
     _engine->tileEditor().update(dt);
 }
 void Game::draw() {
+    ClearBackground({103, 30, 19, 255});
     _engine->tileEditor().draw();
     _gui->draw();
     _entityEditor->draw();

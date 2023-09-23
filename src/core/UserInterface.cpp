@@ -29,7 +29,6 @@ void UserInterface::setProgress(uint32_t current, uint32_t total) {
 }
 
 void UserInterface::draw() {
-    ClearBackground({255, 255, 255, 255});
 
     m_balance.setPosition({0, 0});
     std::vector<ui::Label*> labels = {&m_balance, &m_progress};

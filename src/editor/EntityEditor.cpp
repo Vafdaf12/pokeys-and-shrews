@@ -1,5 +1,7 @@
 #include "EntityEditor.h"
 
+#include "core/Resources.h"
+#include "graphics/TileGraphic.h"
 #include "raylib.h"
 #include <algorithm>
 
@@ -26,8 +28,13 @@ void EntityEditor::setActive(const TileEntity* active) {
     // Add new decorated frame
     if (!m_pActive) {
         gfx::Drawable* g = m_available[active];
-        m_available[active] =
-            new gfx::Frame(std::unique_ptr<gfx::Drawable>(g), 10);
+        const static float p = 4;
+        const static Texture2D tex =
+            Resources::getTexture("res/frame_small.png");
+
+        float s = TileGraphic::TILE_WIDTH;
+        m_available[active] = new gfx::Frame(
+            tex, std::unique_ptr<gfx::Drawable>(g), p, s, gfx::Frame::Fg);
     }
 
     // Remove frame
