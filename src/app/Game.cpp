@@ -6,6 +6,7 @@
 #include "editor/TrapSelector.h"
 #include "entity/Bank.h"
 #include "entity/DamageTrap.h"
+#include "entity/StunTrap.h"
 #include "entity/TeleportTrap.h"
 #include "graphics/TileGraphic.h"
 #include "lair/Lair.h"
@@ -13,6 +14,7 @@
 #include <memory>
 #include <queue>
 #include <stdlib.h>
+
 
 #include "research/ResearchLab.h"
 #include "research/TrapResearch.h"
@@ -50,6 +52,7 @@ void Game::init() {
 
     _researchQueue.push(new DamageTrap(2, _engine.get()));
     _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
+    _researchQueue.push(new StunTrap(3.f, 10.f, _engine.get()));
 }
 
 void Game::execute() {
