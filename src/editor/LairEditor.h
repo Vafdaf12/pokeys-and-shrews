@@ -7,14 +7,13 @@
 #include <map>
 #include <memory>
 
-
 class Tile;
 class TileEntity;
 class Lair;
 
 class LairEditor : public GameObject, public gfx::Graphic {
 public:
-    constexpr static Vector2 MAP_OFFSET = {200, 20};
+    constexpr static Vector2 MAP_OFFSET = {190, 90};
 
     inline LairEditor(Lair* pLair, Engine* pEngine)
         : GameObject(pEngine), m_pLair(pLair) {}

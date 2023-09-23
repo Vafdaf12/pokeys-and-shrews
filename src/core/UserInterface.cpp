@@ -17,10 +17,19 @@
 #include <sstream>
 #include <utility>
 
+UserInterface::UserInterface(Font font, Engine* pEngine)
+    : GameObject(pEngine), m_font(font),
+      m_uiFrame(Resources::getTexture("res/ui_empty.png")),
+      m_balance(font, "??"), m_progress(font, "0/0") {
+    static Color textColor = {255, 211, 0, 255};
+    m_progress.setForeground(textColor);
+    m_balance.setPosition({70, 17});
+    m_balance.setForeground(textColor);
+    m_progress.setPosition({680, 17});
+    ;
+}
 void UserInterface::setBalance(int balance) {
-    std::stringstream s;
-    s << "$ " << balance;
-    m_balance.setText(s.str());
+    m_balance.setText(std::to_string(balance));
 }
 void UserInterface::setProgress(uint32_t current, uint32_t total) {
     std::stringstream s;
@@ -28,14 +37,13 @@ void UserInterface::setProgress(uint32_t current, uint32_t total) {
     m_progress.setText(s.str());
 }
 
-void UserInterface::draw() {
+void UserInterface::reload() {
 
-    m_balance.setPosition({0, 0});
-    std::vector<ui::Label*> labels = {&m_balance, &m_progress};
-    for (int i = 1; i < labels.size(); i++) {
-        Rectangle rect = labels[i - 1]->getBoundingBox();
-        labels[i]->setPosition({rect.x + rect.width + 20, rect.y});
-    }
+    m_uiFrame = Resources::getTexture("res/ui_empty.png", true);
+}
+void UserInterface::draw() {
+    float scale = float(GetScreenWidth()) / m_uiFrame.width;
+    DrawTextureEx(m_uiFrame, {0, 0}, 0, scale, WHITE);
 
     for (const auto& p : m_graphics) {
         p.second->draw();

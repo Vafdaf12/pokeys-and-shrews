@@ -12,6 +12,7 @@
 #include "raylib.h"
 #include <memory>
 #include <queue>
+#include <stdlib.h>
 
 #include "research/ResearchLab.h"
 #include "research/TrapResearch.h"
@@ -23,7 +24,7 @@ void Game::init() {
     _font = LoadFont("res/Monocraft-no-ligatures.ttf");
 
     _lab = std::make_unique<ResearchLab>();
-    _lair = std::make_unique<Lair>(11, 11);
+    _lair = std::make_unique<Lair>(12, 10);
     _bank = std::make_unique<Bank>(100);
     _storyteller = std::make_unique<Storyteller>(3, 3);
     _gui = std::make_unique<UserInterface>(_font);
@@ -79,6 +80,9 @@ void Game::handleInput() {
             _researchQueue.pop();
         }
     }
+    if (IsKeyReleased(KEY_SPACE)) {
+        _gui->reload();
+    }
     if (IsKeyReleased(KEY_UP)) {
         _bank->deposit(1);
     }
@@ -98,6 +102,9 @@ void Game::draw() {
     _engine->tileEditor().draw();
     _gui->draw();
     _entityEditor->draw();
+
+    auto [x, y] = GetMousePosition();
+    printf("%i, %i\n", (int)x, (int)y);
 }
 
 void Game::loadMap(const std::string& path) {

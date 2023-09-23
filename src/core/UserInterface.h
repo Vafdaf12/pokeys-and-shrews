@@ -2,6 +2,7 @@
 
 #include "core/Engine.h"
 #include "core/GameObject.h"
+#include "core/Resources.h"
 #include "core/UserInterface.h"
 #include "raylib.h"
 #include "render/Drawable.h"
@@ -20,9 +21,9 @@ class UserInterface : public gfx::Graphic, public GameObject {
 public:
     constexpr static Vector2 MAP_OFFSET = {200, 20};
 
-    UserInterface(Font font, Engine* pEngine = nullptr)
-        : GameObject(pEngine), m_font(font), m_balance(font, "$"),
-          m_progress(font, "0/0") {}
+    UserInterface(Font font, Engine* pEngine = nullptr);
+
+    void reload();
 
     /// Sets the displayed bank balance
     void setBalance(int balance);
@@ -47,6 +48,8 @@ public:
 
 private:
     Font m_font;
+    Texture2D m_uiFrame;
+
     ui::Label m_balance;
     ui::Label m_progress;
     std::map<const void*, std::unique_ptr<Graphic>> m_graphics;
