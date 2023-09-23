@@ -95,7 +95,7 @@ bool UserInterface::removeResearch(ResearchTask* task) {
 
     float y = m_balance.getBoundingBox().height + 20;
     for (auto& [task, btn] : m_research) {
-        Graphic* label = btn.getGraphic();
+        gfx::Graphic* label = btn.getGraphic();
         label->setPosition({0, y});
         y += label->getBoundingBox().height + 5;
     }

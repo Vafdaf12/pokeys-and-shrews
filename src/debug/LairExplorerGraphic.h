@@ -1,12 +1,12 @@
 #pragma once
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 
 #include <vector>
 
 class LairExplorer;
 
-class LairExplorerGraphic : public Graphic {
+class LairExplorerGraphic : public gfx::Graphic {
 public:
     LairExplorerGraphic(LairExplorer* explorer);
 

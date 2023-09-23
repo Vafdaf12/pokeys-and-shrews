@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 
 class Tile;
 
-class TileGraphic : public Graphic {
+class TileGraphic : public gfx::Graphic {
 public:
     TileGraphic(const Tile* tile, int x = 0, int y = 0);
 

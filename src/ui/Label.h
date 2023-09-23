@@ -1,12 +1,12 @@
 #pragma once
-#include "core/Graphic.h"
+#include "render/Drawable.h"
 
 #include "raylib.h"
 
 #include <string>
 
 namespace ui {
-class Label : public Graphic {
+class Label : public gfx::Graphic {
 public:
     Label(Font f, const std::string& text);
 

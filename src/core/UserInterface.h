@@ -2,9 +2,9 @@
 
 #include "core/Engine.h"
 #include "core/GameObject.h"
-#include "core/Graphic.h"
 #include "core/UserInterface.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 #include "ui/Button.h"
 #include "ui/Label.h"
 
@@ -16,7 +16,7 @@ class Tile;
 class Hero;
 class ResearchTask;
 
-class UserInterface : public Graphic, public GameObject {
+class UserInterface : public gfx::Graphic, public GameObject {
 public:
     constexpr static Vector2 MAP_OFFSET = {200, 20};
 

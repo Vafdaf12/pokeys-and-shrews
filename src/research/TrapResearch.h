@@ -15,7 +15,7 @@ public:
 
     void complete() override;
     void cancel() override;
-    Graphic* createGraphic() const override;
+    gfx::Graphic* createGraphic() const override;
 
     inline std::string toString() const override {
         std::stringstream s;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 #include "ui/Label.h"
 #include <functional>
 #include <memory>
@@ -15,18 +15,18 @@ class Button {
 public:
     using ClickHandler = std::function<void()>;
 
-    inline Button(Graphic* graphic, ClickHandler cb)
+    inline Button(gfx::Graphic* graphic, ClickHandler cb)
         : m_pGraphic(graphic), m_callback(cb) {}
 
     void update(float dt);
 
     inline void draw() { m_pGraphic->draw(); }
 
-    inline Graphic* getGraphic() const { return m_pGraphic; }
+    inline gfx::Graphic* getGraphic() const { return m_pGraphic; }
     inline void onClick(ClickHandler h) { m_callback = h; }
 
 private:
-    Graphic* m_pGraphic;
+    gfx::Graphic* m_pGraphic;
     ClickHandler m_callback;
 };
 } // namespace ui

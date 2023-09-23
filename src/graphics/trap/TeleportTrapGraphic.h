@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 
 class TeleportTrap;
 
-class TeleportTrapGraphic : public Graphic {
+class TeleportTrapGraphic : public gfx::Graphic {
 public:
     TeleportTrapGraphic(const TeleportTrap* trap);
     void draw() override;

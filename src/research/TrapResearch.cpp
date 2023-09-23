@@ -10,6 +10,6 @@ void TrapResearch::complete() {
 void TrapResearch::cancel() {
     if (m_pEngine) m_pEngine->researchCancelled(this, this);
 }
-Graphic* TrapResearch::createGraphic() const {
+gfx::Graphic* TrapResearch::createGraphic() const {
     return new TrapResearchGraphic(this);
 }

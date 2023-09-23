@@ -1,16 +1,18 @@
 #pragma once
 
 #include "core/GameObject.h"
-#include "core/Graphic.h"
+#include "render/Drawable.h"
 
+#include <cassert>
 #include <map>
 #include <memory>
+
 
 class Tile;
 class TileEntity;
 class Lair;
 
-class LairEditor : public GameObject, public Graphic {
+class LairEditor : public GameObject, public gfx::Graphic {
 public:
     constexpr static Vector2 MAP_OFFSET = {200, 20};
 

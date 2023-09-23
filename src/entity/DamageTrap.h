@@ -18,7 +18,7 @@ public:
     inline TileEntity* clone() const override {
         return new DamageTrap(m_damage, m_pEngine);
     }
-    inline Graphic* createGraphic() const override {
+    inline gfx::Graphic* createGraphic() const override {
         return new DamageTrapGraphic(this);
     }
 

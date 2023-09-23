@@ -10,6 +10,6 @@ void LabelResearch::complete() {
 void LabelResearch::cancel() {
     if (m_pEngine) m_pEngine->researchCancelled(this, this);
 }
-Graphic* LabelResearch::createGraphic() const {
+gfx::Graphic* LabelResearch::createGraphic() const {
     return new ui::Label(GetFontDefault(), m_text);
 }

@@ -1,17 +1,19 @@
 #pragma once
 
 #include "core/GameObject.h"
-#include "core/Graphic.h"
 #include "lair/Lair.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 #include "ui/Button.h"
 
+#include <cassert>
 #include <map>
 #include <vector>
 
+
 class TileEntity;
 
-class EntityEditor : public Graphic, public GameObject {
+class EntityEditor : public gfx::Graphic, public GameObject {
 public:
     EntityEditor(Font font) : GameObject(nullptr), m_font(font) {}
 

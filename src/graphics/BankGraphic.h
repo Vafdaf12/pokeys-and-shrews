@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 
 class Bank;
 
-class BankGraphic : public Graphic {
+class BankGraphic : public gfx::Graphic {
 public:
     BankGraphic(const Bank* trap);
     void draw() override;

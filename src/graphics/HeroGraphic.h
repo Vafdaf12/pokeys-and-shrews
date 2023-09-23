@@ -1,12 +1,12 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 #include "tweeny.h"
 
 class Hero;
 
-class HeroGraphic : public Graphic {
+class HeroGraphic : public gfx::Graphic {
 public:
     HeroGraphic(const Hero* explorer);
 

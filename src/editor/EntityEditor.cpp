@@ -28,7 +28,7 @@ void EntityEditor::addEntity(TileEntity* entity) {
 
     float y = m_position.y;
     for (const auto& [e, btn] : m_available) {
-        Graphic* g = btn.getGraphic();
+        gfx::Graphic* g = btn.getGraphic();
         y += g->getBoundingBox().height + 5;
     }
     ui::Button btn(entity->createGraphic(), [=]() {

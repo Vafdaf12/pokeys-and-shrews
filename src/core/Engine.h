@@ -2,6 +2,7 @@
 
 #include "editor/EntityEditor.h"
 #include "editor/LairEditor.h"
+#include "render/Drawable.h"
 #include <map>
 
 class UserInterface;
@@ -9,7 +10,6 @@ class Storyteller;
 class ResearchTask;
 class ResearchLab;
 class Bank;
-class Graphic;
 class Lair;
 class Tile;
 class Hero;

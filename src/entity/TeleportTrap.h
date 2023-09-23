@@ -15,7 +15,7 @@ public:
     inline TileEntity* clone() const override {
         return new TeleportTrap(m_cooldown.getTime(), m_pEngine);
     }
-    inline Graphic* createGraphic() const override {
+    inline gfx::Graphic* createGraphic() const override {
         return new TeleportTrapGraphic(this);
     }
 

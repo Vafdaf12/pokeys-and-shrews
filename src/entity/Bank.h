@@ -32,7 +32,7 @@ public:
 
     void interact(Hero& hero) override;
 
-    inline Graphic* createGraphic() const override {
+    inline gfx::Graphic* createGraphic() const override {
         return new BankGraphic(this);
     }
 

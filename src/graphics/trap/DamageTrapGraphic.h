@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Graphic.h"
 #include "raylib.h"
+#include "render/Drawable.h"
 
 class DamageTrap;
 
-class DamageTrapGraphic : public Graphic {
+class DamageTrapGraphic : public gfx::Graphic {
 public:
     DamageTrapGraphic(const DamageTrap* trap);
     void draw() override;

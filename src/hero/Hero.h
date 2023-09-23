@@ -16,7 +16,7 @@ public:
         Engine* pEngine = nullptr);
 
     friend class HeroGraphic;
-    inline Graphic* createGraphic() const override {
+    inline gfx::Graphic* createGraphic() const override {
         return new HeroGraphic(this);
     }
 
