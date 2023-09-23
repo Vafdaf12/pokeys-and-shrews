@@ -23,7 +23,8 @@ void TileGraphic::draw() {
     }
 
     Texture2D tex;
-    if (m_tile->m_fortified) tex = Resources::getTexture("res/tile.png");
+    if (m_tile->m_fortified)
+        tex = Resources::getTexture("res/tile_fortified.png");
     else tex = Resources::getTexture("res/tile_raw.png");
 
     float scale = TileGraphic::TILE_WIDTH / float(tex.width);

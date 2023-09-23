@@ -101,7 +101,7 @@ void Game::update(float dt) {
     _engine->researchManager()->update(dt);
 }
 void Game::draw() {
-    ClearBackground({103, 30, 19, 255});
+    ClearBackground({74, 13, 4, 255});
     _engine->tileEditor().draw();
     _gui->draw();
     _engine->researchManager()->draw();
