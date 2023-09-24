@@ -126,9 +126,11 @@ void Game::loadMap(const std::string& path) {
         if (isspace(data[i])) continue;
 
         Tile* tile = _lair->addTile(x, y);
+        _bank->deposit(Engine::TILE_COST);
         if (data[i] != '_') {
             _lair->fortifyTile(x, y);
             tile->bake(Tile::FIXED);
+            _bank->deposit(Engine::FORT_COST);
         }
         if (data[i] == 'B') {
             _lair->addEntity(x, y, _bank.get());

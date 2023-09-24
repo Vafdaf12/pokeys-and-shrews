@@ -78,10 +78,10 @@ public:
     inline LairEditor& tileEditor() { return m_tileEditor; }
     inline ResearchManager* researchManager() { return &m_researchManager; }
 
-private:
     static constexpr int TILE_COST = 10;
     static constexpr int FORT_COST = 10;
 
+private:
     bool m_shouldQuit = false;
     Storyteller* m_pStoryteller = nullptr;
     UserInterface* m_pMenu = nullptr;

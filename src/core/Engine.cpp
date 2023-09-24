@@ -103,6 +103,7 @@ void Engine::tileFortified(GameObject* sender, Tile* tile) {
 void Engine::balanceChanged(GameObject* sender, int balance) {
     std::cout << "[ENGINE] balance changed: $" << balance << std::endl;
     m_pMenu->setBalance(balance);
+    if (balance <= 0) gameOver(sender);
 }
 
 void Engine::heroSpawned(GameObject* sender, Hero* hero) {
