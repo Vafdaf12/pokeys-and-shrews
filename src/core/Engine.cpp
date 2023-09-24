@@ -110,14 +110,15 @@ void Engine::heroSpawned(GameObject* sender, Hero* hero) {
     m_pMenu->addHero(hero);
 }
 void Engine::heroDied(GameObject* sender, Hero* hero) {
-    std::cout << "[ENGINE] hero died" << std::endl;
-    // Update GUI
-    m_pMenu->removeHero(hero);
+    // Hero successfully died
+    if (sender == m_pStoryteller) {
+        m_pMenu->removeHero(hero);
+        m_pBank->deposit(hero->getTotalHealth());
+        std::cout << "[ENGINE] hero died" << std::endl;
+        return;
+    }
 
-    // Storyteller is removing heroes
-    if (sender == m_pStoryteller) return;
-
-    m_pBank->deposit(hero->getTotalHealth());
+    // Send request
     m_pStoryteller->killHero(hero);
 }
 void Engine::heroInteracted(TileEntity* entity, Hero* hero) {

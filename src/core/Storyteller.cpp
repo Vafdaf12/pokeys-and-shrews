@@ -28,8 +28,10 @@ Hero* Storyteller::spawnHero() {
 }
 void Storyteller::killHero(Hero* hero) {
     auto it = std::find(m_heroes.begin(), m_heroes.end(), hero);
-    std::swap(*it, m_heroes.back());
-    m_heroes.pop_back();
+    if (m_pEngine) m_pEngine->heroDied(this, hero);
+    delete *it;
+    m_heroes.erase(it);
+
     m_current++;
     if (m_pEngine) {
         if (m_current < m_required)
@@ -44,15 +46,14 @@ void Storyteller::update(float dt) {
         spawnHero();
     }
     if (m_heroes.empty()) return;
-    for (Hero* h : m_heroes) {
+    for (auto& h : m_heroes) {
         h->update(dt);
     }
 }
 void Storyteller::reset() {
     m_current = 0;
-    for (Hero* h : m_heroes) {
+    for (auto& h : m_heroes) {
         if (m_pEngine) m_pEngine->heroDied(this, h);
-        delete h;
     }
     m_heroes.clear();
     m_spawnTimer.reset();
@@ -69,7 +70,7 @@ void Storyteller::nextWave() {
     if (m_pEngine) m_pEngine->waveProgressed(m_required, 0);
 }
 bool Storyteller::isHeroOnTile(const Tile* tile) const {
-    for (Hero* h : m_heroes) {
+    for (auto& h : m_heroes) {
         if (h->getExplorer()->get() == tile) return true;
     }
     return false;
@@ -79,7 +80,7 @@ LairExplorer* Storyteller::createExplorer(Tile* start) {
     int type = rand() % 2;
     switch (type) {
     case 0: return new DepthFirstExplorer(start);
-    case 1: return new BreadthFirstExplorer(start);
+    case 1: return new DepthFirstExplorer(start);
     }
     return nullptr;
 }

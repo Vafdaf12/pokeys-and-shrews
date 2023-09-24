@@ -1,6 +1,7 @@
 #include "Lair.h"
 #include "core/Engine.h"
 #include "entity/TileEntity.h"
+#include "lair/Tile.h"
 
 #include <cassert>
 #include <memory>
@@ -88,23 +89,28 @@ bool Lair::addEntity(int x, int y, TileEntity* entity) {
 bool Lair::removeEntity(int x, int y) {
     Tile* tile = getTile(x, y);
     if (!tile) return false;
-    if (tile->isBaked()) return false;
 
     TileEntity* entity = tile->getEntity();
     if (!entity) return false;
     tile->setEntity(nullptr);
 
     if (m_pEngine) m_pEngine->tileEntityRemoved(this, tile, entity);
+    delete entity;
     return true;
 };
 void Lair::reset() {
-    for (auto& tile : m_tiles) {
-        if (!tile) continue;
-        if (tile->isBaked()) continue;
-        TileEntity* ent = tile->getEntity();
-        if (m_pEngine) {
-            if (ent) m_pEngine->tileEntityRemoved(this, tile.get(), ent);
-            m_pEngine->tileRemoved(this, tile.get());
+    for (size_t y = 0; y < m_height; y++) {
+        for (size_t x = 0; x < m_width; x++) {
+            size_t i = index(x, y);
+            if (!m_tiles[i]) continue;
+            switch (m_tiles[i]->getBakeLevel()) {
+            case Tile::DYNAMIC:
+                removeEntity(x, y);
+                removeTile(x, y);
+                break;
+            case Tile::FIXED: removeEntity(x, y); break;
+            case Tile::STATIC: break;
+            }
         }
     }
 }

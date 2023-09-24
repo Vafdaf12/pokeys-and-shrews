@@ -63,12 +63,13 @@ void Game::execute() {
     traps.push(new TeleportTrap(2.f, _engine.get()));
 
     while (!_engine->shouldQuit()) {
+        handleInput();
+        update(GetFrameTime());
         if (WindowShouldClose()) {
             _engine->quit();
             continue;
         }
-        handleInput();
-        update(GetFrameTime());
+
         BeginDrawing();
         draw();
         EndDrawing();
@@ -127,13 +128,14 @@ void Game::loadMap(const std::string& path) {
         Tile* tile = _lair->addTile(x, y);
         if (data[i] != '_') {
             _lair->fortifyTile(x, y);
+            tile->bake(Tile::FIXED);
         }
         if (data[i] == 'B') {
             _lair->addEntity(x, y, _bank.get());
+            tile->bake(Tile::STATIC);
         }
         if (data[i] == 'T') {
             _lair->addEntity(x, y, new DamageTrap(4, _engine.get()));
         }
-        tile->bake();
     }
 }

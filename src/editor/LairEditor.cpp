@@ -83,7 +83,8 @@ LairEditor::EditAction LairEditor::getAction() const {
         if (!tile->getEntity()) return EditAction::AddEntity;
     }
     if (!tile) return EditAction::None;
-    if (tile->isBaked()) return EditAction::None;
+    Tile::BakeLevel lvl = tile->getBakeLevel();
+    if (lvl > Tile::FIXED) return EditAction::None;
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
         if (!tile->isFortified()) return EditAction::RemoveTile;
