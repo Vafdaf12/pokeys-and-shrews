@@ -37,6 +37,7 @@ bool ResearchLab::cancel(ResearchTask* task) {
     }
     task = it->release();
     task->cancel();
+    task->reset();
     m_queue.erase(it);
     return true;
 }

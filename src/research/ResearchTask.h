@@ -20,6 +20,7 @@ public:
     inline int getCost() const { return m_cost; }
     inline bool isComplete() const { return m_timer.isComplete(); }
     inline float getProgress() const { return m_timer.getProgress(); }
+    inline void reset() { m_timer.reset(); }
 
     /**
      * Updates the research task

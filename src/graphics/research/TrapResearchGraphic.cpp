@@ -11,7 +11,9 @@ void TrapResearchGraphic::draw() {
     m_graphic->setPosition(m_position);
     m_graphic->draw();
     float fac = m_research->getProgress();
-    util::drawProgress(m_graphic->getBoundingBox(), 4, 4, fac, SKYBLUE);
+    if (fac > 0) {
+        util::drawProgress(m_graphic->getBoundingBox(), 4, 4, fac, SKYBLUE);
+    }
 }
 Rectangle TrapResearchGraphic::getBoundingBox() const {
     m_graphic->setPosition(m_position);
