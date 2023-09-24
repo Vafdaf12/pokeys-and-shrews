@@ -21,8 +21,10 @@
 HeroGraphic::HeroGraphic(const Hero* hero) : m_pHero(hero) {
     if (dynamic_cast<DepthFirstExplorer*>(m_pHero->m_pExplorer)) {
         m_texture = Resources::getTexture("res/eduardo.png");
+        m_textureStunned = Resources::getTexture("res/eduardo_stunned.png");
     } else if (dynamic_cast<BreadthFirstExplorer*>(m_pHero->m_pExplorer)) {
         m_texture = Resources::getTexture("res/Hero1.png");
+        m_textureStunned = Resources::getTexture("res/Hero1_stunned.png");
     }
 }
 Color getHealthColor(float fac) {
@@ -42,8 +44,12 @@ void HeroGraphic::draw() {
 
     Color c = getHealthColor(fac);
     Vector2 p{static_cast<float>(x), static_cast<float>(y)};
+    if (!m_pHero->m_stunTimer.isComplete()) {
+        DrawTextureEx(m_textureStunned, p, 0, scale, WHITE);
+    } else {
 
-    DrawTextureEx(m_texture, p, 0, scale, WHITE);
+        DrawTextureEx(m_texture, p, 0, scale, WHITE);
+    }
 
     util::drawProgress(
         {p.x, p.y, TileGraphic::TILE_WIDTH, TileGraphic::TILE_WIDTH},

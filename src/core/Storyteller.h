@@ -29,10 +29,13 @@ public:
 
     bool isHeroOnTile(const Tile* tile) const;
 
+    inline void togglePause() { m_paused = !m_paused; }
+
 private:
     LairExplorer* createExplorer(Tile* start);
     uint32_t m_currentWave = 0;
     uint32_t m_totalWaves;
+    bool m_paused = false;
 
     uint32_t m_required;
     uint32_t m_current = 0;

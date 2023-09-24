@@ -82,7 +82,6 @@ void Engine::tileRemoved(GameObject* sender, Tile* tile) {
             m_pLair->removeTile(tile->getX(), tile->getY());
         return;
     }
-    m_pBank->deposit(TILE_COST);
     m_tileEditor.removeTile(*tile);
     m_pStoryteller->removeSpawnTile(tile);
     std::cout << "[ENGINE] tile removed at: (" << tile->getX() << ", "

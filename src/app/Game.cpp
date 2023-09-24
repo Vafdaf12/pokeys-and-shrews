@@ -89,13 +89,16 @@ void Game::handleInput() {
         _gui->reload();
     }
     if (IsKeyReleased(KEY_UP)) {
-        _bank->deposit(1);
+        _bank->deposit(11);
     }
     if (IsKeyReleased(KEY_DOWN)) {
-        if (_bank->sufficientFunds(1)) _bank->withdraw(1);
+        if (_bank->sufficientFunds(11)) _bank->withdraw(1);
     }
 }
 void Game::update(float dt) {
+    if (IsKeyReleased(KEY_SPACE)) {
+        _storyteller->togglePause();
+    }
     _lair->update(dt);
     _lab->update(dt);
     _storyteller->update(dt);

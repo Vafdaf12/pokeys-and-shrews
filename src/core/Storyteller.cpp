@@ -40,7 +40,9 @@ void Storyteller::killHero(Hero* hero) {
     }
 }
 void Storyteller::update(float dt) {
-    m_spawnTimer.update(dt);
+    if (!m_paused) {
+        m_spawnTimer.update(dt);
+    }
     if (m_spawnTimer.isComplete()) {
         m_spawnTimer.tick();
         spawnHero();
@@ -80,7 +82,7 @@ LairExplorer* Storyteller::createExplorer(Tile* start) {
     int type = rand() % 2;
     switch (type) {
     case 0: return new DepthFirstExplorer(start);
-    case 1: return new DepthFirstExplorer(start);
+    case 1: return new BreadthFirstExplorer(start);
     }
     return nullptr;
 }
