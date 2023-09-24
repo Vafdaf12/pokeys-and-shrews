@@ -5,9 +5,9 @@
 #include "research/ResearchTask.h"
 #include "ui/Button.h"
 
+#include <map>
 #include <set>
 #include <utility>
-#include <vector>
 
 class ResearchTask;
 
@@ -31,5 +31,6 @@ private:
     void layout();
 
     std::set<const ResearchTask*> m_enqueued;
-    std::vector<std::pair<const ResearchTask*, ui::Button*>> m_research;
+    std::map<const ResearchTask*, std::unique_ptr<gfx::DrawableDecorator>>
+        m_research;
 };
