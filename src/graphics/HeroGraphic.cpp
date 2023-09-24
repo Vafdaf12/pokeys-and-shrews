@@ -4,6 +4,8 @@
 #include "core/Resources.h"
 #include "core/UserInterface.h"
 #include "editor/LairEditor.h"
+#include "lair/BreadthFirstExplorer.h"
+#include "lair/DepthFirstExplorer.h"
 #include "raylib.h"
 #include "tween.h"
 #include "tweeny.h"
@@ -16,8 +18,13 @@
 #include <iostream>
 #include <stdio.h>
 
-HeroGraphic::HeroGraphic(const Hero* hero)
-    : m_texture(Resources::getTexture("res/eduardo.png")), m_pHero(hero) {}
+HeroGraphic::HeroGraphic(const Hero* hero) : m_pHero(hero) {
+    if (dynamic_cast<DepthFirstExplorer*>(m_pHero->m_pExplorer)) {
+        m_texture = Resources::getTexture("res/eduardo.png");
+    } else if (dynamic_cast<BreadthFirstExplorer*>(m_pHero->m_pExplorer)) {
+        m_texture = Resources::getTexture("res/Hero1.png");
+    }
+}
 Color getHealthColor(float fac) {
 
     float facR = std::clamp((1 - fac) * 2, 0.f, 1.f);

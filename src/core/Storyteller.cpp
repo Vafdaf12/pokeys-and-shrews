@@ -20,7 +20,7 @@ Hero* Storyteller::spawnHero() {
     auto it = m_spawnTiles.begin();
     std::advance(it, i);
 
-    Hero* hero = new Hero(new BreadthFirstExplorer(*it), 10, 1, 10, m_pEngine);
+    Hero* hero = new Hero(createExplorer(*it), 10, 1, 10, m_pEngine);
     m_heroes.push_back(hero);
 
     if (m_pEngine) m_pEngine->heroSpawned(this, hero);
@@ -73,4 +73,13 @@ bool Storyteller::isHeroOnTile(const Tile* tile) const {
         if (h->getExplorer()->get() == tile) return true;
     }
     return false;
+}
+
+LairExplorer* Storyteller::createExplorer(Tile* start) {
+    int type = rand() % 2;
+    switch (type) {
+    case 0: return new DepthFirstExplorer(start);
+    case 1: return new BreadthFirstExplorer(start);
+    }
+    return nullptr;
 }

@@ -2,6 +2,7 @@
 
 #include "core/GameObject.h"
 #include "core/Timer.h"
+#include "lair/LairExplorer.h"
 #include <vector>
 
 class Tile;
@@ -29,6 +30,7 @@ public:
     bool isHeroOnTile(const Tile* tile) const;
 
 private:
+    LairExplorer* createExplorer(Tile* start);
     uint32_t m_currentWave = 0;
     uint32_t m_totalWaves;
 
