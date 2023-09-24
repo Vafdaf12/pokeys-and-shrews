@@ -15,7 +15,6 @@
 #include <queue>
 #include <stdlib.h>
 
-
 #include "research/ResearchLab.h"
 #include "research/TrapResearch.h"
 
@@ -50,9 +49,12 @@ void Game::init() {
     loadMap("res/map.txt");
     _bank->setBalance(100);
 
-    _researchQueue.push(new DamageTrap(2, _engine.get()));
-    _researchQueue.push(new TeleportTrap(2.f, _engine.get()));
-    _researchQueue.push(new StunTrap(3.f, 10.f, _engine.get()));
+    _engine->researchManager()->addResearch(new TrapResearch(
+        (new DamageTrap(2, _engine.get())), 5.f, 10, _engine.get()));
+    _engine->researchManager()->addResearch(new TrapResearch(
+        (new TeleportTrap(2.f, _engine.get())), 5.f, 10, _engine.get()));
+    _engine->researchManager()->addResearch(new TrapResearch(
+        (new StunTrap(3.f, 10.f, _engine.get())), 5.f, 10, _engine.get()));
 }
 
 void Game::execute() {

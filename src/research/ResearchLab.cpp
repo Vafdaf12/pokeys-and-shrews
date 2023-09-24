@@ -35,6 +35,7 @@ bool ResearchLab::cancel(ResearchTask* task) {
     if (m_pEngine) {
         m_pEngine->researchCancelled(this, task);
     }
+    task = it->release();
     task->cancel();
     m_queue.erase(it);
     return true;

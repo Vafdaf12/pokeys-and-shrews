@@ -5,6 +5,7 @@
 #include "research/ResearchTask.h"
 #include "ui/Button.h"
 
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -26,7 +27,9 @@ private:
     static constexpr gfx::Vec2 OFFSET = {20, 165};
     static constexpr gfx::Vec2 WIDTH = {75, 75};
 
+    void onClick(ResearchTask* task);
     void layout();
 
-    std::vector<std::pair<const ResearchTask*, ui::Button>> m_research;
+    std::set<const ResearchTask*> m_enqueued;
+    std::vector<std::pair<const ResearchTask*, ui::Button*>> m_research;
 };

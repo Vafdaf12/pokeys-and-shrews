@@ -9,10 +9,11 @@
 #include <stdio.h>
 
 void ResearchManager::addResearch(ResearchTask* task) {
-    ui::Button btn(std::unique_ptr<gfx::Graphic>(task->createGraphic()), [=]() {
-        if (m_pEngine) m_pEngine->researchCancelled(this, task);
-    });
-    m_research.emplace_back(task, std::move(btn));
+
+    ui::Button* btn =
+        new ui::Button(std::unique_ptr<gfx::Graphic>(task->createGraphic()),
+            std::bind(&ResearchManager::onClick, this, task));
+    m_research.emplace_back(task, btn);
     layout();
 }
 bool ResearchManager::removeResearch(const ResearchTask* task) {
@@ -25,11 +26,20 @@ bool ResearchManager::removeResearch(const ResearchTask* task) {
 
     return true;
 }
+void ResearchManager::onClick(ResearchTask* task) {
+    if (!m_pEngine) return;
+    if (m_enqueued.contains(task)) {
+        m_pEngine->researchCancelled(this, task);
+        m_enqueued.erase(task);
+    } else if (m_pEngine->researchRequested(this, task)) {
+        m_enqueued.insert(task);
+    }
+}
 void ResearchManager::layout() {
     for (size_t i = 0; i < m_research.size(); i++) {
         int x = i % 2;
         int y = i / 2;
-        gfx::Graphic* g = m_research[i].second.getInternal<gfx::Graphic>();
+        gfx::Graphic* g = m_research[i].second->getInternal<gfx::Graphic>();
         Vector2 v = OFFSET;
         v.x += x * WIDTH.x;
         v.y += y * WIDTH.y;
@@ -38,12 +48,12 @@ void ResearchManager::layout() {
 }
 gfx::Rect ResearchManager::getBoundingBox() const {
     if (m_research.empty()) return {OFFSET.x, OFFSET.y, 0, 0};
-    gfx::Rect r = m_research[0].second.getBoundingBox();
+    gfx::Rect r = m_research[0].second->getBoundingBox();
     Vector2 topLeft = {r.x, r.y};
     Vector2 bottomRight = {r.x + r.width, r.y + r.height};
 
     for (size_t i = 1; i < m_research.size(); i++) {
-        r = m_research[i].second.getBoundingBox();
+        r = m_research[i].second->getBoundingBox();
         topLeft.x = std::min(topLeft.x, r.x);
         topLeft.y = std::min(topLeft.y, r.y);
 
@@ -59,11 +69,11 @@ gfx::Rect ResearchManager::getBoundingBox() const {
 }
 void ResearchManager::draw() {
     for (auto& p : m_research) {
-        p.second.draw();
+        p.second->draw();
     }
 }
 void ResearchManager::update(float dt) {
-    for (auto& p : m_research) {
-        p.second.update(dt);
+    for (size_t i = 0; i < m_research.size(); i++) {
+        m_research[i].second->update(dt);
     }
 }

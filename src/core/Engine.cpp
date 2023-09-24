@@ -19,7 +19,6 @@ bool Engine::researchRequested(GameObject* sender, ResearchTask* pTask) {
     // Research has been successfully queued
     if (sender == m_pLab) {
         m_pBank->withdraw(pTask->getCost());
-        m_researchManager.addResearch(pTask);
         std::cout << "[ENGINE] research queued: " << pTask->toString()
                   << std::endl;
         return true;
@@ -48,7 +47,7 @@ void Engine::researchCancelled(GameObject* sender, ResearchTask* pTask) {
 
     // Task has been successfully removed
     if (sender == m_pLab) {
-        m_researchManager.removeResearch(pTask);
+        // m_researchManager.removeResearch(pTask);
         return;
     }
 
