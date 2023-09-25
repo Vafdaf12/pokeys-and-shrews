@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -28,7 +29,7 @@ protected:
         return m_pContract->m_votes;
     }
     inline void setState(ContractState* pState) const {
-        m_pContract->m_pState = pState;
+        m_pContract->setState(pState);
     }
 
     SmartContract* m_pContract;

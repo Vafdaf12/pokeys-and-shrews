@@ -144,3 +144,13 @@ void Game::loadMap(const std::string& path) {
         }
     }
 }
+
+void Game::execute() {
+    while (!WindowShouldClose()) {
+        handleInput();
+        update(GetFrameTime());
+        BeginDrawing();
+        draw();
+        EndDrawing();
+    }
+}

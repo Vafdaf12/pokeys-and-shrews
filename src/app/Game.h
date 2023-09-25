@@ -16,7 +16,6 @@ class Game : public Task {
 private:
     void init() override;
     void execute() override;
-    void cleanup() override;
 
     void update(float dt);
     void draw();

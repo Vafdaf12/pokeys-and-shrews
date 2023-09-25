@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Task.h"
+#include "contract/SmartContract.h"
+
+#include <memory>
+#include <vector>
+
 
 class SmartContract;
 
@@ -22,4 +27,5 @@ private:
 
 private:
     SmartContract* m_pContract = nullptr;
+    std::vector<std::unique_ptr<ContractObserver>> m_observers;
 };
