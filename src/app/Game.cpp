@@ -75,7 +75,6 @@ void Game::execute() {
         EndDrawing();
     }
 }
-void Game::cleanup() {}
 
 void Game::handleInput() {
     if (IsKeyReleased(KEY_TAB) && !_researchQueue.empty()) {
@@ -142,15 +141,5 @@ void Game::loadMap(const std::string& path) {
         if (data[i] == 'T') {
             _lair->addEntity(x, y, new DamageTrap(4, _engine.get()));
         }
-    }
-}
-
-void Game::execute() {
-    while (!WindowShouldClose()) {
-        handleInput();
-        update(GetFrameTime());
-        BeginDrawing();
-        draw();
-        EndDrawing();
     }
 }
